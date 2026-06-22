@@ -23,7 +23,7 @@ Done:
 - Display Success Message
 
 Issues：
-Anonymous Posting
-Comment System
-Reporting System
-Anonymous Nickname
+- Anonymous Posting
+- Comment System
+- Reporting System
+- Anonymous Nickname
