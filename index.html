@@ -1,23 +1,30 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Anonymous Student Support</title>
+    <title>Anonymous Student Support Platform</title>
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<h1>Anonymous Posting</h1>
+<h1>Anonymous Student Support Platform</h1>
 
-<textarea placeholder="Share your concern here..." rows="5" cols="50"></textarea>
+<h2>Create Anonymous Post</h2>
+
+<textarea id="postContent"
+          placeholder="Share your concern anonymously..."
+          rows="5"
+          cols="50"></textarea>
 
 <br><br>
 
-<button onclick="submitPost()">Post</button>
+<button onclick="submitPost()">
+Submit Post
+</button>
 
-<script>
-function submitPost() {
-    alert("Anonymous post submitted successfully!");
-}
-</script>
+<p id="message"></p>
+
+<script src="script.js"></script>
 
 </body>
 </html>
