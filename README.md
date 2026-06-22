@@ -21,3 +21,9 @@ Done:
 - Create Post Form
 - Implement Post Submission Button
 - Display Success Message
+
+Issues：
+Anonymous Posting
+Comment System
+Reporting System
+Anonymous Nickname
