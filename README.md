@@ -1,3 +1,11 @@
+## Team Roles
+
+| Role | Responsibility | Student Name |
+|---|---|---|
+| Product Owner, Programmer |  | Lu Chuanjun |
+| Scrum Maste, Technician |  | Zhang Jiale |
+| Technician, Designer | | park haewon |
+
 # Anonymous Student Support Platform
 
 ## Project Overview
