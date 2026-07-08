@@ -4,8 +4,8 @@
 
 | Role | Responsibility | Student Name |
 |---|---|---|
-| Product Owner, Programmer |  | Lu Chuanjun |
-| Scrum Maste, Technician |  | Zhang Jiale |
+| Scrum Maste, Programmer |  | Lu Chuanjun |
+| Product Owner, Technician |  | Zhang Jiale |
 | Technician, Designer | | park haewon |
 
 ## Project Overview
