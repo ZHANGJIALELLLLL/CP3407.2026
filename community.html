@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Community | Hello Dear</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+
+    font-family:Arial, Helvetica, sans-serif;
+    background:#f6f7fc;
+    color:#222;
+
+}
+
+/* ---------- Header ---------- */
+
+header{
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    padding:20px 60px;
+
+    background:white;
+
+    box-shadow:0 3px 10px rgba(0,0,0,.08);
+
+    position:sticky;
+    top:0;
+
+}
+
+.logo{
+
+    font-size:28px;
+    font-weight:bold;
+    color:#6257e8;
+
+}
+
+nav a{
+
+    text-decoration:none;
+    color:#444;
+    margin-left:30px;
+    font-weight:600;
+
+}
+
+nav a:hover{
+
+    color:#6257e8;
+
+}
+
+.active{
+
+    color:#6257e8;
+
+}
+
+/* ---------- Main ---------- */
+
+.container{
+
+    width:900px;
+    margin:50px auto;
+
+}
+
+.topSection{
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    margin-bottom:25px;
+
+}
+
+.topSection h1{
+
+    font-size:40px;
+    margin-bottom:8px;
+
+}
+
+.topSection p{
+
+    color:gray;
+
+}
+
+.postButton{
+
+    background:#6257e8;
+    color:white;
+
+    border:none;
+
+    padding:15px 28px;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    font-size:15px;
+
+    font-weight:bold;
+
+}
+
+.postButton:hover{
+
+    background:#4d42cf;
+
+}
+
+.search{
+
+    width:100%;
+
+    padding:15px;
+
+    border-radius:12px;
+
+    border:1px solid #ddd;
+
+    margin-bottom:30px;
+
+    font-size:16px;
+
+}
+
+/* ---------- Post ---------- */
+
+.post{
+
+    background:white;
+
+    border-radius:18px;
+
+    padding:25px;
+
+    margin-bottom:25px;
+
+    box-shadow:0 8px 18px rgba(0,0,0,.08);
+
+    transition:.25s;
+
+}
+
+.post:hover{
+
+    transform:translateY(-3px);
+
+}
+
+.postHeader{
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+}
+
+.user{
+
+    display:flex;
+    align-items:center;
+
+}
+
+.avatar{
+
+    width:55px;
+    height:55px;
+
+    border-radius:50%;
+
+    background:#6257e8;
+
+    color:white;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:24px;
+
+    margin-right:15px;
+
+}
+
+.user h3{
+
+    margin-bottom:5px;
+
+}
+
+.category{
+
+    color:#777;
+    font-size:14px;
+
+}
+
+.postContent{
+
+    margin:25px 0;
+
+    line-height:1.8;
+
+    font-size:17px;
+
+}
+
+.footer{
+
+    display:flex;
+    align-items:center;
+
+}
+
+.footer span{
+
+    margin-right:30px;
+
+    color:#666;
+
+    cursor:pointer;
+
+}
+
+.report{
+
+    margin-left:auto;
+
+    border:1px solid red;
+
+    color:red;
+
+    background:white;
+
+    padding:8px 18px;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+}
+
+.report:hover{
+
+    background:red;
+
+    color:white;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<div class="logo">
+
+Hello Dear
+
+</div>
+
+<nav>
+
+<a href="index.html">Home</a>
+
+<a href="community.html" class="active">Community</a>
+
+<a href="resources.html">Resources</a>
+
+<a href="about.html">About</a>
+
+<a href="login.html">Login</a>
+
+</nav>
+
+</header>
+
+<div class="container">
+
+<div class="topSection">
+
+<div>
+
+<h1>Community</h1>
+
+<p>Browse and connect with your peers.</p>
+
+</div>
+
+<button class="postButton">
+
++ Post Anonymously
+
+</button>
+
+</div>
+
+<input
+class="search"
+type="text"
+placeholder="Search community posts...">
+
+<!-- Post 1 -->
+
+<div class="post">
+
+<div class="postHeader">
+
+<div class="user">
+
+<div class="avatar">🦊</div>
+
+<div>
+
+<h3>Anonymous Fox</h3>
+
+<p class="category">#Academic</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="postContent">
+
+Feeling really stressed about my final exams.
+Does anyone have tips for managing study pressure?
+
+</div>
+
+<div class="footer">
+
+<span>💬 12 Comments</span>
+
+<span>❤️ 18 Likes</span>
+
+<button class="report">
+
+Report
+
+</button>
+
+</div>
+
+</div>
+
+<!-- Post 2 -->
+
+<div class="post">
+
+<div class="postHeader">
+
+<div class="user">
+
+<div class="avatar">🐱</div>
+
+<div>
+
+<h3>Anonymous Cat</h3>
+
+<p class="category">#Friendship</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="postContent">
+
+I just moved here from another country and
+I'm finding it difficult to make friends.
+
+</div>
+
+<div class="footer">
+
+<span>💬 8 Comments</span>
+
+<span>❤️ 25 Likes</span>
+
+<button class="report">
+
+Report
+
+</button>
+
+</div>
+
+</div>
+
+<!-- Post 3 -->
+
+<div class="post">
+
+<div class="postHeader">
+
+<div class="user">
+
+<div class="avatar">🐼</div>
+
+<div>
+
+<h3>Anonymous Panda</h3>
+
+<p class="category">#Mental Health</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="postContent">
+
+Lately I've been feeling overwhelmed by assignments and work.
+Has anyone experienced the same thing?
+
+</div>
+
+<div class="footer">
+
+<span>💬 20 Comments</span>
+
+<span>❤️ 41 Likes</span>
+
+<button class="report">
+
+Report
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</body>
+
+</html>
