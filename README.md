@@ -2,11 +2,11 @@
 
 ## Team Roles
 
-| Role | Responsibility | Student Name |
-|---|---|---|
-| Scrum Maste, Programmer |  | Lu Chuanjun |
-| Product Owner, Technician |  | Zhang Jiale |
-| Technician, Designer | | park haewon |
+| Role | Student Name |
+|---|---|
+| Scrum Maste, Programmer | Lu Chuanjun |
+| Product Owner, Technician | Zhang Jiale |
+| Technician, Designer | park haewon |
 
 ## Project Overview
 This project is an anonymoous student support platform where students can share concerns, comment on posts, report harmful content, and use anonymous nicknames.
