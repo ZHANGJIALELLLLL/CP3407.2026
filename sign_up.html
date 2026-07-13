@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Create an account on Hello Dear, an anonymous peer-support platform for university students." />
+  <title>Sign Up | Hello Dear</title>
+
+  <style>
+    :root {
+      --primary: #6257e8;
+      --primary-dark: #4c42cc;
+      --primary-light: #efedff;
+      --navy: #121936;
+      --text: #566079;
+      --muted: #8790a8;
+      --border: #dde2f0;
+      --background: #f7f8fc;
+      --white: #ffffff;
+      --success: #2f9d68;
+      --success-light: #ebf8f1;
+      --danger: #d85262;
+      --danger-light: #fff0f2;
+      --shadow: 0 22px 60px rgba(34, 40, 84, 0.13);
+      --radius-large: 30px;
+      --radius-medium: 16px;
+      --max-width: 1180px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
+      color: var(--navy);
+      background:
+        radial-gradient(circle at 12% 14%, rgba(98, 87, 232, 0.12), transparent 23%),
+        radial-gradient(circle at 88% 82%, rgba(76, 185, 137, 0.10), transparent 21%),
+        var(--background);
+      line-height: 1.55;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    .container {
+      width: min(calc(100% - 40px), var(--max-width));
+      margin: 0 auto;
+    }
+
+    /* Header */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(221, 226, 240, 0.9);
+    }
+
+    .navbar {
+      min-height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.28rem;
+      font-weight: 850;
+      letter-spacing: -0.04em;
+    }
+
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      color: var(--primary);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      position: relative;
+      padding: 27px 0 24px;
+      color: #2f3650;
+      font-size: 0.95rem;
+      font-weight: 650;
+    }
+
+    .nav-links a:hover {
+      color: var(--primary);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .button {
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 0 18px;
+      border: 1px solid transparent;
+      border-radius: 11px;
+      font-weight: 760;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+    }
+
+    .button-primary {
+      color: var(--white);
+      background: linear-gradient(135deg, var(--primary), #776df4);
+      box-shadow: 0 10px 22px rgba(98, 87, 232, 0.22);
+    }
+
+    .button-primary:hover {
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+    }
+
+    .button-outline {
+      color: var(--navy);
+      background: var(--white);
+      border-color: #aeb5d7;
+    }
+
+    .button-outline:hover {
+      color: var(--primary);
+      border-color: var(--primary);
+    }
+
+    .menu-toggle {
+      display: none;
+      width: 44px;
+      height: 44px;
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      background: var(--white);
+      cursor: pointer;
+    }
+
+    /* Main layout */
+    .signup-section {
+      min-height: calc(100vh - 76px);
+      display: grid;
+      place-items: center;
+      padding: 54px 0;
+    }
+
+    .signup-shell {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1.02fr 0.98fr;
+      overflow: hidden;
+      border: 1px solid #e4e7f3;
+      border-radius: var(--radius-large);
+      background: var(--white);
+      box-shadow: var(--shadow);
+    }
+
+    /* Visual panel */
+    .visual-panel {
+      position: relative;
+      min-height: 760px;
+      padding: 58px;
+      overflow: hidden;
+      color: var(--white);
+      background:
+        radial-gradient(circle at 72% 18%, rgba(255, 255, 255, 0.22), transparent 20%),
+        radial-gradient(circle at 20% 78%, rgba(255, 255, 255, 0.12), transparent 18%),
+        linear-gradient(145deg, #342b8d 0%, #6257e8 54%, #8178f7 100%);
+    }
+
+    .visual-panel::before,
+    .visual-panel::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .visual-panel::before {
+      width: 240px;
+      height: 240px;
+      top: -100px;
+      right: -70px;
+    }
+
+    .visual-panel::after {
+      width: 190px;
+      height: 190px;
+      left: -75px;
+      bottom: -70px;
+    }
+
+    .visual-content {
+      position: relative;
+      z-index: 2;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 18px;
+      font-size: 0.83rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #ddd9ff;
+    }
+
+    .visual-panel h1 {
+      max-width: 520px;
+      margin-bottom: 18px;
+      font-size: clamp(2.2rem, 4.6vw, 4.2rem);
+      line-height: 1.05;
+      letter-spacing: -0.06em;
+    }
+
+    .visual-panel p {
+      max-width: 540px;
+      color: #eeeaff;
+      font-size: 1.05rem;
+    }
+
+    .benefit-list {
+      display: grid;
+      gap: 14px;
+      margin-top: 32px;
+      max-width: 490px;
+    }
+
+    .benefit {
+      display: flex;
+      align-items: flex-start;
+      gap: 13px;
+      padding: 14px 16px;
+      border: 1px solid rgba(255, 255, 255, 0.17);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.09);
+      backdrop-filter: blur(7px);
+    }
+
+    .benefit-icon {
+      flex: 0 0 auto;
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.16);
+    }
+
+    .benefit strong {
+      display: block;
+      margin-bottom: 2px;
+      font-size: 0.94rem;
+    }
+
+    .benefit span {
+      color: #e9e6ff;
+      font-size: 0.84rem;
+    }
+
+    .student-illustration {
+      margin-top: auto;
+      position: relative;
+      min-height: 200px;
+    }
+
+    .speech {
+      position: absolute;
+      right: 44px;
+      top: 10px;
+      width: 110px;
+      height: 76px;
+      display: grid;
+      place-items: center;
+      border-radius: 24px 24px 24px 7px;
+      background: var(--white);
+      color: var(--primary);
+      font-size: 2.5rem;
+      box-shadow: 0 14px 30px rgba(25, 20, 74, 0.23);
+    }
+
+    .people {
+      position: absolute;
+      left: 50%;
+      bottom: 8px;
+      width: 380px;
+      height: 180px;
+      transform: translateX(-50%);
+    }
+
+    .person {
+      position: absolute;
+      bottom: 0;
+      width: 92px;
+      height: 170px;
+    }
+
+    .person:nth-child(1) { left: 15px; transform: rotate(-2deg); }
+    .person:nth-child(2) { left: 100px; transform: translateY(-10px); }
+    .person:nth-child(3) { left: 192px; transform: translateY(-5px); }
+    .person:nth-child(4) { right: 15px; transform: rotate(2deg); }
+
+    .head {
+      position: absolute;
+      top: 11px;
+      left: 27px;
+      width: 39px;
+      height: 44px;
+      border-radius: 46% 46% 50% 50%;
+      background: #f2b68e;
+      z-index: 3;
+    }
+
+    .hair {
+      position: absolute;
+      top: 5px;
+      left: 21px;
+      width: 51px;
+      height: 34px;
+      border-radius: 55% 54% 38% 43%;
+      background: #172344;
+      z-index: 4;
+    }
+
+    .body {
+      position: absolute;
+      top: 51px;
+      left: 10px;
+      width: 74px;
+      height: 91px;
+      border-radius: 25px 25px 16px 16px;
+    }
+
+    .leg {
+      position: absolute;
+      bottom: 4px;
+      width: 30px;
+      height: 58px;
+      border-radius: 18px;
+      background: #243255;
+    }
+
+    .leg.left { left: 19px; transform: rotate(13deg); }
+    .leg.right { right: 14px; transform: rotate(-13deg); }
+
+    .person:nth-child(1) .body { background: #f18ab2; }
+    .person:nth-child(2) .body { background: #ffffff; }
+    .person:nth-child(3) .body { background: #38ad91; }
+    .person:nth-child(4) .body { background: #4b69e8; }
+
+    .ground {
+      position: absolute;
+      left: 5%;
+      right: 5%;
+      bottom: 0;
+      height: 26px;
+      border-radius: 50%;
+      background: rgba(26, 23, 88, 0.26);
+    }
+
+    /* Form panel */
+    .form-panel {
+      padding: 52px 64px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background:
+        radial-gradient(circle at 90% 12%, rgba(98, 87, 232, 0.06), transparent 24%),
+        var(--white);
+    }
+
+    .form-header {
+      margin-bottom: 24px;
+    }
+
+    .form-header h2 {
+      margin-bottom: 8px;
+      font-size: clamp(1.9rem, 3.6vw, 2.7rem);
+      letter-spacing: -0.05em;
+    }
+
+    .form-header p {
+      color: var(--text);
+    }
+
+    .form-header a {
+      color: var(--primary);
+      font-weight: 750;
+    }
+
+    .signup-form {
+      display: grid;
+      gap: 16px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .form-group {
+      display: grid;
+      gap: 8px;
+    }
+
+    .form-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 0.91rem;
+      font-weight: 760;
+    }
+
+    .form-label .hint {
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+
+    .field-wrap {
+      position: relative;
+    }
+
+    .field-icon {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #8a91aa;
+      pointer-events: none;
+    }
+
+    .form-input {
+      width: 100%;
+      min-height: 52px;
+      padding: 0 48px 0 44px;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      background: #fbfcff;
+      color: var(--navy);
+      outline: none;
+      transition: 0.2s ease;
+    }
+
+    .form-input::placeholder {
+      color: #a5abc0;
+    }
+
+    .form-input:focus {
+      border-color: var(--primary);
+      background: var(--white);
+      box-shadow: 0 0 0 4px rgba(98, 87, 232, 0.10);
+    }
+
+    .form-input.invalid {
+      border-color: var(--danger);
+      background: var(--danger-light);
+    }
+
+    .password-toggle {
+      position: absolute;
+      right: 11px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 36px;
+      height: 36px;
+      border: 0;
+      border-radius: 9px;
+      background: transparent;
+      color: #7f879e;
+      cursor: pointer;
+    }
+
+    .password-toggle:hover {
+      color: var(--primary);
+      background: var(--primary-light);
+    }
+
+    .field-error {
+      min-height: 18px;
+      color: var(--danger);
+      font-size: 0.79rem;
+      font-weight: 650;
+    }
+
+    .strength-meter {
+      display: flex;
+      gap: 6px;
+      margin-top: 2px;
+    }
+
+    .strength-bar {
+      height: 5px;
+      flex: 1;
+      border-radius: 4px;
+      background: var(--border);
+      transition: background 0.2s ease;
+    }
+
+    .strength-bar.weak { background: var(--danger); }
+    .strength-bar.fair { background: #e8a83f; }
+    .strength-bar.good { background: var(--success); }
+
+    .checkbox-label {
+      display: inline-flex;
+      align-items: flex-start;
+      gap: 9px;
+      color: var(--text);
+      font-size: 0.86rem;
+      cursor: pointer;
+      line-height: 1.45;
+    }
+
+    .checkbox-label input {
+      margin-top: 2px;
+      width: 17px;
+      height: 17px;
+      flex: 0 0 auto;
+      accent-color: var(--primary);
+    }
+
+    .checkbox-label a {
+      color: var(--primary);
+      font-weight: 680;
+    }
+
+    .signup-button {
+      width: 100%;
+      min-height: 52px;
+      margin-top: 2px;
+      border: 0;
+      border-radius: 13px;
+      color: var(--white);
+      background: linear-gradient(135deg, var(--primary), #786ff5);
+      box-shadow: 0 12px 25px rgba(98, 87, 232, 0.22);
+      font-weight: 800;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .signup-button:hover {
+      transform: translateY(-2px);
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+    }
+
+    .signup-button:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .status-message {
+      display: none;
+      padding: 12px 14px;
+      border-radius: 11px;
+      font-size: 0.87rem;
+      font-weight: 680;
+    }
+
+    .status-message.show {
+      display: block;
+    }
+
+    .status-message.success {
+      color: var(--success);
+      background: var(--success-light);
+      border: 1px solid #cbe9d9;
+    }
+
+    .status-message.error {
+      color: var(--danger);
+      background: var(--danger-light);
+      border: 1px solid #f3c9cf;
+    }
+
+    .privacy-note {
+      margin-top: 22px;
+      padding: 14px 16px;
+      border-radius: 13px;
+      color: var(--text);
+      background: #f7f7fc;
+      font-size: 0.82rem;
+    }
+
+    .privacy-note strong {
+      color: var(--navy);
+    }
+
+    .footer-note {
+      margin-top: 20px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+
+    .footer-note a {
+      color: var(--primary);
+      font-weight: 680;
+    }
+
+    @media (max-width: 980px) {
+      .nav-links {
+        position: fixed;
+        top: 77px;
+        left: 20px;
+        right: 20px;
+        display: none;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        padding: 12px 20px;
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        background: var(--white);
+        box-shadow: var(--shadow);
+      }
+
+      .nav-links.open {
+        display: flex;
+      }
+
+      .nav-links a {
+        display: block;
+        padding: 14px 0;
+      }
+
+      .menu-toggle {
+        display: inline-grid;
+        place-items: center;
+      }
+
+      .nav-actions .button-outline {
+        display: none;
+      }
+
+      .signup-shell {
+        grid-template-columns: 1fr;
+      }
+
+      .visual-panel {
+        min-height: 560px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .container {
+        width: min(calc(100% - 24px), var(--max-width));
+      }
+
+      .nav-actions .button-primary {
+        display: none;
+      }
+
+      .signup-section {
+        padding: 24px 0;
+      }
+
+      .visual-panel {
+        min-height: 460px;
+        padding: 34px 24px;
+      }
+
+      .benefit-list {
+        display: none;
+      }
+
+      .student-illustration {
+        min-height: 200px;
+      }
+
+      .people {
+        transform: translateX(-50%) scale(0.78);
+        transform-origin: center bottom;
+      }
+
+      .form-panel {
+        padding: 38px 24px;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="container navbar">
+      <a class="brand" href="index.html" aria-label="Hello Dear home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 48 48" width="34" height="34">
+            <path d="M24 39S7 29 7 17.5C7 11.7 11.3 8 16 8c3.6 0 6.3 2 8 4.3C25.7 10 28.4 8 32 8c4.7 0 9 3.7 9 9.5C41 29 24 39 24 39Z"
+                  fill="none" stroke="currentColor" stroke-width="3.3"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        Hello Dear
+      </a>
+
+      <nav aria-label="Main navigation">
+        <ul class="nav-links" id="navLinks">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="community.html">Community</a></li>
+          <li><a href="resources.html">Resources</a></li>
+          <li><a href="about.html">About Us</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <a class="button button-outline" href="login.html">Log in</a>
+        <a class="button button-primary" href="signup.html">Sign up</a>
+        <button class="menu-toggle" id="menuToggle" aria-label="Open navigation menu" aria-expanded="false">
+          ☰
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="signup-section">
+    <div class="container">
+      <section class="signup-shell" aria-labelledby="signupTitle">
+        <aside class="visual-panel">
+          <div class="visual-content">
+            <span class="eyebrow">Join Hello Dear</span>
+            <h1>You don't have to carry it alone.</h1>
+            <p>
+              Create an account to share anonymously, support other students,
+              and find university resources whenever you need them.
+            </p>
+
+            <div class="benefit-list">
+              <div class="benefit">
+                <div class="benefit-icon">🔒</div>
+                <div>
+                  <strong>Your identity stays anonymous</strong>
+                  <span>Your real name is never shown in posts or comments.</span>
+                </div>
+              </div>
+
+              <div class="benefit">
+                <div class="benefit-icon">💬</div>
+                <div>
+                  <strong>A judgment-free community</strong>
+                  <span>Connect with peers who understand what you're going through.</span>
+                </div>
+              </div>
+
+              <div class="benefit">
+                <div class="benefit-icon">⚑</div>
+                <div>
+                  <strong>Moderated for safety</strong>
+                  <span>Reporting tools help keep every conversation respectful.</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="student-illustration" aria-label="Illustration of students supporting one another">
+              <div class="speech" aria-hidden="true">♥</div>
+              <div class="ground"></div>
+              <div class="people" aria-hidden="true">
+                <div class="person">
+                  <div class="hair"></div><div class="head"></div><div class="body"></div>
+                  <div class="leg left"></div><div class="leg right"></div>
+                </div>
+                <div class="person">
+                  <div class="hair"></div><div class="head"></div><div class="body"></div>
+                  <div class="leg left"></div><div class="leg right"></div>
+                </div>
+                <div class="person">
+                  <div class="hair"></div><div class="head"></div><div class="body"></div>
+                  <div class="leg left"></div><div class="leg right"></div>
+                </div>
+                <div class="person">
+                  <div class="hair"></div><div class="head"></div><div class="body"></div>
+                  <div class="leg left"></div><div class="leg right"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </aside>
+
+        <div class="form-panel">
+          <div class="form-header">
+            <span class="eyebrow" style="color: var(--primary);">Hello Dear account</span>
+            <h2 id="signupTitle">Create your account</h2>
+            <p>
+              Already have an account?
+              <a href="login.html">Log in</a>
+            </p>
+          </div>
+
+          <form class="signup-form" id="signupForm" novalidate>
+            <div class="form-group">
+              <label class="form-label" for="nickname">
+                Display nickname
+                <span class="hint">Shown on your posts</span>
+              </label>
+              <div class="field-wrap">
+                <span class="field-icon" aria-hidden="true">🙂</span>
+                <input
+                  class="form-input"
+                  id="nickname"
+                  name="nickname"
+                  type="text"
+                  autocomplete="nickname"
+                  placeholder="Anonymous Fox"
+                  maxlength="40"
+                  required
+                />
+              </div>
+              <p class="field-error" id="nicknameError"></p>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="email">University email</label>
+              <div class="field-wrap">
+                <span class="field-icon" aria-hidden="true">✉</span>
+                <input
+                  class="form-input"
+                  id="email"
+                  name="email"
+                  type="email"
+                  autocomplete="email"
+                  placeholder="student@example.edu"
+                  maxlength="120"
+                  required
+                />
+              </div>
+              <p class="field-error" id="emailError"></p>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="password">Password</label>
+                <div class="field-wrap">
+                  <span class="field-icon" aria-hidden="true">🔑</span>
+                  <input
+                    class="form-input"
+                    id="password"
+                    name="password"
+                    type="password"
+                    autocomplete="new-password"
+                    placeholder="Create a password"
+                    minlength="8"
+                    maxlength="72"
+                    required
+                  />
+                  <button
+                    class="password-toggle"
+                    id="passwordToggle"
+                    type="button"
+                    aria-label="Show password"
+                    aria-pressed="false"
+                  >
+                    ◉
+                  </button>
+                </div>
+                <div class="strength-meter" aria-hidden="true">
+                  <div class="strength-bar" id="bar1"></div>
+                  <div class="strength-bar" id="bar2"></div>
+                  <div class="strength-bar" id="bar3"></div>
+                </div>
+                <p class="field-error" id="passwordError"></p>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="confirmPassword">Confirm password</label>
+                <div class="field-wrap">
+                  <span class="field-icon" aria-hidden="true">🔑</span>
+                  <input
+                    class="form-input"
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    type="password"
+                    autocomplete="new-password"
+                    placeholder="Re-enter password"
+                    minlength="8"
+                    maxlength="72"
+                    required
+                  />
+                  <button
+                    class="password-toggle"
+                    id="confirmPasswordToggle"
+                    type="button"
+                    aria-label="Show password"
+                    aria-pressed="false"
+                  >
+                    ◉
+                  </button>
+                </div>
+                <p class="field-error" id="confirmPasswordError"></p>
+              </div>
+            </div>
+
+            <label class="checkbox-label" for="terms">
+              <input id="terms" name="terms" type="checkbox" required />
+              I agree to the <a href="#">Terms of Use</a> and <a href="#">Privacy Policy</a>, and I understand my nickname — not my real name — is shown publicly.
+            </label>
+            <p class="field-error" id="termsError"></p>
+
+            <div class="status-message" id="statusMessage" role="status" aria-live="polite"></div>
+
+            <button class="signup-button" id="signupButton" type="submit">
+              Create my account
+            </button>
+          </form>
+
+          <div class="privacy-note">
+            <strong>Privacy note:</strong> Your email is used only for account
+            access and is never displayed publicly. Anonymous nicknames are
+            used throughout the community.
+          </div>
+
+          <p class="footer-note">
+            Need help? <a href="about.html">Learn more about Hello Dear</a>.
+          </p>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    const menuToggle = document.getElementById("menuToggle");
+    const navLinks = document.getElementById("navLinks");
+
+    menuToggle.addEventListener("click", () => {
+      const isOpen = navLinks.classList.toggle("open");
+      menuToggle.setAttribute("aria-expanded", String(isOpen));
+      menuToggle.textContent = isOpen ? "✕" : "☰";
+    });
+
+    const signupForm = document.getElementById("signupForm");
+    const nicknameInput = document.getElementById("nickname");
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+    const confirmPasswordInput = document.getElementById("confirmPassword");
+    const termsInput = document.getElementById("terms");
+
+    const nicknameError = document.getElementById("nicknameError");
+    const emailError = document.getElementById("emailError");
+    const passwordError = document.getElementById("passwordError");
+    const confirmPasswordError = document.getElementById("confirmPasswordError");
+    const termsError = document.getElementById("termsError");
+
+    const passwordToggle = document.getElementById("passwordToggle");
+    const confirmPasswordToggle = document.getElementById("confirmPasswordToggle");
+
+    const bar1 = document.getElementById("bar1");
+    const bar2 = document.getElementById("bar2");
+    const bar3 = document.getElementById("bar3");
+
+    const statusMessage = document.getElementById("statusMessage");
+    const signupButton = document.getElementById("signupButton");
+
+    function showStatus(message, type) {
+      statusMessage.textContent = message;
+      statusMessage.className = `status-message show ${type}`;
+    }
+
+    function clearStatus() {
+      statusMessage.textContent = "";
+      statusMessage.className = "status-message";
+    }
+
+    function setFieldState(input, errorElement, message) {
+      errorElement.textContent = message;
+      input.classList.toggle("invalid", Boolean(message));
+      input.setAttribute("aria-invalid", String(Boolean(message)));
+    }
+
+    function isValidEmail(value) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value);
+    }
+
+    function passwordScore(value) {
+      let score = 0;
+      if (value.length >= 8) score++;
+      if (/[A-Z]/.test(value) && /[a-z]/.test(value)) score++;
+      if (/\d/.test(value) || /[^A-Za-z0-9]/.test(value)) score++;
+      return score;
+    }
+
+    function updateStrengthMeter(value) {
+      const score = passwordScore(value);
+      const bars = [bar1, bar2, bar3];
+      const classes = ["weak", "fair", "good"];
+
+      bars.forEach((bar) => {
+        bar.className = "strength-bar";
+      });
+
+      for (let i = 0; i < score; i++) {
+        bars[i].classList.add(classes[Math.min(score, 3) - 1]);
+      }
+    }
+
+    function validateForm() {
+      const nickname = nicknameInput.value.trim();
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
+      const confirmPassword = confirmPasswordInput.value;
+      let valid = true;
+
+      setFieldState(nicknameInput, nicknameError, "");
+      setFieldState(emailInput, emailError, "");
+      setFieldState(passwordInput, passwordError, "");
+      setFieldState(confirmPasswordInput, confirmPasswordError, "");
+      termsError.textContent = "";
+      clearStatus();
+
+      if (!nickname) {
+        setFieldState(nicknameInput, nicknameError, "Please choose a display nickname.");
+        valid = false;
+      } else if (nickname.length < 3) {
+        setFieldState(nicknameInput, nicknameError, "Nickname must be at least 3 characters.");
+        valid = false;
+      }
+
+      if (!email) {
+        setFieldState(emailInput, emailError, "Please enter your university email.");
+        valid = false;
+      } else if (!isValidEmail(email)) {
+        setFieldState(emailInput, emailError, "Please enter a valid email address.");
+        valid = false;
+      }
+
+      if (!password) {
+        setFieldState(passwordInput, passwordError, "Please create a password.");
+        valid = false;
+      } else if (password.length < 8) {
+        setFieldState(passwordInput, passwordError, "Password must contain at least 8 characters.");
+        valid = false;
+      }
+
+      if (!confirmPassword) {
+        setFieldState(confirmPasswordInput, confirmPasswordError, "Please confirm your password.");
+        valid = false;
+      } else if (password && confirmPassword !== password) {
+        setFieldState(confirmPasswordInput, confirmPasswordError, "Passwords do not match.");
+        valid = false;
+      }
+
+      if (!termsInput.checked) {
+        termsError.textContent = "Please agree to the Terms of Use and Privacy Policy.";
+        valid = false;
+      }
+
+      return valid;
+    }
+
+    function wireToggle(button, input) {
+      button.addEventListener("click", () => {
+        const isHidden = input.type === "password";
+        input.type = isHidden ? "text" : "password";
+        button.setAttribute("aria-pressed", String(isHidden));
+        button.setAttribute("aria-label", isHidden ? "Hide password" : "Show password");
+        button.textContent = isHidden ? "◉̸" : "◉";
+      });
+    }
+
+    wireToggle(passwordToggle, passwordInput);
+    wireToggle(confirmPasswordToggle, confirmPasswordInput);
+
+    [nicknameInput, emailInput, passwordInput, confirmPasswordInput].forEach((input) => {
+      input.addEventListener("input", () => {
+        if (input.classList.contains("invalid")) {
+          const errorMap = {
+            nickname: nicknameError,
+            email: emailError,
+            password: passwordError,
+            confirmPassword: confirmPasswordError
+          };
+          setFieldState(input, errorMap[input.id], "");
+        }
+        clearStatus();
+      });
+    });
+
+    passwordInput.addEventListener("input", () => {
+      updateStrengthMeter(passwordInput.value);
+    });
+
+    termsInput.addEventListener("change", () => {
+      if (termsInput.checked) {
+        termsError.textContent = "";
+      }
+    });
+
+    signupForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      if (!validateForm()) {
+        showStatus("Please correct the highlighted fields before continuing.", "error");
+        return;
+      }
+
+      signupButton.disabled = true;
+      signupButton.textContent = "Creating your account...";
+
+      const payload = {
+        nickname: nicknameInput.value.trim(),
+        email: emailInput.value.trim(),
+        password: passwordInput.value
+      };
+
+      /*
+        FRONT-END DEMONSTRATION
+
+        When your backend is ready, replace the demonstration below with:
+
+        const response = await fetch("/api/signup", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.message || "Unable to create account.");
+        }
+
+        window.location.href = "login.html";
+      */
+
+      try {
+        await new Promise((resolve) => setTimeout(resolve, 700));
+
+        showStatus(
+          "Demo validation successful. Connect this form to your backend signup API before final deployment.",
+          "success"
+        );
+
+        console.log("Signup demonstration payload:", {
+          nickname: payload.nickname,
+          email: payload.email
+        });
+      } catch (error) {
+        showStatus(error.message || "Unable to create account. Please try again.", "error");
+      } finally {
+        signupButton.disabled = false;
+        signupButton.textContent = "Create my account";
+      }
+    });
+  </script>
+</body>
+</html>
