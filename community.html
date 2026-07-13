@@ -420,6 +420,25 @@
       color: var(--primary);
     }
 
+    .like-button.liked {
+      color: var(--pink);
+    }
+
+    .like-button .heart-icon {
+      display: inline-block;
+      transition: transform 0.2s ease;
+    }
+
+    .like-button.liked .heart-icon {
+      animation: heart-pop 0.3s ease;
+    }
+
+    @keyframes heart-pop {
+      0% { transform: scale(1); }
+      45% { transform: scale(1.35); }
+      100% { transform: scale(1); }
+    }
+
     .report-button {
       margin-left: auto;
       display: inline-flex;
@@ -644,7 +663,9 @@
 
             <div class="post-footer">
               <button class="post-stat" type="button">💬 12 Comments</button>
-              <button class="post-stat" type="button">❤️ 18 Likes</button>
+              <button class="post-stat like-button" type="button" data-base-count="18">
+                <span class="heart-icon">❤️</span> <span class="count">18</span> Likes
+              </button>
               <button class="report-button" type="button">⚑ Report</button>
             </div>
           </article>
@@ -666,7 +687,9 @@
 
             <div class="post-footer">
               <button class="post-stat" type="button">💬 8 Comments</button>
-              <button class="post-stat" type="button">❤️ 25 Likes</button>
+              <button class="post-stat like-button" type="button" data-base-count="25">
+                <span class="heart-icon">❤️</span> <span class="count">25</span> Likes
+              </button>
               <button class="report-button" type="button">⚑ Report</button>
             </div>
           </article>
@@ -688,7 +711,9 @@
 
             <div class="post-footer">
               <button class="post-stat" type="button">💬 20 Comments</button>
-              <button class="post-stat" type="button">❤️ 41 Likes</button>
+              <button class="post-stat like-button" type="button" data-base-count="41">
+                <span class="heart-icon">❤️</span> <span class="count">41</span> Likes
+              </button>
               <button class="report-button" type="button">⚑ Report</button>
             </div>
           </article>
@@ -777,10 +802,17 @@
 
     searchInput.addEventListener("input", applyFilters);
 
-    document.querySelectorAll(".post-stat").forEach((button) => {
+    document.querySelectorAll(".like-button").forEach((button) => {
+      const countEl = button.querySelector(".count");
+      const baseCount = parseInt(button.dataset.baseCount, 10);
+      let liked = false;
+
       button.addEventListener("click", () => {
-        // Front-end demonstration only. Connect to your backend like/comment API here.
-        button.classList.toggle("active-stat");
+        liked = !liked;
+        countEl.textContent = liked ? baseCount + 1 : baseCount;
+        button.classList.toggle("liked", liked);
+        button.setAttribute("aria-pressed", String(liked));
+        // Front-end demonstration only. Connect to your backend like API here.
       });
     });
 
