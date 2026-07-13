@@ -1,27 +1,1093 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Login</title>
-    <style>
-        body { font-family: Arial; background:#f4f4f4; text-align:center; padding-top:100px; }
-        .box { background:white; padding:30px; width:300px; margin:auto; border-radius:10px; }
-        input { width:100%; padding:10px; margin:10px 0; }
-        button { width:100%; padding:10px; background:#3498db; color:white; border:none; }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Log in to Hello Dear, an anonymous peer-support platform for university students." />
+  <title>Log In | Hello Dear</title>
+
+  <style>
+    :root {
+      --primary: #6257e8;
+      --primary-dark: #4c42cc;
+      --primary-light: #efedff;
+      --navy: #121936;
+      --text: #566079;
+      --muted: #8790a8;
+      --border: #dde2f0;
+      --background: #f7f8fc;
+      --white: #ffffff;
+      --success: #2f9d68;
+      --success-light: #ebf8f1;
+      --danger: #d85262;
+      --danger-light: #fff0f2;
+      --shadow: 0 22px 60px rgba(34, 40, 84, 0.13);
+      --radius-large: 30px;
+      --radius-medium: 16px;
+      --max-width: 1180px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
+      color: var(--navy);
+      background:
+        radial-gradient(circle at 12% 14%, rgba(98, 87, 232, 0.12), transparent 23%),
+        radial-gradient(circle at 88% 82%, rgba(76, 185, 137, 0.10), transparent 21%),
+        var(--background);
+      line-height: 1.55;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    .container {
+      width: min(calc(100% - 40px), var(--max-width));
+      margin: 0 auto;
+    }
+
+    /* Header */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(221, 226, 240, 0.9);
+    }
+
+    .navbar {
+      min-height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.28rem;
+      font-weight: 850;
+      letter-spacing: -0.04em;
+    }
+
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      color: var(--primary);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      position: relative;
+      padding: 27px 0 24px;
+      color: #2f3650;
+      font-size: 0.95rem;
+      font-weight: 650;
+    }
+
+    .nav-links a:hover {
+      color: var(--primary);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .button {
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 0 18px;
+      border: 1px solid transparent;
+      border-radius: 11px;
+      font-weight: 760;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+    }
+
+    .button-primary {
+      color: var(--white);
+      background: linear-gradient(135deg, var(--primary), #776df4);
+      box-shadow: 0 10px 22px rgba(98, 87, 232, 0.22);
+    }
+
+    .button-primary:hover {
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+    }
+
+    .button-outline {
+      color: var(--navy);
+      background: var(--white);
+      border-color: #aeb5d7;
+    }
+
+    .button-outline:hover {
+      color: var(--primary);
+      border-color: var(--primary);
+    }
+
+    .menu-toggle {
+      display: none;
+      width: 44px;
+      height: 44px;
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      background: var(--white);
+      cursor: pointer;
+    }
+
+    /* Main layout */
+    .login-section {
+      min-height: calc(100vh - 76px);
+      display: grid;
+      place-items: center;
+      padding: 54px 0;
+    }
+
+    .login-shell {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1.02fr 0.98fr;
+      overflow: hidden;
+      border: 1px solid #e4e7f3;
+      border-radius: var(--radius-large);
+      background: var(--white);
+      box-shadow: var(--shadow);
+    }
+
+    /* Visual panel */
+    .visual-panel {
+      position: relative;
+      min-height: 690px;
+      padding: 58px;
+      overflow: hidden;
+      color: var(--white);
+      background:
+        radial-gradient(circle at 72% 18%, rgba(255, 255, 255, 0.22), transparent 20%),
+        radial-gradient(circle at 20% 78%, rgba(255, 255, 255, 0.12), transparent 18%),
+        linear-gradient(145deg, #342b8d 0%, #6257e8 54%, #8178f7 100%);
+    }
+
+    .visual-panel::before,
+    .visual-panel::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .visual-panel::before {
+      width: 240px;
+      height: 240px;
+      top: -100px;
+      right: -70px;
+    }
+
+    .visual-panel::after {
+      width: 190px;
+      height: 190px;
+      left: -75px;
+      bottom: -70px;
+    }
+
+    .visual-content {
+      position: relative;
+      z-index: 2;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 18px;
+      font-size: 0.83rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #ddd9ff;
+    }
+
+    .visual-panel h1 {
+      max-width: 520px;
+      margin-bottom: 18px;
+      font-size: clamp(2.4rem, 5vw, 4.7rem);
+      line-height: 1.02;
+      letter-spacing: -0.06em;
+    }
+
+    .visual-panel p {
+      max-width: 540px;
+      color: #eeeaff;
+      font-size: 1.05rem;
+    }
+
+    .benefit-list {
+      display: grid;
+      gap: 14px;
+      margin-top: 32px;
+      max-width: 490px;
+    }
+
+    .benefit {
+      display: flex;
+      align-items: flex-start;
+      gap: 13px;
+      padding: 14px 16px;
+      border: 1px solid rgba(255, 255, 255, 0.17);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.09);
+      backdrop-filter: blur(7px);
+    }
+
+    .benefit-icon {
+      flex: 0 0 auto;
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.16);
+    }
+
+    .benefit strong {
+      display: block;
+      margin-bottom: 2px;
+      font-size: 0.94rem;
+    }
+
+    .benefit span {
+      color: #e9e6ff;
+      font-size: 0.84rem;
+    }
+
+    .student-illustration {
+      margin-top: auto;
+      position: relative;
+      min-height: 225px;
+    }
+
+    .speech {
+      position: absolute;
+      right: 44px;
+      top: 10px;
+      width: 110px;
+      height: 76px;
+      display: grid;
+      place-items: center;
+      border-radius: 24px 24px 24px 7px;
+      background: var(--white);
+      color: var(--primary);
+      font-size: 2.5rem;
+      box-shadow: 0 14px 30px rgba(25, 20, 74, 0.23);
+    }
+
+    .people {
+      position: absolute;
+      left: 50%;
+      bottom: 8px;
+      width: 380px;
+      height: 180px;
+      transform: translateX(-50%);
+    }
+
+    .person {
+      position: absolute;
+      bottom: 0;
+      width: 92px;
+      height: 170px;
+    }
+
+    .person:nth-child(1) { left: 15px; transform: rotate(-2deg); }
+    .person:nth-child(2) { left: 100px; transform: translateY(-10px); }
+    .person:nth-child(3) { left: 192px; transform: translateY(-5px); }
+    .person:nth-child(4) { right: 15px; transform: rotate(2deg); }
+
+    .head {
+      position: absolute;
+      top: 11px;
+      left: 27px;
+      width: 39px;
+      height: 44px;
+      border-radius: 46% 46% 50% 50%;
+      background: #f2b68e;
+      z-index: 3;
+    }
+
+    .hair {
+      position: absolute;
+      top: 5px;
+      left: 21px;
+      width: 51px;
+      height: 34px;
+      border-radius: 55% 54% 38% 43%;
+      background: #172344;
+      z-index: 4;
+    }
+
+    .body {
+      position: absolute;
+      top: 51px;
+      left: 10px;
+      width: 74px;
+      height: 91px;
+      border-radius: 25px 25px 16px 16px;
+    }
+
+    .leg {
+      position: absolute;
+      bottom: 4px;
+      width: 30px;
+      height: 58px;
+      border-radius: 18px;
+      background: #243255;
+    }
+
+    .leg.left { left: 19px; transform: rotate(13deg); }
+    .leg.right { right: 14px; transform: rotate(-13deg); }
+
+    .person:nth-child(1) .body { background: #f18ab2; }
+    .person:nth-child(2) .body { background: #ffffff; }
+    .person:nth-child(3) .body { background: #38ad91; }
+    .person:nth-child(4) .body { background: #4b69e8; }
+
+    .ground {
+      position: absolute;
+      left: 5%;
+      right: 5%;
+      bottom: 0;
+      height: 26px;
+      border-radius: 50%;
+      background: rgba(26, 23, 88, 0.26);
+    }
+
+    /* Form panel */
+    .form-panel {
+      padding: 62px 64px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background:
+        radial-gradient(circle at 90% 12%, rgba(98, 87, 232, 0.06), transparent 24%),
+        var(--white);
+    }
+
+    .form-header {
+      margin-bottom: 28px;
+    }
+
+    .form-header h2 {
+      margin-bottom: 8px;
+      font-size: clamp(2rem, 4vw, 3rem);
+      letter-spacing: -0.05em;
+    }
+
+    .form-header p {
+      color: var(--text);
+    }
+
+    .form-header a {
+      color: var(--primary);
+      font-weight: 750;
+    }
+
+    .login-form {
+      display: grid;
+      gap: 19px;
+    }
+
+    .form-group {
+      display: grid;
+      gap: 8px;
+    }
+
+    .form-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 0.91rem;
+      font-weight: 760;
+    }
+
+    .form-label a {
+      color: var(--primary);
+      font-size: 0.86rem;
+    }
+
+    .field-wrap {
+      position: relative;
+    }
+
+    .field-icon {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #8a91aa;
+      pointer-events: none;
+    }
+
+    .form-input {
+      width: 100%;
+      min-height: 52px;
+      padding: 0 48px 0 44px;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      background: #fbfcff;
+      color: var(--navy);
+      outline: none;
+      transition: 0.2s ease;
+    }
+
+    .form-input::placeholder {
+      color: #a5abc0;
+    }
+
+    .form-input:focus {
+      border-color: var(--primary);
+      background: var(--white);
+      box-shadow: 0 0 0 4px rgba(98, 87, 232, 0.10);
+    }
+
+    .form-input.invalid {
+      border-color: var(--danger);
+      background: var(--danger-light);
+    }
+
+    .password-toggle {
+      position: absolute;
+      right: 11px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 36px;
+      height: 36px;
+      border: 0;
+      border-radius: 9px;
+      background: transparent;
+      color: #7f879e;
+      cursor: pointer;
+    }
+
+    .password-toggle:hover {
+      color: var(--primary);
+      background: var(--primary-light);
+    }
+
+    .field-error {
+      min-height: 18px;
+      color: var(--danger);
+      font-size: 0.79rem;
+      font-weight: 650;
+    }
+
+    .form-options {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-top: -2px;
+    }
+
+    .checkbox-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      color: var(--text);
+      font-size: 0.88rem;
+      cursor: pointer;
+    }
+
+    .checkbox-label input {
+      width: 17px;
+      height: 17px;
+      accent-color: var(--primary);
+    }
+
+    .login-button {
+      width: 100%;
+      min-height: 52px;
+      margin-top: 2px;
+      border: 0;
+      border-radius: 13px;
+      color: var(--white);
+      background: linear-gradient(135deg, var(--primary), #786ff5);
+      box-shadow: 0 12px 25px rgba(98, 87, 232, 0.22);
+      font-weight: 800;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .login-button:hover {
+      transform: translateY(-2px);
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+    }
+
+    .login-button:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .status-message {
+      display: none;
+      padding: 12px 14px;
+      border-radius: 11px;
+      font-size: 0.87rem;
+      font-weight: 680;
+    }
+
+    .status-message.show {
+      display: block;
+    }
+
+    .status-message.success {
+      color: var(--success);
+      background: var(--success-light);
+      border: 1px solid #cbe9d9;
+    }
+
+    .status-message.error {
+      color: var(--danger);
+      background: var(--danger-light);
+      border: 1px solid #f3c9cf;
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 5px 0;
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .guest-button {
+      width: 100%;
+      min-height: 49px;
+      border: 1px solid #b7bdd9;
+      border-radius: 12px;
+      color: var(--navy);
+      background: var(--white);
+      font-weight: 750;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .guest-button:hover {
+      color: var(--primary);
+      border-color: var(--primary);
+      background: var(--primary-light);
+    }
+
+    .privacy-note {
+      margin-top: 23px;
+      padding: 14px 16px;
+      border-radius: 13px;
+      color: var(--text);
+      background: #f7f7fc;
+      font-size: 0.82rem;
+    }
+
+    .privacy-note strong {
+      color: var(--navy);
+    }
+
+    .footer-note {
+      margin-top: 24px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+
+    .footer-note a {
+      color: var(--primary);
+      font-weight: 680;
+    }
+
+    @media (max-width: 980px) {
+      .nav-links {
+        position: fixed;
+        top: 77px;
+        left: 20px;
+        right: 20px;
+        display: none;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        padding: 12px 20px;
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        background: var(--white);
+        box-shadow: var(--shadow);
+      }
+
+      .nav-links.open {
+        display: flex;
+      }
+
+      .nav-links a {
+        display: block;
+        padding: 14px 0;
+      }
+
+      .menu-toggle {
+        display: inline-grid;
+        place-items: center;
+      }
+
+      .nav-actions .button-outline {
+        display: none;
+      }
+
+      .login-shell {
+        grid-template-columns: 1fr;
+      }
+
+      .visual-panel {
+        min-height: 560px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .container {
+        width: min(calc(100% - 24px), var(--max-width));
+      }
+
+      .nav-actions .button-primary {
+        display: none;
+      }
+
+      .login-section {
+        padding: 24px 0;
+      }
+
+      .visual-panel {
+        min-height: 480px;
+        padding: 34px 24px;
+      }
+
+      .benefit-list {
+        display: none;
+      }
+
+      .student-illustration {
+        min-height: 210px;
+      }
+
+      .people {
+        transform: translateX(-50%) scale(0.78);
+        transform-origin: center bottom;
+      }
+
+      .form-panel {
+        padding: 38px 24px;
+      }
+
+      .form-options {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+  </style>
 </head>
 
 <body>
+  <header class="site-header">
+    <div class="container navbar">
+      <a class="brand" href="index.html" aria-label="Hello Dear home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 48 48" width="34" height="34">
+            <path d="M24 39S7 29 7 17.5C7 11.7 11.3 8 16 8c3.6 0 6.3 2 8 4.3C25.7 10 28.4 8 32 8c4.7 0 9 3.7 9 9.5C41 29 24 39 24 39Z"
+                  fill="none" stroke="currentColor" stroke-width="3.3"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        Hello Dear
+      </a>
 
-<div class="box">
-    <h2>Student Login</h2>
+      <nav aria-label="Main navigation">
+        <ul class="nav-links" id="navLinks">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="community.html">Community</a></li>
+          <li><a href="resources.html">Resources</a></li>
+          <li><a href="about.html">About Us</a></li>
+        </ul>
+      </nav>
 
-    <input placeholder="Username">
-    <input type="password" placeholder="Password">
+      <div class="nav-actions">
+        <a class="button button-outline" href="login.html">Log in</a>
+        <a class="button button-primary" href="signup.html">Sign up</a>
+        <button class="menu-toggle" id="menuToggle" aria-label="Open navigation menu" aria-expanded="false">
+          ☰
+        </button>
+      </div>
+    </div>
+  </header>
 
-    <button onclick="window.location.href='index.html'">
-        Login
-    </button>
-</div>
+  <main class="login-section">
+    <div class="container">
+      <section class="login-shell" aria-labelledby="loginTitle">
+        <aside class="visual-panel">
+          <div class="visual-content">
+            <span class="eyebrow">Welcome back</span>
+            <h1>A safer space starts with connection.</h1>
+            <p>
+              Log in to continue sharing anonymously, supporting other students,
+              and finding useful university resources.
+            </p>
 
+            <div class="benefit-list">
+              <div class="benefit">
+                <div class="benefit-icon">🔒</div>
+                <div>
+                  <strong>Your public identity stays anonymous</strong>
+                  <span>Your real name is not shown in posts or comments.</span>
+                </div>
+              </div>
+
+              <div class="benefit">
+                <div class="benefit-icon">💬</div>
+                <div>
+                  <strong>Connect through peer support</strong>
+                  <span>Share experiences and encourage other students respectfully.</span>
+                </div>
+              </div>
+
+              <div class="benefit">
+                <div class="benefit-icon">⚑</div>
+                <div>
+                  <strong>Community safety tools</strong>
+                  <span>Reporting and moderation help keep discussions respectful.</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="student-illustration" aria-label="Illustration of students supporting one another">
+              <div class="speech" aria-hidden="true">♥</div>
+              <div class="ground"></div>
+              <div class="people" aria-hidden="true">
+                <div class="person">
+                  <div class="hair"></div><div class="head"></div><div class="body"></div>
+                  <div class="leg left"></div><div class="leg right"></div>
+                </div>
+                <div class="person">
+                  <div class="hair"></div><div class="head"></div><div class="body"></div>
+                  <div class="leg left"></div><div class="leg right"></div>
+                </div>
+                <div class="person">
+                  <div class="hair"></div><div class="head"></div><div class="body"></div>
+                  <div class="leg left"></div><div class="leg right"></div>
+                </div>
+                <div class="person">
+                  <div class="hair"></div><div class="head"></div><div class="body"></div>
+                  <div class="leg left"></div><div class="leg right"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </aside>
+
+        <div class="form-panel">
+          <div class="form-header">
+            <span class="eyebrow" style="color: var(--primary);">Hello Dear account</span>
+            <h2 id="loginTitle">Log in</h2>
+            <p>
+              New to Hello Dear?
+              <a href="signup.html">Create an account</a>
+            </p>
+          </div>
+
+          <form class="login-form" id="loginForm" novalidate>
+            <div class="form-group">
+              <label class="form-label" for="email">University email</label>
+              <div class="field-wrap">
+                <span class="field-icon" aria-hidden="true">✉</span>
+                <input
+                  class="form-input"
+                  id="email"
+                  name="email"
+                  type="email"
+                  autocomplete="email"
+                  placeholder="student@example.edu"
+                  maxlength="120"
+                  required
+                />
+              </div>
+              <p class="field-error" id="emailError"></p>
+            </div>
+
+            <div class="form-group">
+              <div class="form-label">
+                <label for="password">Password</label>
+                <a href="forgot-password.html">Forgot password?</a>
+              </div>
+
+              <div class="field-wrap">
+                <span class="field-icon" aria-hidden="true">🔑</span>
+                <input
+                  class="form-input"
+                  id="password"
+                  name="password"
+                  type="password"
+                  autocomplete="current-password"
+                  placeholder="Enter your password"
+                  minlength="8"
+                  maxlength="72"
+                  required
+                />
+                <button
+                  class="password-toggle"
+                  id="passwordToggle"
+                  type="button"
+                  aria-label="Show password"
+                  aria-pressed="false"
+                >
+                  ◉
+                </button>
+              </div>
+              <p class="field-error" id="passwordError"></p>
+            </div>
+
+            <div class="form-options">
+              <label class="checkbox-label" for="remember">
+                <input id="remember" name="remember" type="checkbox" />
+                Remember me on this device
+              </label>
+            </div>
+
+            <div class="status-message" id="statusMessage" role="status" aria-live="polite"></div>
+
+            <button class="login-button" id="loginButton" type="submit">
+              Log in securely
+            </button>
+
+            <div class="divider">or</div>
+
+            <button class="guest-button" id="guestButton" type="button">
+              Continue as a guest
+            </button>
+          </form>
+
+          <div class="privacy-note">
+            <strong>Privacy note:</strong> Your email is used for account access
+            and is not displayed publicly. Anonymous nicknames are used in the
+            community.
+          </div>
+
+          <p class="footer-note">
+            By continuing, you agree to our
+            <a href="#">Terms of Use</a> and
+            <a href="#">Privacy Policy</a>.
+          </p>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    const menuToggle = document.getElementById("menuToggle");
+    const navLinks = document.getElementById("navLinks");
+
+    menuToggle.addEventListener("click", () => {
+      const isOpen = navLinks.classList.toggle("open");
+      menuToggle.setAttribute("aria-expanded", String(isOpen));
+      menuToggle.textContent = isOpen ? "✕" : "☰";
+    });
+
+    const loginForm = document.getElementById("loginForm");
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+    const rememberInput = document.getElementById("remember");
+    const emailError = document.getElementById("emailError");
+    const passwordError = document.getElementById("passwordError");
+    const passwordToggle = document.getElementById("passwordToggle");
+    const statusMessage = document.getElementById("statusMessage");
+    const loginButton = document.getElementById("loginButton");
+    const guestButton = document.getElementById("guestButton");
+
+    function showStatus(message, type) {
+      statusMessage.textContent = message;
+      statusMessage.className = `status-message show ${type}`;
+    }
+
+    function clearStatus() {
+      statusMessage.textContent = "";
+      statusMessage.className = "status-message";
+    }
+
+    function setFieldState(input, errorElement, message) {
+      errorElement.textContent = message;
+      input.classList.toggle("invalid", Boolean(message));
+      input.setAttribute("aria-invalid", String(Boolean(message)));
+    }
+
+    function isValidEmail(value) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value);
+    }
+
+    function validateForm() {
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
+      let valid = true;
+
+      setFieldState(emailInput, emailError, "");
+      setFieldState(passwordInput, passwordError, "");
+      clearStatus();
+
+      if (!email) {
+        setFieldState(emailInput, emailError, "Please enter your university email.");
+        valid = false;
+      } else if (!isValidEmail(email)) {
+        setFieldState(emailInput, emailError, "Please enter a valid email address.");
+        valid = false;
+      }
+
+      if (!password) {
+        setFieldState(passwordInput, passwordError, "Please enter your password.");
+        valid = false;
+      } else if (password.length < 8) {
+        setFieldState(passwordInput, passwordError, "Password must contain at least 8 characters.");
+        valid = false;
+      }
+
+      return valid;
+    }
+
+    passwordToggle.addEventListener("click", () => {
+      const isHidden = passwordInput.type === "password";
+      passwordInput.type = isHidden ? "text" : "password";
+      passwordToggle.setAttribute("aria-pressed", String(isHidden));
+      passwordToggle.setAttribute("aria-label", isHidden ? "Hide password" : "Show password");
+      passwordToggle.textContent = isHidden ? "◉̸" : "◉";
+    });
+
+    emailInput.addEventListener("input", () => {
+      if (emailInput.classList.contains("invalid")) {
+        setFieldState(emailInput, emailError, "");
+      }
+      clearStatus();
+    });
+
+    passwordInput.addEventListener("input", () => {
+      if (passwordInput.classList.contains("invalid")) {
+        setFieldState(passwordInput, passwordError, "");
+      }
+      clearStatus();
+    });
+
+    loginForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      if (!validateForm()) {
+        showStatus("Please correct the highlighted fields before continuing.", "error");
+        return;
+      }
+
+      loginButton.disabled = true;
+      loginButton.textContent = "Checking account...";
+
+      const payload = {
+        email: emailInput.value.trim(),
+        password: passwordInput.value,
+        remember: rememberInput.checked
+      };
+
+      /*
+        FRONT-END DEMONSTRATION
+
+        When your backend is ready, replace the demonstration below with:
+
+        const response = await fetch("/api/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.message || "Unable to log in.");
+        }
+
+        window.location.href = "community.html";
+      */
+
+      try {
+        await new Promise((resolve) => setTimeout(resolve, 700));
+
+        showStatus(
+          "Demo validation successful. Connect this form to your backend login API before final deployment.",
+          "success"
+        );
+
+        console.log("Login demonstration payload:", {
+          email: payload.email,
+          remember: payload.remember
+        });
+      } catch (error) {
+        showStatus(error.message || "Unable to log in. Please try again.", "error");
+      } finally {
+        loginButton.disabled = false;
+        loginButton.textContent = "Log in securely";
+      }
+    });
+
+    guestButton.addEventListener("click", () => {
+      showStatus(
+        "Guest mode selected. Connect this button to your community page when it is ready.",
+        "success"
+      );
+
+      // Replace with: window.location.href = "community.html";
+    });
+  </script>
 </body>
 </html>
