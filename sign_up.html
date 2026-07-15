@@ -37,6 +37,55 @@
       scroll-behavior: smooth;
     }
 
+    .site-footer {
+      border-top: 1px solid var(--border);
+      background: var(--white);
+    }
+
+    .footer-bar {
+      min-height: 76px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      color: var(--text);
+      font-size: 0.85rem;
+    }
+
+    .footer-bar .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1.05rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+
+    .footer-bar .brand-mark {
+      color: var(--primary);
+      display: grid;
+      place-items: center;
+    }
+
+    .footer-bar-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+    }
+
+    .footer-bar-links a:hover {
+      color: var(--primary);
+    }
+
+    @media (max-width: 640px) {
+      .footer-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 20px 0;
+      }
+    }
+
     body {
       min-height: 100vh;
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
@@ -963,6 +1012,27 @@
       </section>
     </div>
   </main>
+
+  <footer class="site-footer">
+    <div class="container footer-bar">
+      <a class="brand" href="index.html">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 48 48" width="26" height="26">
+            <path d="M24 39S7 29 7 17.5C7 11.7 11.3 8 16 8c3.6 0 6.3 2 8 4.3C25.7 10 28.4 8 32 8c4.7 0 9 3.7 9 9.5C41 29 24 39 24 39Z"
+                  fill="none" stroke="currentColor" stroke-width="3.3"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        Hello Dear
+      </a>
+      <span>© 2026 Hello Dear. All rights reserved.</span>
+      <div class="footer-bar-links">
+        <a href="about.html">About Us</a>
+        <a href="resources.html">Resources</a>
+        <a href="#">Contact Us</a>
+      </div>
+    </div>
+  </footer>
 
   <script>
     const menuToggle = document.getElementById("menuToggle");
