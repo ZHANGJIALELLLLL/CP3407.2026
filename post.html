@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Share what's on your mind anonymously on Hello Dear, a peer-support platform for university students." />
+  <title>Post Anonymously | Hello Dear</title>
+
+  <style>
+    :root {
+      --primary: #6257e8;
+      --primary-dark: #493ec9;
+      --primary-light: #eeecff;
+      --navy: #111936;
+      --text: #4f5873;
+      --muted: #8790a8;
+      --border: #dfe3f1;
+      --background: #f8f9fd;
+      --white: #ffffff;
+      --green: #28a66a;
+      --green-light: #eaf8f0;
+      --pink: #e85d93;
+      --pink-light: #fff0f6;
+      --blue: #3f79e8;
+      --blue-light: #edf4ff;
+      --orange: #ef8f2f;
+      --orange-light: #fff5e8;
+      --danger: #d85262;
+      --danger-light: #fff0f2;
+      --success: #28a66a;
+      --success-light: #eaf8f0;
+      --shadow: 0 22px 60px rgba(34, 40, 84, 0.13);
+      --radius-large: 30px;
+      --radius-medium: 18px;
+      --radius-small: 12px;
+      --max-width: 1180px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
+      color: var(--navy);
+      background:
+        radial-gradient(circle at 12% 14%, rgba(98, 87, 232, 0.1), transparent 23%),
+        radial-gradient(circle at 88% 82%, rgba(40, 166, 106, 0.08), transparent 21%),
+        var(--background);
+      line-height: 1.6;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button, input, textarea { font: inherit; }
+    img, svg { display: block; max-width: 100%; }
+
+    .container {
+      width: min(calc(100% - 40px), var(--max-width));
+      margin: 0 auto;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.83rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    /* Header */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.92);
+      border-bottom: 1px solid rgba(223, 227, 241, 0.8);
+      backdrop-filter: blur(14px);
+    }
+
+    .navbar {
+      min-height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.28rem;
+      font-weight: 850;
+      letter-spacing: -0.04em;
+    }
+
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      color: var(--primary);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      position: relative;
+      color: #2f3650;
+      font-size: 0.95rem;
+      font-weight: 650;
+      padding: 27px 0 24px;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--primary);
+    }
+
+    .nav-links a.active::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 17px;
+      height: 3px;
+      border-radius: 99px;
+      background: var(--primary);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .menu-toggle {
+      display: none;
+      width: 44px;
+      height: 44px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--white);
+      cursor: pointer;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      min-height: 46px;
+      padding: 0 20px;
+      border: 1px solid transparent;
+      border-radius: 11px;
+      font-weight: 750;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .button:hover { transform: translateY(-2px); }
+
+    .button-primary {
+      color: var(--white);
+      background: linear-gradient(135deg, var(--primary), #766cf4);
+      box-shadow: 0 10px 22px rgba(98, 87, 232, 0.22);
+    }
+
+    .button-primary:hover {
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+    }
+
+    .button-primary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .button-outline {
+      color: var(--navy);
+      border-color: #aeb5db;
+      background: var(--white);
+    }
+
+    .button-outline:hover {
+      color: var(--primary);
+      border-color: var(--primary);
+    }
+
+    .button-small { min-height: 40px; padding: 0 16px; font-size: 0.9rem; }
+
+    /* Main layout */
+    .post-section {
+      padding: 54px 0 70px;
+    }
+
+    .post-shell {
+      display: grid;
+      grid-template-columns: 0.86fr 1.14fr;
+      overflow: hidden;
+      border: 1px solid #e4e7f3;
+      border-radius: var(--radius-large);
+      background: var(--white);
+      box-shadow: var(--shadow);
+    }
+
+    /* Visual panel */
+    .visual-panel {
+      position: relative;
+      min-height: 720px;
+      padding: 54px;
+      overflow: hidden;
+      color: var(--white);
+      background:
+        radial-gradient(circle at 72% 18%, rgba(255, 255, 255, 0.22), transparent 20%),
+        radial-gradient(circle at 20% 78%, rgba(255, 255, 255, 0.12), transparent 18%),
+        linear-gradient(145deg, #342b8d 0%, #6257e8 54%, #8178f7 100%);
+    }
+
+    .visual-panel::before,
+    .visual-panel::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .visual-panel::before { width: 220px; height: 220px; top: -90px; right: -60px; }
+    .visual-panel::after { width: 170px; height: 170px; left: -65px; bottom: -60px; }
+
+    .visual-content {
+      position: relative;
+      z-index: 2;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .visual-panel .eyebrow { margin-bottom: 18px; color: #ddd9ff; }
+
+    .visual-panel h1 {
+      max-width: 420px;
+      margin-bottom: 16px;
+      font-size: clamp(1.9rem, 3.6vw, 2.9rem);
+      line-height: 1.12;
+      letter-spacing: -0.05em;
+    }
+
+    .visual-panel p {
+      max-width: 420px;
+      color: #eeeaff;
+      font-size: 1rem;
+    }
+
+    .benefit-list {
+      display: grid;
+      gap: 13px;
+      margin-top: 30px;
+    }
+
+    .benefit {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 13px 15px;
+      border: 1px solid rgba(255, 255, 255, 0.17);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.09);
+      backdrop-filter: blur(7px);
+    }
+
+    .benefit-icon {
+      flex: 0 0 auto;
+      width: 32px;
+      height: 32px;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.16);
+    }
+
+    .benefit strong { display: block; margin-bottom: 2px; font-size: 0.92rem; }
+    .benefit span { color: #e9e6ff; font-size: 0.82rem; }
+
+    .student-illustration {
+      margin-top: auto;
+      position: relative;
+      min-height: 170px;
+    }
+
+    .speech {
+      position: absolute;
+      right: 30px;
+      top: 4px;
+      width: 96px;
+      height: 68px;
+      display: grid;
+      place-items: center;
+      border-radius: 22px 22px 22px 6px;
+      background: var(--white);
+      color: var(--primary);
+      font-size: 2.1rem;
+      box-shadow: 0 14px 30px rgba(25, 20, 74, 0.23);
+    }
+
+    .people {
+      position: absolute;
+      left: 50%;
+      bottom: 6px;
+      width: 300px;
+      height: 150px;
+      transform: translateX(-50%);
+    }
+
+    .person { position: absolute; bottom: 0; width: 78px; height: 142px; }
+    .person:nth-child(1) { left: 5px; transform: rotate(-2deg); }
+    .person:nth-child(2) { left: 78px; transform: translateY(-8px); }
+    .person:nth-child(3) { right: 5px; transform: rotate(2deg); }
+
+    .head {
+      position: absolute; top: 9px; left: 22px;
+      width: 33px; height: 37px;
+      border-radius: 46% 46% 50% 50%;
+      background: #f2b68e; z-index: 3;
+    }
+
+    .hair {
+      position: absolute; top: 4px; left: 17px;
+      width: 43px; height: 28px;
+      border-radius: 55% 54% 38% 43%;
+      background: #172344; z-index: 4;
+    }
+
+    .body {
+      position: absolute; top: 43px; left: 8px;
+      width: 62px; height: 77px;
+      border-radius: 21px 21px 13px 13px;
+    }
+
+    .leg { position: absolute; bottom: 4px; width: 25px; height: 48px; border-radius: 15px; background: #243255; }
+    .leg.left { left: 16px; transform: rotate(13deg); }
+    .leg.right { right: 12px; transform: rotate(-13deg); }
+
+    .person:nth-child(1) .body { background: #38ad91; }
+    .person:nth-child(2) .body { background: #ffffff; }
+    .person:nth-child(3) .body { background: #f18ab2; }
+
+    .ground {
+      position: absolute; left: 5%; right: 5%; bottom: 0; height: 22px;
+      border-radius: 50%; background: rgba(26, 23, 88, 0.26);
+    }
+
+    /* Form panel */
+    .form-panel {
+      padding: 52px 60px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .form-header { margin-bottom: 26px; }
+    .form-header .eyebrow { color: var(--primary); margin-bottom: 12px; }
+    .form-header h2 {
+      margin-bottom: 8px;
+      font-size: clamp(1.8rem, 3.2vw, 2.4rem);
+      letter-spacing: -0.05em;
+    }
+    .form-header p { color: var(--text); }
+
+    .post-form { display: grid; gap: 22px; }
+
+    .form-group { display: grid; gap: 10px; }
+
+    .form-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 0.91rem;
+      font-weight: 760;
+    }
+
+    .form-label .hint { color: var(--muted); font-size: 0.78rem; font-weight: 600; }
+
+    .category-selector {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .category-option {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 10px 16px;
+      border: 1px solid var(--border);
+      border-radius: 99px;
+      background: var(--white);
+      color: var(--text);
+      font-size: 0.86rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .category-option:hover { border-color: var(--primary); color: var(--primary); }
+
+    .category-option.selected[data-category="academic"] {
+      color: var(--blue); background: var(--blue-light); border-color: var(--blue);
+    }
+    .category-option.selected[data-category="friendship"] {
+      color: var(--pink); background: var(--pink-light); border-color: var(--pink);
+    }
+    .category-option.selected[data-category="mental-health"] {
+      color: var(--green); background: var(--green-light); border-color: var(--green);
+    }
+    .category-option.selected[data-category="other"] {
+      color: var(--orange); background: var(--orange-light); border-color: var(--orange);
+    }
+
+    .textarea-wrap { position: relative; }
+
+    .post-textarea {
+      width: 100%;
+      min-height: 190px;
+      padding: 16px 18px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-small);
+      background: #fbfcff;
+      color: var(--navy);
+      resize: vertical;
+      outline: none;
+      font-size: 0.98rem;
+      line-height: 1.6;
+      transition: 0.2s ease;
+    }
+
+    .post-textarea::placeholder { color: #a5abc0; }
+
+    .post-textarea:focus {
+      border-color: var(--primary);
+      background: var(--white);
+      box-shadow: 0 0 0 4px rgba(98, 87, 232, 0.1);
+    }
+
+    .post-textarea.invalid { border-color: var(--danger); background: var(--danger-light); }
+
+    .char-count {
+      display: flex;
+      justify-content: flex-end;
+      color: var(--muted);
+      font-size: 0.79rem;
+      font-weight: 650;
+    }
+
+    .char-count.near-limit { color: var(--orange); }
+    .char-count.over-limit { color: var(--danger); }
+
+    .field-error {
+      min-height: 18px;
+      color: var(--danger);
+      font-size: 0.79rem;
+      font-weight: 650;
+    }
+
+    .checkbox-label {
+      display: inline-flex;
+      align-items: flex-start;
+      gap: 9px;
+      color: var(--text);
+      font-size: 0.85rem;
+      cursor: pointer;
+      line-height: 1.45;
+    }
+
+    .checkbox-label input {
+      margin-top: 2px;
+      width: 17px;
+      height: 17px;
+      flex: 0 0 auto;
+      accent-color: var(--primary);
+    }
+
+    .post-button {
+      width: 100%;
+      min-height: 52px;
+      border: 0;
+      border-radius: 13px;
+      color: var(--white);
+      background: linear-gradient(135deg, var(--primary), #786ff5);
+      box-shadow: 0 12px 25px rgba(98, 87, 232, 0.22);
+      font-weight: 800;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .post-button:hover:not(:disabled) {
+      transform: translateY(-2px);
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+    }
+
+    .post-button:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+    .status-message {
+      display: none;
+      padding: 12px 14px;
+      border-radius: 11px;
+      font-size: 0.87rem;
+      font-weight: 680;
+    }
+
+    .status-message.show { display: block; }
+
+    .status-message.success {
+      color: var(--success);
+      background: var(--success-light);
+      border: 1px solid #cbe9d9;
+    }
+
+    .status-message.error {
+      color: var(--danger);
+      background: var(--danger-light);
+      border: 1px solid #f3c9cf;
+    }
+
+    .privacy-note {
+      margin-top: 22px;
+      padding: 14px 16px;
+      border-radius: 13px;
+      color: var(--text);
+      background: #f7f7fc;
+      font-size: 0.82rem;
+    }
+
+    .privacy-note strong { color: var(--navy); }
+
+    /* Footer */
+    .site-footer { border-top: 1px solid var(--border); background: var(--white); }
+
+    .footer-inner {
+      min-height: 85px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      color: var(--text);
+      font-size: 0.85rem;
+    }
+
+    .footer-links { display: flex; flex-wrap: wrap; gap: 20px; }
+    .footer-links a:hover { color: var(--primary); }
+
+    @media (max-width: 980px) {
+      .nav-links {
+        position: fixed; top: 77px; left: 20px; right: 20px;
+        display: none; flex-direction: column; align-items: stretch; gap: 0;
+        padding: 12px 20px; border: 1px solid var(--border); border-radius: 16px;
+        background: var(--white); box-shadow: var(--shadow);
+      }
+      .nav-links.open { display: flex; }
+      .nav-links a { display: block; padding: 14px 0; }
+      .nav-links a.active::after { display: none; }
+      .menu-toggle { display: inline-grid; place-items: center; }
+      .nav-actions .button-outline { display: none; }
+      .post-shell { grid-template-columns: 1fr; }
+      .visual-panel { min-height: 420px; }
+      .benefit-list { display: none; }
+    }
+
+    @media (max-width: 640px) {
+      .container { width: min(calc(100% - 24px), var(--max-width)); }
+      .nav-actions .button-primary { display: none; }
+      .post-section { padding: 24px 0; }
+      .visual-panel { padding: 34px 26px; min-height: 300px; }
+      .student-illustration { display: none; }
+      .form-panel { padding: 38px 24px; }
+      .footer-inner { flex-direction: column; align-items: flex-start; padding: 24px 0; }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="container navbar">
+      <a class="brand" href="index.html" aria-label="Hello Dear home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 48 48" width="34" height="34">
+            <path d="M24 39S7 29 7 17.5C7 11.7 11.3 8 16 8c3.6 0 6.3 2 8 4.3C25.7 10 28.4 8 32 8c4.7 0 9 3.7 9 9.5C41 29 24 39 24 39Z"
+                  fill="none" stroke="currentColor" stroke-width="3.3"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        Hello Dear
+      </a>
+
+      <nav aria-label="Main navigation">
+        <ul class="nav-links" id="navLinks">
+          <li><a class="active" href="index.html">Home</a></li>
+          <li><a href="community.html">Community</a></li>
+          <li><a href="resources.html">Resources</a></li>
+          <li><a href="about.html">About Us</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <a class="button button-outline button-small" href="login.html">Log in</a>
+        <a class="button button-primary button-small" href="signup.html">Sign up</a>
+        <button class="menu-toggle" id="menuToggle" aria-label="Open navigation menu" aria-expanded="false">
+          ☰
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="post-section">
+    <div class="container">
+      <section class="post-shell" aria-labelledby="postTitle">
+        <aside class="visual-panel">
+          <div class="visual-content">
+            <span class="eyebrow">100% Anonymous</span>
+            <h1>Your voice matters here.</h1>
+            <p>
+              Whatever you're going through, you don't have to face it alone.
+              Share it with a community that understands.
+            </p>
+
+            <div class="benefit-list">
+              <div class="benefit">
+                <div class="benefit-icon">🔒</div>
+                <div>
+                  <strong>No name attached</strong>
+                  <span>Your post is shown under a random anonymous identity.</span>
+                </div>
+              </div>
+
+              <div class="benefit">
+                <div class="benefit-icon">💬</div>
+                <div>
+                  <strong>Real peer support</strong>
+                  <span>Other students can respond with comments and encouragement.</span>
+                </div>
+              </div>
+
+              <div class="benefit">
+                <div class="benefit-icon">⚑</div>
+                <div>
+                  <strong>Safety first</strong>
+                  <span>Every post can be reported and is reviewed by moderators.</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="student-illustration" aria-hidden="true">
+              <div class="speech">✎</div>
+              <div class="ground"></div>
+              <div class="people">
+                <div class="person">
+                  <div class="hair"></div><div class="head"></div><div class="body"></div>
+                  <div class="leg left"></div><div class="leg right"></div>
+                </div>
+                <div class="person">
+                  <div class="hair"></div><div class="head"></div><div class="body"></div>
+                  <div class="leg left"></div><div class="leg right"></div>
+                </div>
+                <div class="person">
+                  <div class="hair"></div><div class="head"></div><div class="body"></div>
+                  <div class="leg left"></div><div class="leg right"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </aside>
+
+        <div class="form-panel">
+          <div class="form-header">
+            <span class="eyebrow">Create post</span>
+            <h2 id="postTitle">Post Anonymously</h2>
+            <p>Share your concern anonymously and connect with your peers.</p>
+          </div>
+
+          <form class="post-form" id="postForm" novalidate>
+            <div class="form-group">
+              <label class="form-label" for="category">
+                Category
+                <span class="hint">Choose one</span>
+              </label>
+              <div class="category-selector" id="categorySelector">
+                <button class="category-option" type="button" data-category="academic">📚 Academic</button>
+                <button class="category-option" type="button" data-category="friendship">🤝 Friendship</button>
+                <button class="category-option" type="button" data-category="mental-health">💚 Mental Health</button>
+                <button class="category-option" type="button" data-category="other">✦ Other</button>
+              </div>
+              <p class="field-error" id="categoryError"></p>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="postContent">
+                Your post
+                <span class="hint">Kept 100% anonymous</span>
+              </label>
+              <div class="textarea-wrap">
+                <textarea
+                  class="post-textarea"
+                  id="postContent"
+                  name="postContent"
+                  rows="7"
+                  maxlength="600"
+                  placeholder="Share your concern anonymously..."
+                  required
+                ></textarea>
+              </div>
+              <div class="char-count" id="charCount">0 / 600</div>
+              <p class="field-error" id="postError"></p>
+            </div>
+
+            <label class="checkbox-label" for="guidelines">
+              <input id="guidelines" name="guidelines" type="checkbox" required />
+              I agree this post follows the
+              <a href="#" style="color: var(--primary); font-weight: 680;">Community Guidelines</a>
+              and contains no personal identifying information.
+            </label>
+            <p class="field-error" id="guidelinesError"></p>
+
+            <div class="status-message" id="statusMessage" role="status" aria-live="polite"></div>
+
+            <button class="post-button" id="postButton" type="submit">
+              Submit Post
+            </button>
+          </form>
+
+          <div class="privacy-note">
+            <strong>Privacy note:</strong> Your post is published under a random
+            anonymous nickname and avatar. No personal account details are ever shown.
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <a class="brand" href="index.html">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 48 48" width="31" height="31">
+            <path d="M24 39S7 29 7 17.5C7 11.7 11.3 8 16 8c3.6 0 6.3 2 8 4.3C25.7 10 28.4 8 32 8c4.7 0 9 3.7 9 9.5C41 29 24 39 24 39Z"
+                  fill="none" stroke="currentColor" stroke-width="3.3"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        Hello Dear
+      </a>
+
+      <span>© 2026 Hello Dear. All rights reserved.</span>
+
+      <div class="footer-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Use</a>
+        <a href="#">Contact Us</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const menuToggle = document.getElementById("menuToggle");
+    const navLinks = document.getElementById("navLinks");
+
+    menuToggle.addEventListener("click", () => {
+      const isOpen = navLinks.classList.toggle("open");
+      menuToggle.setAttribute("aria-expanded", String(isOpen));
+      menuToggle.textContent = isOpen ? "✕" : "☰";
+    });
+
+    const categorySelector = document.getElementById("categorySelector");
+    const categoryError = document.getElementById("categoryError");
+    let selectedCategory = null;
+
+    categorySelector.addEventListener("click", (event) => {
+      const option = event.target.closest(".category-option");
+      if (!option) return;
+
+      categorySelector.querySelectorAll(".category-option").forEach((btn) => {
+        btn.classList.remove("selected");
+      });
+
+      option.classList.add("selected");
+      selectedCategory = option.dataset.category;
+      categoryError.textContent = "";
+    });
+
+    const postContent = document.getElementById("postContent");
+    const charCount = document.getElementById("charCount");
+    const postError = document.getElementById("postError");
+    const MAX_LENGTH = 600;
+
+    postContent.addEventListener("input", () => {
+      const length = postContent.value.length;
+      charCount.textContent = `${length} / ${MAX_LENGTH}`;
+
+      charCount.classList.toggle("near-limit", length >= MAX_LENGTH * 0.85 && length < MAX_LENGTH);
+      charCount.classList.toggle("over-limit", length >= MAX_LENGTH);
+
+      if (postContent.classList.contains("invalid") && length > 0) {
+        postContent.classList.remove("invalid");
+        postError.textContent = "";
+      }
+    });
+
+    const guidelines = document.getElementById("guidelines");
+    const guidelinesError = document.getElementById("guidelinesError");
+
+    guidelines.addEventListener("change", () => {
+      if (guidelines.checked) guidelinesError.textContent = "";
+    });
+
+    const postForm = document.getElementById("postForm");
+    const postButton = document.getElementById("postButton");
+    const statusMessage = document.getElementById("statusMessage");
+
+    function showStatus(message, type) {
+      statusMessage.textContent = message;
+      statusMessage.className = `status-message show ${type}`;
+    }
+
+    function clearStatus() {
+      statusMessage.textContent = "";
+      statusMessage.className = "status-message";
+    }
+
+    function validateForm() {
+      let valid = true;
+      clearStatus();
+
+      if (!selectedCategory) {
+        categoryError.textContent = "Please choose a category for your post.";
+        valid = false;
+      }
+
+      const content = postContent.value.trim();
+      if (!content) {
+        postContent.classList.add("invalid");
+        postError.textContent = "Please write something before posting.";
+        valid = false;
+      } else if (content.length < 10) {
+        postContent.classList.add("invalid");
+        postError.textContent = "Please share a bit more detail (at least 10 characters).";
+        valid = false;
+      }
+
+      if (!guidelines.checked) {
+        guidelinesError.textContent = "Please confirm your post follows the Community Guidelines.";
+        valid = false;
+      }
+
+      return valid;
+    }
+
+    postForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      if (!validateForm()) {
+        showStatus("Please fix the highlighted fields before posting.", "error");
+        return;
+      }
+
+      postButton.disabled = true;
+      postButton.textContent = "Posting...";
+
+      const payload = {
+        category: selectedCategory,
+        content: postContent.value.trim()
+      };
+
+      /*
+        FRONT-END DEMONSTRATION
+
+        Replace with your backend call, e.g.:
+
+        const response = await fetch("/api/posts", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.message || "Unable to post.");
+        window.location.href = "community.html";
+      */
+
+      try {
+        await new Promise((resolve) => setTimeout(resolve, 700));
+
+        showStatus(
+          "Your post was submitted (demo). Connect this form to your backend API to publish it live.",
+          "success"
+        );
+
+        console.log("Post demonstration payload:", payload);
+
+        postForm.reset();
+        charCount.textContent = `0 / ${MAX_LENGTH}`;
+        categorySelector.querySelectorAll(".category-option").forEach((btn) => {
+          btn.classList.remove("selected");
+        });
+        selectedCategory = null;
+      } catch (error) {
+        showStatus(error.message || "Unable to post. Please try again.", "error");
+      } finally {
+        postButton.disabled = false;
+        postButton.textContent = "Submit Post";
+      }
+    });
+  </script>
+</body>
+</html>
