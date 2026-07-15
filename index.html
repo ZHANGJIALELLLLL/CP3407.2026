@@ -1,173 +1,852 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Hello Dear anonymous student peer support platform">
-<title>Hello Dear | Home</title>
-<style>
-:root{--p:#6257e8;--pd:#493ec9;--pl:#efedff;--n:#111936;--t:#59627a;--b:#dfe3f1;--bg:#f7f8fc;--w:#fff;--g:#2da66f;--gl:#eaf8f1;--pk:#e76798;--pkl:#fff0f6;--o:#ed9134;--ol:#fff5e8;--sh:0 16px 38px rgba(37,42,88,.09);--mw:1180px}
-*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}body{font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--n);background:radial-gradient(circle at 10% 8%,rgba(98,87,232,.09),transparent 21%),var(--bg);line-height:1.58}a{text-decoration:none;color:inherit}button{font:inherit}.container{width:min(calc(100% - 40px),var(--mw));margin:auto}.section{padding:72px 0}.heading{text-align:center;max-width:760px;margin:0 auto 34px}.heading h2{font-size:clamp(2rem,4vw,3rem);letter-spacing:-.05em;line-height:1.1;margin-bottom:10px}.heading p{color:var(--t)}.eyebrow{display:inline-block;color:var(--p);font-size:.82rem;font-weight:850;letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px}
-header{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--b)}.nav{min-height:76px;display:flex;align-items:center;justify-content:space-between;gap:24px}.brand{display:flex;align-items:center;gap:10px;font-size:1.28rem;font-weight:850;letter-spacing:-.04em}.mark{width:34px;height:34px;display:grid;place-items:center;color:var(--p)}.links{display:flex;gap:30px;list-style:none}.links a{position:relative;padding:27px 0 24px;font-size:.95rem;font-weight:650;color:#303750}.links a:hover,.links a.active{color:var(--p)}.links a.active:after{content:"";position:absolute;left:0;right:0;bottom:17px;height:3px;border-radius:20px;background:var(--p)}.actions{display:flex;gap:10px}.btn{min-height:44px;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:0 18px;border-radius:11px;border:1px solid transparent;font-weight:760;transition:.2s}.btn:hover{transform:translateY(-2px)}.primary{color:#fff;background:linear-gradient(135deg,var(--p),#776df4);box-shadow:0 10px 22px rgba(98,87,232,.22)}.primary:hover{background:linear-gradient(135deg,var(--pd),var(--p))}.outline{background:#fff;border-color:#aeb5d7}.outline:hover{color:var(--p);border-color:var(--p)}.menu{display:none;width:44px;height:44px;border:1px solid var(--b);border-radius:11px;background:#fff}
-.hero{padding:74px 0 46px}.hero-grid{display:grid;grid-template-columns:1.02fr .98fr;gap:56px;align-items:center}.hero h1{font-size:clamp(3rem,6vw,5.5rem);line-height:1.01;letter-spacing:-.07em;margin-bottom:22px}.hero h1 span{color:var(--p)}.hero-copy>p{color:var(--t);font-size:1.1rem;max-width:640px;margin-bottom:30px}.hero-actions{display:flex;flex-wrap:wrap;gap:12px}.hero-note{display:flex;flex-wrap:wrap;gap:16px;margin-top:22px;color:#8991a8;font-size:.82rem;font-weight:650}.visual{min-height:500px;position:relative;overflow:hidden;border:1px solid #e2dff8;border-radius:36px;background:radial-gradient(circle at 48% 28%,#fff 0,#f0edff 57%,#e5e1ff 100%);box-shadow:var(--sh)}.bubble{position:absolute;z-index:3;width:205px;padding:16px;border:1px solid var(--b);border-radius:16px;background:rgba(255,255,255,.94);box-shadow:0 14px 28px rgba(48,53,100,.13)}.bubble.one{top:42px;left:34px}.bubble.two{right:28px;bottom:55px}.mini{display:flex;align-items:center;gap:9px;font-size:.78rem;font-weight:800;margin-bottom:9px}.avatar{width:31px;height:31px;display:grid;place-items:center;border-radius:50%;background:var(--pl)}.bubble p{font-size:.8rem;color:var(--t)}.bubble small{display:block;margin-top:10px;color:#8991a8}.people{position:absolute;left:50%;bottom:35px;width:430px;height:300px;transform:translateX(-50%)}.ground{position:absolute;left:4%;right:4%;bottom:5px;height:38px;border-radius:50%;background:rgba(98,87,232,.15)}.person{position:absolute;bottom:22px;width:104px;height:210px}.person:nth-child(1){left:8px}.person:nth-child(2){left:110px;transform:translateY(-14px)}.person:nth-child(3){left:215px;transform:translateY(-8px)}.person:nth-child(4){right:8px}.head{position:absolute;top:14px;left:31px;width:42px;height:48px;border-radius:46% 46% 50% 50%;background:#f1b48d;z-index:3}.hair{position:absolute;top:7px;left:25px;width:53px;height:35px;border-radius:55% 54% 38% 43%;background:#172344;z-index:4}.body{position:absolute;top:59px;left:11px;width:82px;height:103px;border-radius:28px 28px 16px 16px}.leg{position:absolute;bottom:5px;width:33px;height:70px;border-radius:18px;background:#243255}.leg.l{left:22px;transform:rotate(14deg)}.leg.r{right:15px;transform:rotate(-14deg)}.person:nth-child(1) .body{background:#5366e9}.person:nth-child(2) .body{background:#f18ab2}.person:nth-child(3) .body{background:#8b75e8}.person:nth-child(4) .body{background:#36a58d}
-.trust{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:22px}.trust-card,.card,.category,.resource-card,.faq{border:1px solid var(--b);background:#fff;border-radius:18px;box-shadow:0 8px 24px rgba(43,49,93,.05)}.trust-card{display:flex;align-items:center;gap:13px;min-height:94px;padding:17px}.icon{width:48px;height:48px;display:grid;place-items:center;border-radius:14px;background:var(--pl);color:var(--p);font-size:1.25rem}.trust-card strong{display:block;font-size:.92rem}.trust-card span{color:var(--t);font-size:.78rem}
-.features{display:grid;grid-template-columns:repeat(4,1fr);gap:17px}.card{padding:26px;min-height:245px;transition:.2s}.card:hover,.category:hover{transform:translateY(-4px);border-color:#c8c3f4;box-shadow:var(--sh)}.card .icon{margin-bottom:18px}.card h3{margin-bottom:9px}.card p{color:var(--t);font-size:.9rem}
-.categories{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.category{display:flex;align-items:center;gap:16px;min-height:120px;padding:22px;transition:.2s}.category h3{margin-bottom:4px;font-size:1rem}.category p{font-size:.82rem;color:var(--t)}
-.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}.step{text-align:center}.step-icon{width:84px;height:84px;display:grid;place-items:center;margin:0 auto 17px;border:9px solid var(--bg);border-radius:50%;background:var(--pl);color:var(--p);font-size:2rem}.step h3{font-size:.98rem;margin-bottom:7px}.step p{color:var(--t);font-size:.86rem}
-.resource-panel{display:grid;grid-template-columns:.9fr 1.1fr;gap:28px;align-items:center;padding:38px;border:1px solid #d8d3fa;border-radius:28px;background:linear-gradient(135deg,#f0edff,#fff 72%)}.resource-panel h2{font-size:clamp(2rem,4vw,3rem);letter-spacing:-.05em;line-height:1.1;margin-bottom:12px}.resource-panel p{color:var(--t);margin-bottom:20px}.resource-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.resource-card{padding:18px}.resource-card strong{display:block;margin-bottom:4px}.resource-card span{color:var(--t);font-size:.8rem}
-.faq-list{max-width:860px;margin:auto;display:grid;gap:12px}.faq{overflow:hidden}.faq button{width:100%;min-height:62px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;border:0;background:#fff;font-weight:780;text-align:left;cursor:pointer}.answer{max-height:0;overflow:hidden;color:var(--t);transition:max-height .25s}.answer p{padding:0 20px 20px}.faq.open .plus{transform:rotate(45deg)}.plus{transition:.2s}
-.cta{padding:0 0 72px}.cta-box{padding:52px;border-radius:28px;text-align:center;color:#fff;background:linear-gradient(135deg,#332885,#6257e8 58%,#8178f6)}.cta-box h2{font-size:clamp(2.1rem,4vw,3.2rem);letter-spacing:-.05em;margin-bottom:12px}.cta-box p{max-width:700px;margin:0 auto 24px;color:#eceaff}.cta-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:12px}
-footer{background:#fff;border-top:1px solid var(--b)}.footer-grid{display:grid;grid-template-columns:1.4fr repeat(3,1fr);gap:36px;padding:46px 0 34px}.footer-grid p,.footer-grid li{color:var(--t);font-size:.85rem}.footer-grid ul{list-style:none;display:grid;gap:9px}.footer-grid h3{margin-bottom:12px;font-size:.92rem}.bottom{min-height:66px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--b);color:#8b93aa;font-size:.8rem}
-@media(max-width:980px){.links{position:fixed;top:77px;left:20px;right:20px;display:none;flex-direction:column;gap:0;padding:12px 20px;background:#fff;border:1px solid var(--b);border-radius:16px;box-shadow:var(--sh)}.links.open{display:flex}.links a{display:block;padding:14px 0}.links a.active:after{display:none}.menu{display:block}.actions .outline{display:none}.hero-grid,.resource-panel{grid-template-columns:1fr}.hero-copy{text-align:center}.hero-copy>p{margin-left:auto;margin-right:auto}.hero-actions,.hero-note{justify-content:center}.trust,.features{grid-template-columns:repeat(2,1fr)}.categories{grid-template-columns:repeat(2,1fr)}.steps{grid-template-columns:repeat(2,1fr)}.footer-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:640px){.container{width:min(calc(100% - 24px),var(--mw))}.actions .primary{display:none}.visual{min-height:430px}.bubble{width:170px}.bubble.one{top:20px;left:12px}.bubble.two{right:12px;bottom:20px}.people{transform:translateX(-50%) scale(.82);transform-origin:center bottom}.trust,.features,.categories,.steps,.resource-grid,.footer-grid{grid-template-columns:1fr}.resource-panel{padding:26px}.cta-box{padding:38px 24px}.bottom{padding:20px 0;flex-direction:column;align-items:flex-start;gap:8px}}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Hello Dear, an anonymous peer-support platform for university students." />
+  <title>Hello Dear | Home</title>
+
+  <style>
+    :root {
+      --primary: #6257e8;
+      --primary-dark: #493ec9;
+      --primary-light: #efedff;
+      --navy: #111936;
+      --text: #566079;
+      --muted: #8b93aa;
+      --border: #dfe3f1;
+      --background: #f7f8fc;
+      --white: #ffffff;
+      --green: #2da66f;
+      --green-light: #eaf8f1;
+      --pink: #e76798;
+      --pink-light: #fff0f6;
+      --blue: #3d79e8;
+      --blue-light: #edf4ff;
+      --orange: #ed9134;
+      --orange-light: #fff5e8;
+      --danger: #d85262;
+      --danger-light: #fff0f2;
+      --shadow: 0 16px 38px rgba(37, 42, 88, 0.09);
+      --radius-large: 26px;
+      --radius-medium: 18px;
+      --radius-small: 12px;
+      --max-width: 1180px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--navy);
+      background:
+        radial-gradient(circle at 10% 8%, rgba(98, 87, 232, 0.09), transparent 21%),
+        var(--background);
+      line-height: 1.58;
+    }
+
+    a { text-decoration: none; color: inherit; }
+    button, input { font: inherit; }
+
+    .container {
+      width: min(calc(100% - 40px), var(--max-width));
+      margin: 0 auto;
+    }
+
+    .section { padding: 72px 0; }
+
+    .section-heading {
+      text-align: center;
+      max-width: 760px;
+      margin: 0 auto 34px;
+    }
+
+    .section-heading h2 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      letter-spacing: -0.05em;
+      line-height: 1.1;
+      margin-bottom: 10px;
+    }
+
+    .section-heading p { color: var(--text); }
+
+    .eyebrow {
+      display: inline-block;
+      color: var(--primary);
+      font-size: 0.82rem;
+      font-weight: 850;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    /* Header */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .navbar {
+      min-height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.28rem;
+      font-weight: 850;
+      letter-spacing: -0.04em;
+    }
+
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      color: var(--primary);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      position: relative;
+      padding: 27px 0 24px;
+      color: #303750;
+      font-size: 0.95rem;
+      font-weight: 650;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active { color: var(--primary); }
+
+    .nav-links a.active::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 17px;
+      height: 3px;
+      border-radius: 99px;
+      background: var(--primary);
+    }
+
+    .nav-actions { display: flex; align-items: center; gap: 10px; }
+
+    .menu-toggle {
+      display: none;
+      width: 44px;
+      height: 44px;
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      background: var(--white);
+      cursor: pointer;
+    }
+
+    /* Buttons */
+    .button {
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 0 18px;
+      border: 1px solid transparent;
+      border-radius: 11px;
+      font-weight: 760;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .button:hover { transform: translateY(-2px); }
+
+    .button-primary {
+      color: var(--white);
+      background: linear-gradient(135deg, var(--primary), #776df4);
+      box-shadow: 0 10px 22px rgba(98, 87, 232, 0.22);
+    }
+
+    .button-primary:hover {
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+    }
+
+    .button-outline {
+      color: var(--navy);
+      background: var(--white);
+      border-color: #aeb5d7;
+    }
+
+    .button-outline:hover { color: var(--primary); border-color: var(--primary); }
+
+    /* Hero */
+    .hero { padding: 74px 0 46px; }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.02fr 0.98fr;
+      gap: 56px;
+      align-items: center;
+    }
+
+    .hero-copy h1 {
+      font-size: clamp(3rem, 6vw, 5.5rem);
+      line-height: 1.01;
+      letter-spacing: -0.07em;
+      margin-bottom: 22px;
+    }
+
+    .hero-copy h1 span { color: var(--primary); }
+
+    .hero-copy p {
+      color: var(--text);
+      font-size: 1.1rem;
+      max-width: 640px;
+      margin-bottom: 30px;
+    }
+
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+
+    .hero-note {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-top: 22px;
+      color: var(--muted);
+      font-size: 0.82rem;
+      font-weight: 650;
+    }
+
+    .hero-visual {
+      min-height: 500px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid #e2dff8;
+      border-radius: 36px;
+      background: radial-gradient(circle at 48% 28%, #fff 0, #f0edff 57%, #e5e1ff 100%);
+      box-shadow: var(--shadow);
+    }
+
+    .hero-bubble {
+      position: absolute;
+      z-index: 3;
+      width: 205px;
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.94);
+      box-shadow: 0 14px 28px rgba(48, 53, 100, 0.13);
+    }
+
+    .hero-bubble.one { top: 42px; left: 34px; }
+    .hero-bubble.two { right: 28px; bottom: 55px; }
+
+    .bubble-user {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      margin-bottom: 9px;
+    }
+
+    .bubble-avatar {
+      width: 31px;
+      height: 31px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--primary-light);
+    }
+
+    .hero-bubble p { font-size: 0.8rem; color: var(--text); }
+    .hero-bubble small { display: block; margin-top: 10px; color: var(--muted); }
+
+    .people-scene {
+      position: absolute;
+      left: 50%;
+      bottom: 35px;
+      width: 430px;
+      height: 300px;
+      transform: translateX(-50%);
+    }
+
+    .ground {
+      position: absolute;
+      left: 4%;
+      right: 4%;
+      bottom: 5px;
+      height: 38px;
+      border-radius: 50%;
+      background: rgba(98, 87, 232, 0.15);
+    }
+
+    .person { position: absolute; bottom: 22px; width: 104px; height: 210px; }
+    .person:nth-child(2) { left: 8px; }
+    .person:nth-child(3) { left: 110px; transform: translateY(-14px); }
+    .person:nth-child(4) { left: 215px; transform: translateY(-8px); }
+    .person:nth-child(5) { right: 8px; }
+
+    .head {
+      position: absolute; top: 14px; left: 31px;
+      width: 42px; height: 48px;
+      border-radius: 46% 46% 50% 50%;
+      background: #f1b48d; z-index: 3;
+    }
+
+    .hair {
+      position: absolute; top: 7px; left: 25px;
+      width: 53px; height: 35px;
+      border-radius: 55% 54% 38% 43%;
+      background: #172344; z-index: 4;
+    }
+
+    .body {
+      position: absolute; top: 59px; left: 11px;
+      width: 82px; height: 103px;
+      border-radius: 28px 28px 16px 16px;
+    }
+
+    .leg { position: absolute; bottom: 5px; width: 33px; height: 70px; border-radius: 18px; background: #243255; }
+    .leg.left { left: 22px; transform: rotate(14deg); }
+    .leg.right { right: 15px; transform: rotate(-14deg); }
+
+    .person:nth-child(2) .body { background: #5366e9; }
+    .person:nth-child(3) .body { background: #f18ab2; }
+    .person:nth-child(4) .body { background: #8b75e8; }
+    .person:nth-child(5) .body { background: #36a58d; }
+
+    /* Trust strip */
+    .trust {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-top: 22px;
+    }
+
+    .trust-card,
+    .feature-card,
+    .category-card,
+    .resource-mini-card {
+      border: 1px solid var(--border);
+      background: var(--white);
+      border-radius: 18px;
+      box-shadow: 0 8px 24px rgba(43, 49, 93, 0.05);
+    }
+
+    .trust-card {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      min-height: 94px;
+      padding: 17px;
+    }
+
+    .icon-badge {
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      background: var(--primary-light);
+      color: var(--primary);
+      font-size: 1.25rem;
+    }
+
+    .trust-card strong { display: block; font-size: 0.92rem; }
+    .trust-card span { color: var(--text); font-size: 0.78rem; }
+
+    /* Features */
+    .features-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 17px; }
+
+    .feature-card { padding: 26px; min-height: 245px; transition: 0.2s ease; }
+    .feature-card:hover,
+    .category-card:hover {
+      transform: translateY(-4px);
+      border-color: #c8c3f4;
+      box-shadow: var(--shadow);
+    }
+
+    .feature-card .icon-badge { margin-bottom: 18px; }
+    .feature-card h3 { margin-bottom: 9px; }
+    .feature-card p { color: var(--text); font-size: 0.9rem; }
+
+    /* Categories */
+    .categories-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+
+    .category-card {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      min-height: 120px;
+      padding: 22px;
+      transition: 0.2s ease;
+    }
+
+    .category-card h3 { margin-bottom: 4px; font-size: 1rem; }
+    .category-card p { font-size: 0.82rem; color: var(--text); }
+
+    /* Steps */
+    .steps-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; }
+
+    .step { text-align: center; }
+
+    .step-icon {
+      width: 84px;
+      height: 84px;
+      display: grid;
+      place-items: center;
+      margin: 0 auto 17px;
+      border: 9px solid var(--background);
+      border-radius: 50%;
+      background: var(--primary-light);
+      color: var(--primary);
+      font-size: 2rem;
+    }
+
+    .step h3 { font-size: 0.98rem; margin-bottom: 7px; }
+    .step p { color: var(--text); font-size: 0.86rem; }
+
+    /* Resource panel */
+    .resource-panel {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 28px;
+      align-items: center;
+      padding: 38px;
+      border: 1px solid #d8d3fa;
+      border-radius: 28px;
+      background: linear-gradient(135deg, #f0edff, #ffffff 72%);
+    }
+
+    .resource-panel h2 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      letter-spacing: -0.05em;
+      line-height: 1.1;
+      margin-bottom: 12px;
+    }
+
+    .resource-panel p { color: var(--text); margin-bottom: 20px; }
+
+    .resource-mini-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .resource-mini-card { padding: 18px; }
+    .resource-mini-card strong { display: block; margin-bottom: 4px; }
+    .resource-mini-card span { color: var(--text); font-size: 0.8rem; }
+
+    /* FAQ */
+    .faq-list { max-width: 860px; margin: 0 auto; display: grid; gap: 12px; }
+
+    .faq-item {
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: var(--white);
+      border-radius: 18px;
+      box-shadow: 0 8px 24px rgba(43, 49, 93, 0.05);
+    }
+
+    .faq-item button {
+      width: 100%;
+      min-height: 62px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      border: 0;
+      background: var(--white);
+      font-weight: 780;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .faq-answer { max-height: 0; overflow: hidden; color: var(--text); transition: max-height 0.25s ease; }
+    .faq-answer p { padding: 0 20px 20px; }
+    .faq-item.open .faq-plus { transform: rotate(45deg); }
+    .faq-plus { transition: 0.2s ease; }
+
+    /* CTA */
+    .cta { padding: 0 0 72px; }
+
+    .cta-panel {
+      padding: 52px;
+      border-radius: 28px;
+      text-align: center;
+      color: var(--white);
+      background: linear-gradient(135deg, #332885, #6257e8 58%, #8178f6);
+    }
+
+    .cta-panel h2 {
+      font-size: clamp(2.1rem, 4vw, 3.2rem);
+      letter-spacing: -0.05em;
+      margin-bottom: 12px;
+    }
+
+    .cta-panel p { max-width: 700px; margin: 0 auto 24px; color: #eceaff; }
+    .cta-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+
+    /* Footer */
+    .site-footer { background: var(--white); border-top: 1px solid var(--border); }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.4fr repeat(3, 1fr);
+      gap: 36px;
+      padding: 46px 0 34px;
+    }
+
+    .footer-about p { max-width: 360px; margin-top: 14px; color: var(--text); font-size: 0.87rem; }
+    .footer-column h3 { margin-bottom: 12px; font-size: 0.92rem; }
+    .footer-column ul { list-style: none; display: grid; gap: 9px; color: var(--text); font-size: 0.85rem; }
+    .footer-column a:hover { color: var(--primary); }
+
+    .footer-bottom {
+      min-height: 66px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 980px) {
+      .nav-links {
+        position: fixed; top: 77px; left: 20px; right: 20px;
+        display: none; flex-direction: column; gap: 0;
+        padding: 12px 20px; background: var(--white);
+        border: 1px solid var(--border); border-radius: 16px; box-shadow: var(--shadow);
+      }
+      .nav-links.open { display: flex; }
+      .nav-links a { display: block; padding: 14px 0; }
+      .nav-links a.active::after { display: none; }
+      .menu-toggle { display: inline-grid; place-items: center; }
+      .nav-actions .button-outline { display: none; }
+      .hero-grid, .resource-panel { grid-template-columns: 1fr; }
+      .hero-copy { text-align: center; }
+      .hero-copy p { margin-left: auto; margin-right: auto; }
+      .hero-actions, .hero-note { justify-content: center; }
+      .trust, .features-grid { grid-template-columns: repeat(2, 1fr); }
+      .categories-grid { grid-template-columns: repeat(2, 1fr); }
+      .steps-grid { grid-template-columns: repeat(2, 1fr); }
+      .footer-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 640px) {
+      .container { width: min(calc(100% - 24px), var(--max-width)); }
+      .nav-actions .button-primary { display: none; }
+      .hero-visual { min-height: 430px; }
+      .hero-bubble { width: 170px; }
+      .hero-bubble.one { top: 20px; left: 12px; }
+      .hero-bubble.two { right: 12px; bottom: 20px; }
+      .people-scene { transform: translateX(-50%) scale(0.82); transform-origin: center bottom; }
+      .trust, .features-grid, .categories-grid, .steps-grid, .resource-mini-grid, .footer-grid { grid-template-columns: 1fr; }
+      .resource-panel { padding: 26px; }
+      .cta-panel { padding: 38px 24px; }
+      .footer-bottom { padding: 20px 0; flex-direction: column; align-items: flex-start; gap: 8px; }
+    }
+  </style>
 </head>
+
 <body>
-<header>
-  <div class="container nav">
-    <a class="brand" href="index.html">
-      <span class="mark">
-        <svg viewBox="0 0 48 48" width="34" height="34"><path d="M24 39S7 29 7 17.5C7 11.7 11.3 8 16 8c3.6 0 6.3 2 8 4.3C25.7 10 28.4 8 32 8c4.7 0 9 3.7 9 9.5C41 29 24 39 24 39Z" fill="none" stroke="currentColor" stroke-width="3.3"/></svg>
-      </span>Hello Dear
-    </a>
-    <ul class="links" id="links">
-      <li><a class="active" href="index.html">Home</a></li>
-      <li><a href="community.html">Community</a></li>
-      <li><a href="resources.html">Resources</a></li>
-      <li><a href="about.html">About Us</a></li>
-    </ul>
-    <div class="actions">
-      <a class="btn outline" href="login.html">Log in</a>
-      <a class="btn primary" href="signup.html">Sign up</a>
-      <button class="menu" id="menu" aria-label="Open menu">☰</button>
-    </div>
-  </div>
-</header>
+  <header class="site-header">
+    <div class="container navbar">
+      <a class="brand" href="index.html" aria-label="Hello Dear home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 48 48" width="34" height="34">
+            <path d="M24 39S7 29 7 17.5C7 11.7 11.3 8 16 8c3.6 0 6.3 2 8 4.3C25.7 10 28.4 8 32 8c4.7 0 9 3.7 9 9.5C41 29 24 39 24 39Z"
+                  fill="none" stroke="currentColor" stroke-width="3.3"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        Hello Dear
+      </a>
 
-<main>
-<section class="hero">
-  <div class="container hero-grid">
-    <div class="hero-copy">
-      <span class="eyebrow">Anonymous student peer support</span>
-      <h1>You are not alone. <span>Share, support, and grow together.</span></h1>
-      <p>Hello Dear gives university students a safer place to share concerns anonymously, receive peer support, and find useful campus resources.</p>
-      <div class="hero-actions">
-        <a class="btn primary" href="create-post.html">✎ Share Anonymously</a>
-        <a class="btn outline" href="community.html">💬 Explore Community</a>
-      </div>
-      <div class="hero-note"><span>🔒 Anonymous identity</span><span>⚑ Reporting and moderation</span><span>▤ University resources</span></div>
-    </div>
-    <div class="visual">
-      <div class="bubble one"><div class="mini"><span class="avatar">🐼</span>Anonymous Panda</div><p>I have several assignments due soon. How do other students stay organised?</p><small>💬 12 · ♡ 18 helpful</small></div>
-      <div class="bubble two"><div class="mini"><span class="avatar">🐯</span>Anonymous Tiger</div><p>Breaking large tasks into smaller steps helped me feel more in control.</p><small>Reply · Helpful</small></div>
-      <div class="people">
-        <div class="ground"></div>
-        <div class="person"><div class="hair"></div><div class="head"></div><div class="body"></div><div class="leg l"></div><div class="leg r"></div></div>
-        <div class="person"><div class="hair"></div><div class="head"></div><div class="body"></div><div class="leg l"></div><div class="leg r"></div></div>
-        <div class="person"><div class="hair"></div><div class="head"></div><div class="body"></div><div class="leg l"></div><div class="leg r"></div></div>
-        <div class="person"><div class="hair"></div><div class="head"></div><div class="body"></div><div class="leg l"></div><div class="leg r"></div></div>
+      <nav aria-label="Main navigation">
+        <ul class="nav-links" id="navLinks">
+          <li><a class="active" href="index.html">Home</a></li>
+          <li><a href="community.html">Community</a></li>
+          <li><a href="resources.html">Resources</a></li>
+          <li><a href="about.html">About Us</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <a class="button button-outline" href="login.html">Log in</a>
+        <a class="button button-primary" href="signup.html">Sign up</a>
+        <button class="menu-toggle" id="menuToggle" aria-label="Open navigation menu" aria-expanded="false">☰</button>
       </div>
     </div>
-  </div>
-  <div class="container trust">
-    <div class="trust-card"><div class="icon">🔒</div><div><strong>Anonymous</strong><span>Real names are not shown publicly.</span></div></div>
-    <div class="trust-card"><div class="icon">♡</div><div><strong>Peer Support</strong><span>Students encourage and help one another.</span></div></div>
-    <div class="trust-card"><div class="icon">♢</div><div><strong>Safe Community</strong><span>Reports support respectful discussion.</span></div></div>
-    <div class="trust-card"><div class="icon">▤</div><div><strong>Helpful Resources</strong><span>Campus services are easier to find.</span></div></div>
-  </div>
-</section>
+  </header>
 
-<section class="section">
-  <div class="container">
-    <div class="heading"><span class="eyebrow">Core features</span><h2>Designed for a supportive student community</h2><p>A realistic first version that a three-person team can implement, test, and demonstrate properly.</p></div>
-    <div class="features">
-      <article class="card"><div class="icon">✎</div><h3>Anonymous Posting</h3><p>Students create posts using generated anonymous nicknames and clear topic categories.</p></article>
-      <article class="card"><div class="icon" style="background:var(--pkl);color:var(--pk)">💬</div><h3>Comments & Helpful Votes</h3><p>Students reply respectfully, share experiences, and mark useful contributions as helpful.</p></article>
-      <article class="card"><div class="icon" style="background:var(--gl);color:var(--g)">⚑</div><h3>Reporting & Moderation</h3><p>Users can report inappropriate content and administrators can review community reports.</p></article>
-      <article class="card"><div class="icon" style="background:var(--ol);color:var(--o)">▤</div><h3>Resource Directory</h3><p>Students can browse counselling, academic, career, and international support services.</p></article>
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <span class="eyebrow">Anonymous student peer support</span>
+          <h1>You are not alone. <span>Share, support, and grow together.</span></h1>
+          <p>Hello Dear gives university students a safer place to share concerns anonymously, receive peer support, and find useful campus resources.</p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="create-post.html">✎ Share Anonymously</a>
+            <a class="button button-outline" href="community.html">💬 Explore Community</a>
+          </div>
+          <div class="hero-note">
+            <span>🔒 Anonymous identity</span>
+            <span>⚑ Reporting and moderation</span>
+            <span>▤ University resources</span>
+          </div>
+        </div>
+
+        <div class="hero-visual" aria-hidden="true">
+          <div class="hero-bubble one">
+            <div class="bubble-user"><span class="bubble-avatar">🐼</span>Anonymous Panda</div>
+            <p>I have several assignments due soon. How do other students stay organised?</p>
+            <small>💬 12 · ♡ 18 helpful</small>
+          </div>
+          <div class="hero-bubble two">
+            <div class="bubble-user"><span class="bubble-avatar">🐯</span>Anonymous Tiger</div>
+            <p>Breaking large tasks into smaller steps helped me feel more in control.</p>
+            <small>Reply · Helpful</small>
+          </div>
+          <div class="people-scene">
+            <div class="ground"></div>
+            <div class="person"><div class="hair"></div><div class="head"></div><div class="body"></div><div class="leg left"></div><div class="leg right"></div></div>
+            <div class="person"><div class="hair"></div><div class="head"></div><div class="body"></div><div class="leg left"></div><div class="leg right"></div></div>
+            <div class="person"><div class="hair"></div><div class="head"></div><div class="body"></div><div class="leg left"></div><div class="leg right"></div></div>
+            <div class="person"><div class="hair"></div><div class="head"></div><div class="body"></div><div class="leg left"></div><div class="leg right"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container trust">
+        <div class="trust-card"><div class="icon-badge">🔒</div><div><strong>Anonymous</strong><span>Real names are not shown publicly.</span></div></div>
+        <div class="trust-card"><div class="icon-badge">♡</div><div><strong>Peer Support</strong><span>Students encourage and help one another.</span></div></div>
+        <div class="trust-card"><div class="icon-badge">♢</div><div><strong>Safe Community</strong><span>Reports support respectful discussion.</span></div></div>
+        <div class="trust-card"><div class="icon-badge">▤</div><div><strong>Helpful Resources</strong><span>Campus services are easier to find.</span></div></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-heading">
+          <span class="eyebrow">Core features</span>
+          <h2>Designed for a supportive student community</h2>
+          <p>A realistic first version that a three-person team can implement, test, and demonstrate properly.</p>
+        </div>
+        <div class="features-grid">
+          <article class="feature-card">
+            <div class="icon-badge">✎</div>
+            <h3>Anonymous Posting</h3>
+            <p>Students create posts using generated anonymous nicknames and clear topic categories.</p>
+          </article>
+          <article class="feature-card">
+            <div class="icon-badge" style="background:var(--pink-light);color:var(--pink);">💬</div>
+            <h3>Comments &amp; Helpful Votes</h3>
+            <p>Students reply respectfully, share experiences, and mark useful contributions as helpful.</p>
+          </article>
+          <article class="feature-card">
+            <div class="icon-badge" style="background:var(--green-light);color:var(--green);">⚑</div>
+            <h3>Reporting &amp; Moderation</h3>
+            <p>Users can report inappropriate content and administrators can review community reports.</p>
+          </article>
+          <article class="feature-card">
+            <div class="icon-badge" style="background:var(--orange-light);color:var(--orange);">▤</div>
+            <h3>Resource Directory</h3>
+            <p>Students can browse counselling, academic, career, and international support services.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-heading">
+          <span class="eyebrow">Browse by topic</span>
+          <h2>Find conversations that matter to you</h2>
+          <p>Categories link directly to the community page to reduce unnecessary navigation.</p>
+        </div>
+        <div class="categories-grid">
+          <a class="category-card" href="community.html?category=academic">
+            <div class="icon-badge" style="background:var(--blue-light);color:var(--blue);">📘</div>
+            <div><h3>Academic</h3><p>Assignments, exams, study habits, and course concerns.</p></div>
+          </a>
+          <a class="category-card" href="community.html?category=stress">
+            <div class="icon-badge" style="background:var(--pink-light);color:var(--pink);">🧠</div>
+            <div><h3>Stress</h3><p>Workload, time pressure, balance, and well-being.</p></div>
+          </a>
+          <a class="category-card" href="community.html?category=relationships">
+            <div class="icon-badge" style="background:var(--pink-light);color:var(--pink);">♡</div>
+            <div><h3>Relationships</h3><p>Friendships, communication, conflict, and connection.</p></div>
+          </a>
+          <a class="category-card" href="community.html?category=career">
+            <div class="icon-badge" style="background:var(--orange-light);color:var(--orange);">💼</div>
+            <div><h3>Career</h3><p>Career direction, internships, skills, and planning.</p></div>
+          </a>
+          <a class="category-card" href="community.html?category=international">
+            <div class="icon-badge" style="background:var(--blue-light);color:var(--blue);">🌏</div>
+            <div><h3>International Student Life</h3><p>Adjustment, language, culture, and studying away from home.</p></div>
+          </a>
+          <a class="category-card" href="community.html?category=general">
+            <div class="icon-badge" style="background:var(--green-light);color:var(--green);">💬</div>
+            <div><h3>General Discussion</h3><p>Campus life, everyday questions, tips, and experiences.</p></div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-heading">
+          <span class="eyebrow">Simple user journey</span>
+          <h2>How Hello Dear works</h2>
+          <p>A clear process helps students move from concern to support quickly.</p>
+        </div>
+        <div class="steps-grid">
+          <div class="step"><div class="step-icon">✎</div><h3>Write a Post</h3><p>Choose a category and describe your concern.</p></div>
+          <div class="step"><div class="step-icon" style="background:var(--pink-light);color:var(--pink);">◉</div><h3>Post Anonymously</h3><p>The platform displays an anonymous nickname.</p></div>
+          <div class="step"><div class="step-icon" style="background:var(--green-light);color:var(--green);">💬</div><h3>Receive Peer Support</h3><p>Other students respond with suggestions and encouragement.</p></div>
+          <div class="step"><div class="step-icon" style="background:var(--orange-light);color:var(--orange);">▤</div><h3>Find Resources</h3><p>Browse relevant university support services.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container resource-panel">
+        <div>
+          <span class="eyebrow">Student resources</span>
+          <h2>Professional university support, easier to find</h2>
+          <p>Peer support is valuable, but it does not replace professional services. Hello Dear provides a clear directory of official university support options.</p>
+          <a class="button button-primary" href="resources.html">View All Resources</a>
+        </div>
+        <div class="resource-mini-grid">
+          <div class="resource-mini-card"><strong>💙 Counselling Service</strong><span>Well-being and personal support services.</span></div>
+          <div class="resource-mini-card"><strong>📘 Academic Support</strong><span>Study skills, assignments, and learning assistance.</span></div>
+          <div class="resource-mini-card"><strong>💼 Career Centre</strong><span>Career planning, applications, and employment guidance.</span></div>
+          <div class="resource-mini-card"><strong>🌏 International Support</strong><span>Adjustment, language, and student services.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-heading">
+          <span class="eyebrow">Frequently asked questions</span>
+          <h2>Clear answers before you begin</h2>
+        </div>
+        <div class="faq-list">
+          <article class="faq-item">
+            <button type="button">Is Hello Dear anonymous?<span class="faq-plus">＋</span></button>
+            <div class="faq-answer"><p>Public posts and comments use generated anonymous nicknames. Account information is not displayed to other community members.</p></div>
+          </article>
+          <article class="faq-item">
+            <button type="button">How is inappropriate content handled?<span class="faq-plus">＋</span></button>
+            <div class="faq-answer"><p>Users can report posts or comments. Administrators can review reports and remove inappropriate content when necessary.</p></div>
+          </article>
+          <article class="faq-item">
+            <button type="button">Can I browse without posting?<span class="faq-plus">＋</span></button>
+            <div class="faq-answer"><p>Yes. Students can explore community discussions and the resource directory before deciding whether to post.</p></div>
+          </article>
+          <article class="faq-item">
+            <button type="button">Does peer support replace professional help?<span class="faq-plus">＋</span></button>
+            <div class="faq-answer"><p>No. Hello Dear supports student-to-student communication and also helps users find official university services.</p></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta">
+      <div class="container cta-panel">
+        <h2>Ready to join a more supportive student community?</h2>
+        <p>Share a concern anonymously, learn from other students, or explore university support resources in one clear platform.</p>
+        <div class="cta-actions">
+          <a class="button button-primary" style="background:#fff;color:var(--primary);" href="signup.html">Create an Account</a>
+          <a class="button button-outline" style="background:transparent;color:#fff;border-color:rgba(255,255,255,0.5);" href="community.html">Browse Community</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-about">
+        <a class="brand" href="index.html">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 48 48" width="32" height="32">
+              <path d="M24 39S7 29 7 17.5C7 11.7 11.3 8 16 8c3.6 0 6.3 2 8 4.3C25.7 10 28.4 8 32 8c4.7 0 9 3.7 9 9.5C41 29 24 39 24 39Z"
+                    fill="none" stroke="currentColor" stroke-width="3.3"
+                    stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          Hello Dear
+        </a>
+        <p>A safe and anonymous peer-support platform created for university students.</p>
+      </div>
+
+      <div class="footer-column">
+        <h3>Platform</h3>
+        <ul>
+          <li><a href="community.html">Community</a></li>
+          <li><a href="create-post.html">Create Post</a></li>
+          <li><a href="resources.html">Resources</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h3>About</h3>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Use</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h3>Account</h3>
+        <ul>
+          <li><a href="login.html">Log in</a></li>
+          <li><a href="signup.html">Sign up</a></li>
+          <li><a href="#">Contact Us</a></li>
+        </ul>
+      </div>
     </div>
-  </div>
-</section>
 
-<section class="section">
-  <div class="container">
-    <div class="heading"><span class="eyebrow">Browse by topic</span><h2>Find conversations that matter to you</h2><p>Categories link directly to the community page to reduce unnecessary navigation.</p></div>
-    <div class="categories">
-      <a class="category" href="community.html?category=academic"><div class="icon">📘</div><div><h3>Academic</h3><p>Assignments, exams, study habits, and course concerns.</p></div></a>
-      <a class="category" href="community.html?category=stress"><div class="icon" style="background:var(--pkl)">🧠</div><div><h3>Stress</h3><p>Workload, time pressure, balance, and well-being.</p></div></a>
-      <a class="category" href="community.html?category=relationships"><div class="icon" style="background:var(--pkl)">♡</div><div><h3>Relationships</h3><p>Friendships, communication, conflict, and connection.</p></div></a>
-      <a class="category" href="community.html?category=career"><div class="icon" style="background:var(--ol)">💼</div><div><h3>Career</h3><p>Career direction, internships, skills, and planning.</p></div></a>
-      <a class="category" href="community.html?category=international"><div class="icon" style="background:#edf4ff">🌏</div><div><h3>International Student Life</h3><p>Adjustment, language, culture, and studying away from home.</p></div></a>
-      <a class="category" href="community.html?category=general"><div class="icon" style="background:var(--gl)">💬</div><div><h3>General Discussion</h3><p>Campus life, everyday questions, tips, and experiences.</p></div></a>
+    <div class="container footer-bottom">
+      <span>© 2026 Hello Dear. All rights reserved.</span>
+      <span>Designed for university student peer support.</span>
     </div>
-  </div>
-</section>
+  </footer>
 
-<section class="section">
-  <div class="container">
-    <div class="heading"><span class="eyebrow">Simple user journey</span><h2>How Hello Dear works</h2><p>A clear process helps students move from concern to support quickly.</p></div>
-    <div class="steps">
-      <div class="step"><div class="step-icon">✎</div><h3>Write a Post</h3><p>Choose a category and describe your concern.</p></div>
-      <div class="step"><div class="step-icon" style="background:var(--pkl);color:var(--pk)">◉</div><h3>Post Anonymously</h3><p>The platform displays an anonymous nickname.</p></div>
-      <div class="step"><div class="step-icon" style="background:var(--gl);color:var(--g)">💬</div><h3>Receive Peer Support</h3><p>Other students respond with suggestions and encouragement.</p></div>
-      <div class="step"><div class="step-icon" style="background:var(--ol);color:var(--o)">▤</div><h3>Find Resources</h3><p>Browse relevant university support services.</p></div>
-    </div>
-  </div>
-</section>
+  <script>
+    const menuToggle = document.getElementById("menuToggle");
+    const navLinks = document.getElementById("navLinks");
 
-<section class="section">
-  <div class="container resource-panel">
-    <div>
-      <span class="eyebrow">Student resources</span>
-      <h2>Professional university support, easier to find</h2>
-      <p>Peer support is valuable, but it does not replace professional services. Hello Dear provides a clear directory of official university support options.</p>
-      <a class="btn primary" href="resources.html">View All Resources</a>
-    </div>
-    <div class="resource-grid">
-      <div class="resource-card"><strong>💙 Counselling Service</strong><span>Well-being and personal support services.</span></div>
-      <div class="resource-card"><strong>📘 Academic Support</strong><span>Study skills, assignments, and learning assistance.</span></div>
-      <div class="resource-card"><strong>💼 Career Centre</strong><span>Career planning, applications, and employment guidance.</span></div>
-      <div class="resource-card"><strong>🌏 International Support</strong><span>Adjustment, language, and student services.</span></div>
-    </div>
-  </div>
-</section>
+    menuToggle.addEventListener("click", () => {
+      const isOpen = navLinks.classList.toggle("open");
+      menuToggle.setAttribute("aria-expanded", String(isOpen));
+      menuToggle.textContent = isOpen ? "✕" : "☰";
+    });
 
-<section class="section">
-  <div class="container">
-    <div class="heading"><span class="eyebrow">Frequently asked questions</span><h2>Clear answers before you begin</h2></div>
-    <div class="faq-list">
-      <article class="faq"><button type="button">Is Hello Dear anonymous?<span class="plus">＋</span></button><div class="answer"><p>Public posts and comments use generated anonymous nicknames. Account information is not displayed to other community members.</p></div></article>
-      <article class="faq"><button type="button">How is inappropriate content handled?<span class="plus">＋</span></button><div class="answer"><p>Users can report posts or comments. Administrators can review reports and remove inappropriate content when necessary.</p></div></article>
-      <article class="faq"><button type="button">Can I browse without posting?<span class="plus">＋</span></button><div class="answer"><p>Yes. Students can explore community discussions and the resource directory before deciding whether to post.</p></div></article>
-      <article class="faq"><button type="button">Does peer support replace professional help?<span class="plus">＋</span></button><div class="answer"><p>No. Hello Dear supports student-to-student communication and also helps users find official university services.</p></div></article>
-    </div>
-  </div>
-</section>
-
-<section class="cta">
-  <div class="container cta-box">
-    <h2>Ready to join a more supportive student community?</h2>
-    <p>Share a concern anonymously, learn from other students, or explore university support resources in one clear platform.</p>
-    <div class="cta-actions"><a class="btn primary" style="background:#fff;color:var(--p)" href="signup.html">Create an Account</a><a class="btn outline" href="community.html">Browse Community</a></div>
-  </div>
-</section>
-</main>
-
-
-<footer>
-  <div class="container footer-grid">
-    <div><a class="brand" href="index.html"><span class="mark">♡</span>Hello Dear</a><p style="margin-top:14px">A safe and anonymous peer-support platform created for university students.</p></div>
-    <div><h3>Platform</h3><ul><li><a href="community.html">Community</a></li><li><a href="create-post.html">Create Post</a></li><li><a href="resources.html">Resources</a></li></ul></div>
-    <div><h3>About</h3><ul><li><a href="about.html">About Us</a></li><li><a href="#">Privacy Policy</a></li><li><a href="#">Terms of Use</a></li></ul></div>
-    <div><h3>Account</h3><ul><li><a href="login.html">Log in</a></li><li><a href="signup.html">Sign up</a></li><li><a href="#">Contact Us</a></li></ul></div>
-  </div>
-  <div class="container bottom"><span>© 2026 Hello Dear. All rights reserved.</span><span>Designed for university student peer support.</span></div>
-</footer>
-
-<script>
-const menu=document.getElementById("menu"),links=document.getElementById("links");
-menu.addEventListener("click",()=>{links.classList.toggle("open");menu.textContent=links.classList.contains("open")?"✕":"☰"});
-document.querySelectorAll(".faq button").forEach(btn=>btn.addEventListener("click",()=>{const item=btn.parentElement,ans=item.querySelector(".answer");item.classList.toggle("open");ans.style.maxHeight=item.classList.contains("open")?ans.scrollHeight+"px":"0"}));
-</script>
+    document.querySelectorAll(".faq-item button").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const item = btn.parentElement;
+        const answer = item.querySelector(".faq-answer");
+        item.classList.toggle("open");
+        answer.style.maxHeight = item.classList.contains("open") ? answer.scrollHeight + "px" : "0";
+      });
+    });
+  </script>
 </body>
 </html>
