@@ -925,7 +925,8 @@
       return valid;
     }
 
-    postForm.addEventListener("submit", async (event) => {
+    // ─── Submit Post: Save to localStorage and redirect to the community ───
+    postForm.addEventListener("submit", function(event) {
       event.preventDefault();
 
       if (!validateForm()) {
@@ -933,52 +934,33 @@
         return;
       }
 
-      postButton.disabled = true;
-      postButton.textContent = "Posting...";
-
-      const payload = {
+      // Create new
+      const newPost = {
+        id: Date.now(),
         category: selectedCategory,
-        content: postContent.value.trim()
+        content: postContent.value.trim(),
+        comments: []
       };
 
-      /*
-        FRONT-END DEMONSTRATION
+      // Read existing posts
+      let posts = JSON.parse(localStorage.getItem("communityPosts")) || [];
 
-        Replace with your backend call, e.g.:
+      // Insert at the beginning (with the latest item taking precedence)
+      posts.unshift(newPost);
 
-        const response = await fetch("/api/posts", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload)
-        });
+      // save
+      localStorage.setItem("communityPosts", JSON.stringify(posts));
 
-        const data = await response.json();
-        if (!response.ok) throw new Error(data.message || "Unable to post.");
+      // Display the success message
+      showStatus("Post published successfully!", "success");
+
+      // Disable button to prevent duplicate submissions
+      postButton.disabled = true;
+
+      // Delay the jump to the community page
+      setTimeout(function() {
         window.location.href = "community.html";
-      */
-
-      try {
-        await new Promise((resolve) => setTimeout(resolve, 700));
-
-        showStatus(
-          "Your post was submitted (demo). Connect this form to your backend API to publish it live.",
-          "success"
-        );
-
-        console.log("Post demonstration payload:", payload);
-
-        postForm.reset();
-        charCount.textContent = `0 / ${MAX_LENGTH}`;
-        categorySelector.querySelectorAll(".category-option").forEach((btn) => {
-          btn.classList.remove("selected");
-        });
-        selectedCategory = null;
-      } catch (error) {
-        showStatus(error.message || "Unable to post. Please try again.", "error");
-      } finally {
-        postButton.disabled = false;
-        postButton.textContent = "Submit Post";
-      }
+      }, 800);
     });
   </script>
 </body>
