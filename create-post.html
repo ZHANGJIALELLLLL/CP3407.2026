@@ -433,6 +433,37 @@
       color: var(--orange); background: var(--orange-light); border-color: var(--orange);
     }
 
+    /* ---- New addition: Visibility selector ---- */
+    .visibility-selector {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .visibility-option {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 10px 16px;
+      border: 1px solid var(--border);
+      border-radius: 99px;
+      background: var(--white);
+      color: var(--text);
+      font-size: 0.86rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .visibility-option:hover { border-color: var(--primary); color: var(--primary); }
+
+    .visibility-option.selected[data-visibility="public"] {
+      color: #2f7a5a; background: #e2f3eb; border-color: #2f7a5a;
+    }
+    .visibility-option.selected[data-visibility="private"] {
+      color: #a05c3a; background: #f6ede7; border-color: #a05c3a;
+    }
+
     .textarea-wrap { position: relative; }
 
     .post-textarea {
@@ -630,8 +661,8 @@
         <span class="brand-mark" aria-hidden="true">
           <svg viewBox="0 0 48 48" width="34" height="34">
             <path d="M24 39S7 29 7 17.5C7 11.7 11.3 8 16 8c3.6 0 6.3 2 8 4.3C25.7 10 28.4 8 32 8c4.7 0 9 3.7 9 9.5C41 29 24 39 24 39Z"
-                  fill="none" stroke="currentColor" stroke-width="3.3"
-                  stroke-linecap="round" stroke-linejoin="round"/>
+            fill="none" stroke="currentColor" stroke-width="3.3"
+            stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </span>
         Hello Dear
@@ -737,6 +768,19 @@
               <p class="field-error" id="categoryError"></p>
             </div>
 
+            <!-- ---- New addition: Visibility selection ---- -->
+            <div class="form-group">
+              <label class="form-label">
+                Visibility
+                <span class="hint">Who can see this?</span>
+              </label>
+              <div class="visibility-selector" id="visibilitySelector">
+                <button class="visibility-option selected" type="button" data-visibility="public">🌐 Publicly</button>
+                <button class="visibility-option" type="button" data-visibility="private">🔒 Private (for oneself only)</button>
+              </div>
+              <p class="field-error" id="visibilityError"></p>
+            </div>
+
             <div class="form-group">
               <label class="form-label" for="postContent">
                 Your post
@@ -788,8 +832,8 @@
           <span class="brand-mark" aria-hidden="true">
             <svg viewBox="0 0 48 48" width="32" height="32">
               <path d="M24 39S7 29 7 17.5C7 11.7 11.3 8 16 8c3.6 0 6.3 2 8 4.3C25.7 10 28.4 8 32 8c4.7 0 9 3.7 9 9.5C41 29 24 39 24 39Z"
-                    fill="none" stroke="currentColor" stroke-width="3.3"
-                    stroke-linecap="round" stroke-linejoin="round"/>
+              fill="none" stroke="currentColor" stroke-width="3.3"
+              stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </span>
           Hello Dear
@@ -832,6 +876,17 @@
   </footer>
 
   <script>
+    // ---- Tool: Obtain/Generate the current user ID ----
+    function getCurrentUserId() {
+      let userId = localStorage.getItem('hd_userId');
+      if (!userId) {
+        userId = crypto.randomUUID ? crypto.randomUUID() : 'user_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8);
+        localStorage.setItem('hd_userId', userId);
+      }
+      return userId;
+    }
+    const CURRENT_USER_ID = getCurrentUserId();
+
     const menuToggle = document.getElementById("menuToggle");
     const navLinks = document.getElementById("navLinks");
 
@@ -841,6 +896,7 @@
       menuToggle.textContent = isOpen ? "✕" : "☰";
     });
 
+    // ---- Classification selection ----
     const categorySelector = document.getElementById("categorySelector");
     const categoryError = document.getElementById("categoryError");
     let selectedCategory = null;
@@ -858,6 +914,25 @@
       categoryError.textContent = "";
     });
 
+    // ---- Visibility selection ----
+    const visibilitySelector = document.getElementById("visibilitySelector");
+    const visibilityError = document.getElementById("visibilityError");
+    let selectedVisibility = "public"; // Default to public access
+
+    visibilitySelector.addEventListener("click", (event) => {
+      const option = event.target.closest(".visibility-option");
+      if (!option) return;
+
+      visibilitySelector.querySelectorAll(".visibility-option").forEach((btn) => {
+        btn.classList.remove("selected");
+      });
+
+      option.classList.add("selected");
+      selectedVisibility = option.dataset.visibility;
+      visibilityError.textContent = "";
+    });
+
+    // ---- Content and word count ----
     const postContent = document.getElementById("postContent");
     const charCount = document.getElementById("charCount");
     const postError = document.getElementById("postError");
@@ -876,6 +951,7 @@
       }
     });
 
+    // ---- Check the terms ----
     const guidelines = document.getElementById("guidelines");
     const guidelinesError = document.getElementById("guidelinesError");
 
@@ -883,6 +959,7 @@
       if (guidelines.checked) guidelinesError.textContent = "";
     });
 
+    // ---- Form submission ----
     const postForm = document.getElementById("postForm");
     const postButton = document.getElementById("postButton");
     const statusMessage = document.getElementById("statusMessage");
@@ -922,10 +999,11 @@
         valid = false;
       }
 
+      // Visibility is set by default and no additional verification is required.
       return valid;
     }
 
-    // ─── Submit Post: Save to localStorage and redirect to the community ───
+    // ─── Submit post: Save to localStorage and redirect ───
     postForm.addEventListener("submit", function(event) {
       event.preventDefault();
 
@@ -934,27 +1012,29 @@
         return;
       }
 
-      // Create new
+      // Create a new post object
       const newPost = {
         id: Date.now(),
         category: selectedCategory,
         content: postContent.value.trim(),
-        comments: []
+        comments: [],
+        authorId: CURRENT_USER_ID,
+        isPublic: (selectedVisibility === "public")
       };
 
       // Read existing posts
       let posts = JSON.parse(localStorage.getItem("communityPosts")) || [];
 
-      // Insert at the beginning (with the latest item taking precedence)
+      // Insert at the beginning (the latest one is on top)
       posts.unshift(newPost);
 
       // save
       localStorage.setItem("communityPosts", JSON.stringify(posts));
 
-      // Display the success message
+      // Display success message
       showStatus("Post published successfully!", "success");
 
-      // Disable button to prevent duplicate submissions
+      // Disable the button to prevent duplicate submissions
       postButton.disabled = true;
 
       // Delay the jump to the community page
