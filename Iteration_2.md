@@ -1,73 +1,63 @@
-# Practical 7 – Iteration 2
+## Iteration 2
 
-## 1. Testing Plan
+| User Story | Priority | Effort |
+|------------|:--------:|:------:|
+| Create an Account | 10 | 2 days |
+| Log In to the Platform | 20 | 2 days |
+| Browse Community Posts | 20 | 3 days |
+| Create an Anonymous Post | 10 | 4 days |
 
-The following testing will be conducted for the Anonymous Student Support Platform.
+**Total: 11 days**
 
-- **Unit Testing** – Test individual functions such as creating posts, comments, and reports.
-- **Integration Testing** – Ensure different components work together correctly.
-- **Validation Testing** – Check invalid inputs such as empty titles, comments, and report reasons.
+## Iteration 2 Actual Velocity
 
----
+The planned effort for Iteration 2 was 11 days.
 
-## 2. User Stories and Test Cases
+All four user stories were completed during the iteration.
 
-### User Story 1
-**As a student, I want to create an anonymous post so that I can share my concerns safely.**
+**Actual Velocity: 11 days**
 
-**Test Cases**
-- Create a post with valid title and content.
-- Submit a post with an empty title.
-- Submit a post with empty content.
+## Iteration 2 Reflection
 
----
+### What went well
 
-### User Story 2
-**As a student, I want to comment on a post so that I can support other students.**
+- The main user interface pages were completed successfully.
+- The login, sign-up, community, and post creation pages were implemented.
+- Team members were able to divide the tasks and work on different features.
 
-**Test Cases**
-- Add a valid comment.
-- Submit an empty comment.
-- Verify the comment appears under the correct post.
+### What could be improved
 
----
+- Some features currently provide only front-end functionality.
+- The login and sign-up processes are not yet connected to a real authentication system.
+- More testing should have been performed during development.
+- Task progress and GitHub issue labels should have been updated more consistently.
 
-### User Story 3
-**As a student, I want to report inappropriate content to keep the platform safe.**
+### Improvements for Iteration 3
 
-**Test Cases**
-- Submit a valid report.
-- Submit a report without a reason.
-- Prevent duplicate reports.
+- Apply test-driven development before implementing new features.
+- Update GitHub issue labels regularly.
+- Connect the user interface to functional application logic.
+- Add automated tests and mock objects for user-related functions.
 
----
+## Iteration 2 Burndown Data
 
-### User Story 4
-**As a student, I want to use an anonymous nickname to protect my identity.**
+| Day | Ideal Remaining Effort | Actual Remaining Effort |
+|---:|---:|---:|
+| 0 | 11 | 11 |
+| 1 | 10 | 11 |
+| 2 | 9 | 9 |
+| 3 | 8 | 9 |
+| 4 | 7 | 7 |
+| 5 | 6 | 7 |
+| 6 | 5 | 4 |
+| 7 | 4 | 4 |
+| 8 | 3 | 2 |
+| 9 | 2 | 2 |
+| 10 | 1 | 0 |
+| 11 | 0 | 0 |
 
-**Test Cases**
-- Display an anonymous nickname.
-- Hide the user's real identity.
-- Ensure the nickname is not empty.
+<img width="1400" height="900" alt="image" src="https://github.com/user-attachments/assets/00be6dbd-c807-4092-be00-8cf213bfa856" />
 
----
 
-### User Story 5
-**As a student, I want to view posts so that I can read other students' experiences.**
 
-**Test Cases**
-- Display existing posts.
-- Show a message when no posts exist.
-- Open a selected post successfully.
 
----
-
-## 3. Automated Tests
-
-Implement at least **15 automated tests** based on the test cases above.
-
-- 3 tests for Post
-- 3 tests for Comment
-- 3 tests for Report
-- 3 tests for Anonymous Nickname
-- 3 tests for Viewing Posts
