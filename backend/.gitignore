@@ -1,0 +1,12 @@
+# Environment variables (contains your real MySQL password — never commit this)
+.env
+
+# Dependencies (large folder, teammates just run npm install instead)
+node_modules/
+
+# Logs
+npm-debug.log*
+*.log
+
+# OS files
+.DS_Store
