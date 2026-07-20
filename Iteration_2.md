@@ -1,5 +1,3 @@
-<img width="1400" height="900" alt="iteration2-burndown" src="https://github.com/user-attachments/assets/51623aa2-1c90-43d4-876f-3464b8a5857a" /># Practical 7 – Iteration 2
-
 ## Iteration 2
 
 | User Story | Priority | Effort |
