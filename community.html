@@ -391,6 +391,26 @@
       background: var(--orange-light);
     }
 
+    /* ---- 可见性标签 ---- */
+    .visibility-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 11px;
+      border-radius: 99px;
+      font-size: 0.76rem;
+      font-weight: 750;
+      margin-left: 6px;
+    }
+    .visibility-tag.tag-public {
+      color: #2f7a5a;
+      background: #e2f3eb;
+    }
+    .visibility-tag.tag-private {
+      color: #a05c3a;
+      background: #f6ede7;
+    }
+
     .post-content {
       margin-bottom: 20px;
       color: var(--navy);
@@ -435,9 +455,15 @@
     }
 
     @keyframes heart-pop {
-      0% { transform: scale(1); }
-      45% { transform: scale(1.35); }
-      100% { transform: scale(1); }
+      0% {
+        transform: scale(1);
+      }
+      45% {
+        transform: scale(1.35);
+      }
+      100% {
+        transform: scale(1);
+      }
     }
 
     .report-button {
@@ -685,8 +711,8 @@
         <span class="brand-mark" aria-hidden="true">
           <svg viewBox="0 0 48 48" width="34" height="34">
             <path d="M24 39S7 29 7 17.5C7 11.7 11.3 8 16 8c3.6 0 6.3 2 8 4.3C25.7 10 28.4 8 32 8c4.7 0 9 3.7 9 9.5C41 29 24 39 24 39Z"
-                  fill="none" stroke="currentColor" stroke-width="3.3"
-                  stroke-linecap="round" stroke-linejoin="round"/>
+            fill="none" stroke="currentColor" stroke-width="3.3"
+            stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </span>
         Hello Dear
@@ -759,8 +785,8 @@
           <span class="brand-mark" aria-hidden="true">
             <svg viewBox="0 0 48 48" width="32" height="32">
               <path d="M24 39S7 29 7 17.5C7 11.7 11.3 8 16 8c3.6 0 6.3 2 8 4.3C25.7 10 28.4 8 32 8c4.7 0 9 3.7 9 9.5C41 29 24 39 24 39Z"
-                    fill="none" stroke="currentColor" stroke-width="3.3"
-                    stroke-linecap="round" stroke-linejoin="round"/>
+              fill="none" stroke="currentColor" stroke-width="3.3"
+              stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </span>
           Hello Dear
@@ -803,6 +829,17 @@
   </footer>
 
   <script>
+    // ---- Tool: Obtain/Generate the current user ID ----
+    function getCurrentUserId() {
+      let userId = localStorage.getItem('hd_userId');
+      if (!userId) {
+        userId = crypto.randomUUID ? crypto.randomUUID() : 'user_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8);
+        localStorage.setItem('hd_userId', userId);
+      }
+      return userId;
+    }
+    const CURRENT_USER_ID = getCurrentUserId();
+
     //Navigation menu switch
     const menuToggle = document.getElementById("menuToggle");
     const navLinks = document.getElementById("navLinks");
@@ -845,10 +882,22 @@
       localStorage.setItem("communityPosts", JSON.stringify(posts));
     }
 
+    // ---- Determine whether the post is visible to the current user ----
+    function isPostVisible(post) {
+      // Compatible with old data: If the "isPublic" field is not specified, it is automatically regarded as public.
+      const isPublic = post.isPublic !== undefined ? post.isPublic : true;
+      if (isPublic) return true;
+      // Confidential: Only the author himself/herself can view it.
+      return post.authorId === CURRENT_USER_ID;
+    }
+
     // Render all posts
     function renderPosts() {
       const posts = getPosts();
-      if (posts.length === 0) {
+      // Filter out the posts that are visible to the current user
+      const visiblePosts = posts.filter(p => isPostVisible(p));
+
+      if (visiblePosts.length === 0) {
         postList.innerHTML = "";
         emptyState.classList.add("show");
         return;
@@ -856,7 +905,7 @@
       emptyState.classList.remove("show");
 
       // Sort by ID in descending order (the most recent ones come first)
-      const sorted = [...posts].sort((a, b) => b.id - a.id);
+      const sorted = [...visiblePosts].sort((a, b) => b.id - a.id);
 
       let html = "";
       sorted.forEach(post => {
@@ -864,6 +913,16 @@
         const tagClass = categoryTagClass[category] || "tag-other";
         const emoji = categoryEmoji[category] || "✦";
         const comments = post.comments || [];
+        const isPublic = post.isPublic !== undefined ? post.isPublic : true;
+        const isOwn = post.authorId === CURRENT_USER_ID;
+
+        // Visibility label
+        let visibilityHtml = '';
+        if (!isPublic && isOwn) {
+          visibilityHtml = `<span class="visibility-tag tag-private">🔒 仅自己可见</span>`;
+        } else if (isPublic) {
+
+        }
 
         html += `
           <article class="post-card" data-category="${category}" data-post-id="${post.id}">
@@ -873,6 +932,7 @@
                 <div>
                   <h3>Anonymous</h3>
                   <span class="category-tag ${tagClass}">${emoji} ${category.charAt(0).toUpperCase() + category.slice(1)}</span>
+                  ${visibilityHtml}
                 </div>
               </div>
             </div>
