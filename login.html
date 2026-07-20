@@ -1020,8 +1020,12 @@
     const passwordError = document.getElementById("passwordError");
     const passwordToggle = document.getElementById("passwordToggle");
     const statusMessage = document.getElementById("statusMessage");
-    const loginButton = document.getElementById("loginButton");
-    const guestButton = document.getElementById("guestButton");
+    const userLoginButton = document.getElementById("userLoginButton");
+    const adminLoginButton = document.getElementById("adminLoginButton");
+
+    // Admin credentials (front-end demo only — replace with real backend auth)
+    const ADMIN_ID = "admin";
+    const ADMIN_PASSWORD = "Admin123!";
 
     function showStatus(message, type) {
       statusMessage.textContent = message;
@@ -1093,16 +1097,20 @@
       clearStatus();
     });
 
-    loginForm.addEventListener("submit", async (event) => {
+    loginForm.addEventListener("submit", (event) => {
+      // Buttons are type="button", so this only guards against an accidental
+      // Enter-key submit; the real logic lives in the click handlers below.
       event.preventDefault();
+    });
 
+    userLoginButton.addEventListener("click", async () => {
       if (!validateForm()) {
         showStatus("Please correct the highlighted fields before continuing.", "error");
         return;
       }
 
-      loginButton.disabled = true;
-      loginButton.textContent = "Checking account...";
+      userLoginButton.disabled = true;
+      userLoginButton.textContent = "Checking account...";
 
       const payload = {
         email: emailInput.value.trim(),
@@ -1145,18 +1153,30 @@
       } catch (error) {
         showStatus(error.message || "Unable to log in. Please try again.", "error");
       } finally {
-        loginButton.disabled = false;
-        loginButton.textContent = "Log in securely";
+        userLoginButton.disabled = false;
+        userLoginButton.textContent = "User Login";
       }
     });
 
-    guestButton.addEventListener("click", () => {
-      showStatus(
-        "Guest mode selected. Connect this button to your community page when it is ready.",
-        "success"
-      );
+    adminLoginButton.addEventListener("click", () => {
+      // Admin login uses the same email/password fields.
+      // Enter "admin" in the email field and "Admin123!" in the password field.
+      const enteredId = emailInput.value.trim();
+      const enteredPassword = passwordInput.value;
 
-      // Replace with: window.location.href = "community.html";
+      clearStatus();
+      setFieldState(emailInput, emailError, "");
+      setFieldState(passwordInput, passwordError, "");
+
+      if (enteredId === ADMIN_ID && enteredPassword === ADMIN_PASSWORD) {
+        showStatus("Admin login successful. Redirecting...", "success");
+        adminLoginButton.disabled = true;
+        setTimeout(() => {
+          window.location.href = "admin.html";
+        }, 500);
+      } else {
+        showStatus("Invalid admin ID or password.", "error");
+      }
     });
   </script>
 </body>
