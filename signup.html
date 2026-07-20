@@ -1013,7 +1013,7 @@
             <button class="signup-button" id="signupButton" type="submit">
               Create my account
             </button>
-           </form>
+            </form>
 
           <div class="privacy-note">
             <strong>Privacy note:</strong> Your email is used only for account
@@ -1236,12 +1236,8 @@
         password: passwordInput.value
       };
 
-      /*
-        FRONT-END DEMONSTRATION
-
-        When your backend is ready, replace the demonstration below with:
-
-        const response = await fetch("/api/signup", {
+      try {
+        const response = await fetch("http://localhost:3000/api/signup", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload)
@@ -1253,23 +1249,12 @@
           throw new Error(data.message || "Unable to create account.");
         }
 
-        window.location.href = "login.html";
-      */
-
-      try {
-        await new Promise((resolve) => setTimeout(resolve, 700));
-
-        showStatus(
-          "Demo validation successful. Connect this form to your backend signup API before final deployment.",
-          "success"
-        );
-
-        console.log("Signup demonstration payload:", {
-          nickname: payload.nickname,
-          email: payload.email
-        });
+        showStatus("Account created! Redirecting to login...", "success");
+        setTimeout(() => {
+          window.location.href = "login.html";
+        }, 800);
       } catch (error) {
-        showStatus(error.message || "Unable to create account. Please try again.", "error");
+        showStatus(error.message || "Unable to create account. Please check that the server is running.", "error");
       } finally {
         signupButton.disabled = false;
         signupButton.textContent = "Create my account";
