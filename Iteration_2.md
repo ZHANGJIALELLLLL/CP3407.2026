@@ -1,4 +1,4 @@
-# Practical 7 – Iteration 2
+<img width="1400" height="900" alt="iteration2-burndown" src="https://github.com/user-attachments/assets/51623aa2-1c90-43d4-876f-3464b8a5857a" /># Practical 7 – Iteration 2
 
 ## Iteration 2
 
@@ -58,6 +58,8 @@ All four user stories were completed during the iteration.
 | 10 | 1 | 0 |
 | 11 | 0 | 0 |
 
+<img width="1400" height="900" alt="image" src="https://github.com/user-attachments/assets/00be6dbd-c807-4092-be00-8cf213bfa856" />
 
-![iteration2-burndown.png](../../Downloads/iteration2-burndown.png)
+
+
 
