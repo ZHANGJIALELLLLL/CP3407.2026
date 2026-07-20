@@ -57,3 +57,7 @@ All four user stories were completed during the iteration.
 | 9 | 2 | 2 |
 | 10 | 1 | 0 |
 | 11 | 0 | 0 |
+
+
+![iteration2-burndown.png](../../Downloads/iteration2-burndown.png)
+
