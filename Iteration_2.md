@@ -17,6 +17,7 @@ All four user stories were completed during the iteration.
 
 **Actual Velocity: 11 days**
 
+
 ## Iteration 2 Reflection
 
 ### What went well
