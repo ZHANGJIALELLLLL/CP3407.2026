@@ -1,34 +1,9 @@
-# Iteration-1
+## Iteration 1
 
-Checklist: 
-* Assumed Velocity: 0.9
-* Number of developers: 3
-* Total estimated amount of work:
+| User Story | Priority | Effort |
+|------------|:--------:|:------:|
+| Browse Website (Home & Navigation) | 10 | 4 days |
+| Learn About the Platform | 20 | 2 days |
+| View Mental Health Resources | 10 | 4 days |
 
-
-## Iteration 1 User Stories
-- Anonymous Posting
-- Comment System
-- Reporting System
-- Anonymous Nickname
-
-## Task Tracking
-Todo:
-- Store Report Information
-  
-
-In Progress:
-
-
-Done:
-- Create Post Form
-- Implement Post Submission Button
-- Display Success Message
-
-Issues：
-- Anonymous Posting
-- Comment System
-- Reporting System
-- Anonymous Nickname
-
-
+**Total: 10 days**
