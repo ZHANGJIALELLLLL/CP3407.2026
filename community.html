@@ -391,7 +391,7 @@
       background: var(--orange-light);
     }
 
-    /* ---- 可见性标签 ---- */
+    /* ---- Visibility tag ---- */
     .visibility-tag {
       display: inline-flex;
       align-items: center;
@@ -872,14 +872,19 @@
       other: "✦"
     };
 
-    // Read the posts from localStorage
-    function getPosts() {
-      return JSON.parse(localStorage.getItem("communityPosts")) || [];
-    }
+    // Backend server address
+    const API_BASE_URL = "http://localhost:3000";
 
-    // Save the post to localStorage
-    function savePosts(posts) {
-      localStorage.setItem("communityPosts", JSON.stringify(posts));
+    // Fetch posts (public posts + this user's own private posts) from the backend
+    async function getPosts() {
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/posts?userId=${encodeURIComponent(CURRENT_USER_ID)}`);
+        if (!response.ok) throw new Error("Failed to load posts");
+        return await response.json();
+      } catch (error) {
+        console.error(error);
+        return [];
+      }
     }
 
     // ---- Determine whether the post is visible to the current user ----
@@ -887,13 +892,13 @@
       // Compatible with old data: If the "isPublic" field is not specified, it is automatically regarded as public.
       const isPublic = post.isPublic !== undefined ? post.isPublic : true;
       if (isPublic) return true;
-      // Confidential: Only the author himself/herself can view it.
-      return post.authorId === CURRENT_USER_ID;
+      // Private: only the author can view it.
+      return String(post.authorId) === String(CURRENT_USER_ID);
     }
 
     // Render all posts
-    function renderPosts() {
-      const posts = getPosts();
+    async function renderPosts() {
+      const posts = await getPosts();
       // Filter out the posts that are visible to the current user
       const visiblePosts = posts.filter(p => isPostVisible(p));
 
@@ -914,12 +919,12 @@
         const emoji = categoryEmoji[category] || "✦";
         const comments = post.comments || [];
         const isPublic = post.isPublic !== undefined ? post.isPublic : true;
-        const isOwn = post.authorId === CURRENT_USER_ID;
+        const isOwn = String(post.authorId) === String(CURRENT_USER_ID);
 
         // Visibility label
         let visibilityHtml = '';
         if (!isPublic && isOwn) {
-          visibilityHtml = `<span class="visibility-tag tag-private">🔒 Visible only to oneself</span>`;
+          visibilityHtml = `<span class="visibility-tag tag-private">🔒 Only visible to you</span>`;
         } else if (isPublic) {
 
         }
@@ -989,20 +994,35 @@
     }
 
     // Processing comment submission
-    function handleCommentSubmit(event) {
+    async function handleCommentSubmit(event) {
       const btn = event.currentTarget;
       const postId = Number(btn.dataset.postId);
       const input = btn.parentElement.querySelector(".comment-input");
       const commentText = input.value.trim();
       if (!commentText) return;
 
-      // Update data
-      let posts = getPosts();
-      const post = posts.find(p => p.id === postId);
-      if (!post) return;
-      if (!post.comments) post.comments = [];
-      post.comments.push(commentText);
-      savePosts(posts);
+      const authorId = localStorage.getItem("hd_userId");
+
+      btn.disabled = true;
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/posts/${postId}/comments`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ authorId: Number(authorId), content: commentText })
+        });
+
+        if (!response.ok) {
+          const data = await response.json().catch(() => ({}));
+          throw new Error(data.message || "Failed to add comment.");
+        }
+      } catch (error) {
+        console.error(error);
+        btn.disabled = false;
+        return;
+      }
+
+      btn.disabled = false;
 
       // Clear the input field
       input.value = "";
@@ -1020,7 +1040,7 @@
       const card = btn.closest(".post-card");
       const countSpan = card.querySelector(".comment-count");
       if (countSpan) {
-        countSpan.textContent = post.comments.length;
+        countSpan.textContent = Number(countSpan.textContent) + 1;
       }
     }
 
@@ -1086,9 +1106,10 @@
     // Initialize rendering
     renderPosts();
 
-    // When the localStorage changes in other tabs (for example, when returning from the posting page), automatically refresh.
-    window.addEventListener("storage", (e) => {
-      if (e.key === "communityPosts") {
+    // Refresh the feed when the user comes back to this tab
+    // (e.g. after publishing a post on create-post.html and returning)
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "visible") {
         renderPosts();
       }
     });
