@@ -1129,6 +1129,11 @@
           throw new Error(data.message || "Unable to log in.");
         }
 
+        // Remember who's logged in (community.html reads this same key)
+        localStorage.setItem("hd_userId", String(data.id));
+        localStorage.setItem("hd_userEmail", data.email);
+        localStorage.setItem("hd_userNickname", data.nickname || "");
+
         showStatus("Login successful! Redirecting...", "success");
         setTimeout(() => {
           window.location.href = "community.html";

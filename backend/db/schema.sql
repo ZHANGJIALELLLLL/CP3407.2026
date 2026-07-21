@@ -1,12 +1,12 @@
--- Hello Dear 데이터베이스 스키마
--- 실행 방법: mysql -u root -p < schema.sql
+-- Hello Dear database schema
+-- How to run: mysql -u root -p < schema.sql
 
 CREATE DATABASE IF NOT EXISTS hello_dear
   CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 USE hello_dear;
 
--- 일반 유저 테이블
+-- Regular users table
 CREATE TABLE IF NOT EXISTS users (
   id INT AUTO_INCREMENT PRIMARY KEY,
   email VARCHAR(190) NOT NULL UNIQUE,
@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS users (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- 관리자 테이블 (유저와 분리)
+-- Admin table (kept separate from users)
 CREATE TABLE IF NOT EXISTS admins (
   id INT AUTO_INCREMENT PRIMARY KEY,
   admin_id VARCHAR(50) NOT NULL UNIQUE,
@@ -23,11 +23,11 @@ CREATE TABLE IF NOT EXISTS admins (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- 게시글 테이블
+-- Posts table
 CREATE TABLE IF NOT EXISTS posts (
   id INT AUTO_INCREMENT PRIMARY KEY,
   author_id INT NOT NULL,
-  title VARCHAR(200) NOT NULL,
+  title VARCHAR(200),
   category VARCHAR(50),
   content TEXT NOT NULL,
   is_public BOOLEAN NOT NULL DEFAULT TRUE,
@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS posts (
   FOREIGN KEY (author_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
--- 댓글 테이블
+-- Comments table
 CREATE TABLE IF NOT EXISTS comments (
   id INT AUTO_INCREMENT PRIMARY KEY,
   post_id INT NOT NULL,
