@@ -60,6 +60,18 @@ This project is an anonymoous student support platform where students can share 
 
 - GitHub
 
+## Initial Backlog Ideas
+
+1. As a student, I want to create an anonymous account so that I can use the platform without revealing my identity.
+2. As a student, I want to publish an anonymous post so that I can safely share my concerns.
+3. As a student, I want to categorise my post so that other users can identify its topic.
+4. As a student, I want to comment on posts so that I can support other students.
+5. As a student, I want to react positively to posts so that I can express support quickly.
+6. As a student, I want to search and filter posts so that I can find relevant discussions.
+7. As a student, I want to report harmful content so that the community remains safe.
+8. As a student, I want to access support resources so that I know where to seek professional help.
+9. As an administrator, I want to review reported content so that I can enforce community guidelines.
+10. As an administrator, I want to manage categories so that posts remain organised.
 
 
 
