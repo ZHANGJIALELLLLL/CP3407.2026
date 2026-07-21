@@ -1023,9 +1023,8 @@
     const userLoginButton = document.getElementById("userLoginButton");
     const adminLoginButton = document.getElementById("adminLoginButton");
 
-    // Admin credentials (front-end demo only — replace with real backend auth)
-    const ADMIN_ID = "admin";
-    const ADMIN_PASSWORD = "Admin123!";
+    // Backend server address (running locally via npm start)
+    const API_BASE_URL = "http://localhost:3000";
 
     function showStatus(message, type) {
       statusMessage.textContent = message;
@@ -1114,16 +1113,11 @@
 
       const payload = {
         email: emailInput.value.trim(),
-        password: passwordInput.value,
-        remember: rememberInput.checked
+        password: passwordInput.value
       };
 
-      /*
-        FRONT-END DEMONSTRATION
-
-        When your backend is ready, replace the demonstration below with:
-
-        const response = await fetch("/api/login", {
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/login`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload)
@@ -1135,32 +1129,25 @@
           throw new Error(data.message || "Unable to log in.");
         }
 
-        window.location.href = "community.html";
-      */
+        // Remember who's logged in (community.html reads this same key)
+        localStorage.setItem("hd_userId", String(data.id));
+        localStorage.setItem("hd_userEmail", data.email);
+        localStorage.setItem("hd_userNickname", data.nickname || "");
 
-      try {
-        await new Promise((resolve) => setTimeout(resolve, 700));
-
-        showStatus(
-          "Demo validation successful. Connect this form to your backend login API before final deployment.",
-          "success"
-        );
-
-        console.log("Login demonstration payload:", {
-          email: payload.email,
-          remember: payload.remember
-        });
+        showStatus("Login successful! Redirecting...", "success");
+        setTimeout(() => {
+          window.location.href = "community.html";
+        }, 500);
       } catch (error) {
-        showStatus(error.message || "Unable to log in. Please try again.", "error");
+        showStatus(error.message || "Something went wrong. Please check that the server is running.", "error");
       } finally {
         userLoginButton.disabled = false;
         userLoginButton.textContent = "User Login";
       }
     });
 
-    adminLoginButton.addEventListener("click", () => {
+    adminLoginButton.addEventListener("click", async () => {
       // Admin login uses the same email/password fields.
-      // Enter "admin" in the email field and "Admin123!" in the password field.
       const enteredId = emailInput.value.trim();
       const enteredPassword = passwordInput.value;
 
@@ -1168,14 +1155,36 @@
       setFieldState(emailInput, emailError, "");
       setFieldState(passwordInput, passwordError, "");
 
-      if (enteredId === ADMIN_ID && enteredPassword === ADMIN_PASSWORD) {
+      if (!enteredId || !enteredPassword) {
+        showStatus("Please enter the admin ID and password.", "error");
+        return;
+      }
+
+      adminLoginButton.disabled = true;
+      adminLoginButton.textContent = "Checking...";
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/admin/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ adminId: enteredId, password: enteredPassword })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.message || "Admin login failed.");
+        }
+
         showStatus("Admin login successful. Redirecting...", "success");
-        adminLoginButton.disabled = true;
         setTimeout(() => {
           window.location.href = "admin.html";
         }, 500);
-      } else {
-        showStatus("Invalid admin ID or password.", "error");
+      } catch (error) {
+        showStatus(error.message || "Something went wrong. Please check that the server is running.", "error");
+      } finally {
+        adminLoginButton.disabled = false;
+        adminLoginButton.textContent = "Admin Login";
       }
     });
   </script>

@@ -1003,8 +1003,8 @@
       return valid;
     }
 
-    // ─── Submit post: Save to localStorage and redirect ───
-    postForm.addEventListener("submit", function(event) {
+    // ─── Submit post: Save to the database via the backend API ───
+    postForm.addEventListener("submit", async function(event) {
       event.preventDefault();
 
       if (!validateForm()) {
@@ -1012,35 +1012,43 @@
         return;
       }
 
-      // Create a new post object
-      const newPost = {
-        id: Date.now(),
-        category: selectedCategory,
-        content: postContent.value.trim(),
-        comments: [],
-        authorId: CURRENT_USER_ID,
-        isPublic: (selectedVisibility === "public")
-      };
+      const authorId = localStorage.getItem("hd_userId");
+      if (!authorId) {
+        showStatus("Please log in before posting.", "error");
+        return;
+      }
 
-      // Read existing posts
-      let posts = JSON.parse(localStorage.getItem("communityPosts")) || [];
-
-      // Insert at the beginning (the latest one is on top)
-      posts.unshift(newPost);
-
-      // save
-      localStorage.setItem("communityPosts", JSON.stringify(posts));
-
-      // Display success message
-      showStatus("Post published successfully!", "success");
-
-      // Disable the button to prevent duplicate submissions
       postButton.disabled = true;
+      postButton.textContent = "Posting...";
 
-      // Delay the jump to the community page
-      setTimeout(function() {
-        window.location.href = "community.html";
-      }, 800);
+      try {
+        const response = await fetch("http://localhost:3000/api/posts", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            authorId: Number(authorId),
+            category: selectedCategory,
+            content: postContent.value.trim(),
+            isPublic: (selectedVisibility === "public")
+          })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.message || "Unable to publish your post.");
+        }
+
+        showStatus("Post published successfully!", "success");
+
+        setTimeout(function() {
+          window.location.href = "community.html";
+        }, 800);
+      } catch (error) {
+        showStatus(error.message || "Unable to publish your post. Please check that the server is running.", "error");
+        postButton.disabled = false;
+        postButton.textContent = "Submit Post";
+      }
     });
   </script>
 </body>
