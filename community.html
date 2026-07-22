@@ -727,9 +727,9 @@
         </ul>
       </nav>
 
-      <div class="nav-actions">
-        <a class="button button-outline button-small" href="login.html">Log in</a>
-        <a class="button button-primary button-small" href="signup.html">Sign up</a>
+      <div class="nav-actions" id="navActions">
+        <a class="button button-outline button-small" id="loginNavLink" href="login.html">Log in</a>
+        <a class="button button-primary button-small" id="signupNavLink" href="signup.html">Sign up</a>
         <button class="menu-toggle" id="menuToggle" aria-label="Open navigation menu" aria-expanded="false">
           ☰
         </button>
@@ -838,6 +838,31 @@
       }
       return userId;
     }
+    // ---- Show "Log out" instead of "Log in / Sign up" when a user is logged in ----
+    function updateNavForLoginState() {
+      const nickname = localStorage.getItem("hd_userNickname");
+      const email = localStorage.getItem("hd_userEmail");
+      const loginLink = document.getElementById("loginNavLink");
+      const signupLink = document.getElementById("signupNavLink");
+
+      if (email && loginLink && signupLink) {
+        loginLink.textContent = nickname ? `Hi, ${nickname}` : "Account";
+        loginLink.removeAttribute("href");
+        loginLink.style.cursor = "default";
+
+        signupLink.textContent = "Log out";
+        signupLink.href = "#";
+        signupLink.addEventListener("click", (e) => {
+          e.preventDefault();
+          localStorage.removeItem("hd_userId");
+          localStorage.removeItem("hd_userEmail");
+          localStorage.removeItem("hd_userNickname");
+          window.location.href = "login.html";
+        });
+      }
+    }
+    updateNavForLoginState();
+
     const CURRENT_USER_ID = getCurrentUserId();
 
     //Navigation menu switch
