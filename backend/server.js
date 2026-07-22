@@ -184,6 +184,27 @@ app.post("/api/posts/:id/comments", async (req, res) => {
   }
 });
 
+// ─── Admin dashboard stats ───
+app.get("/api/admin/stats", async (req, res) => {
+  try {
+    const [[{ userCount }]] = await pool.query(`SELECT COUNT(*) AS userCount FROM users`);
+    const [[{ postCount }]] = await pool.query(`SELECT COUNT(*) AS postCount FROM posts`);
+    const [[{ publicPostCount }]] = await pool.query(`SELECT COUNT(*) AS publicPostCount FROM posts WHERE is_public = TRUE`);
+    const [[{ commentCount }]] = await pool.query(`SELECT COUNT(*) AS commentCount FROM comments`);
+
+    res.json({
+      userCount,
+      postCount,
+      publicPostCount,
+      privatePostCount: postCount - publicPostCount,
+      commentCount
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "A server error occurred." });
+  }
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running: http://localhost:${PORT}`);
