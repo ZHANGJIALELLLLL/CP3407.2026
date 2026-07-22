@@ -205,6 +205,135 @@ app.get("/api/admin/stats", async (req, res) => {
   }
 });
 
+// ─── Delete a post (used by admin to remove reported content) ───
+app.delete("/api/posts/:id", async (req, res) => {
+  try {
+    await pool.query(`DELETE FROM posts WHERE id = ?`, [req.params.id]);
+    res.json({ message: "Post deleted." });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "A server error occurred." });
+  }
+});
+
+// ─── Submit a report on a post ───
+app.post("/api/reports", async (req, res) => {
+  try {
+    const { postId, reporterId, reason } = req.body;
+
+    if (!postId) {
+      return res.status(400).json({ message: "Missing post id." });
+    }
+
+    await pool.query(
+      `INSERT INTO reports (post_id, reporter_id, reason) VALUES (?, ?, ?)`,
+      [postId, reporterId || null, reason || "Not specified"]
+    );
+
+    res.status(201).json({ message: "Report submitted." });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "A server error occurred." });
+  }
+});
+
+// ─── Get all reports (for the admin dashboard) ───
+app.get("/api/reports", async (req, res) => {
+  try {
+    const [reports] = await pool.query(
+      `SELECT r.id, r.post_id AS postId, r.reason, r.status, r.created_at AS createdAt,
+              p.content AS postContent, u.email AS reporterEmail
+       FROM reports r
+       LEFT JOIN posts p ON p.id = r.post_id
+       LEFT JOIN users u ON u.id = r.reporter_id
+       ORDER BY r.id DESC`
+    );
+    res.json(reports);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "A server error occurred." });
+  }
+});
+
+// ─── Update a report's status (resolve / dismiss) ───
+app.patch("/api/reports/:id", async (req, res) => {
+  try {
+    const { status } = req.body;
+    if (!["pending", "resolved", "dismissed"].includes(status)) {
+      return res.status(400).json({ message: "Invalid status." });
+    }
+    await pool.query(`UPDATE reports SET status = ? WHERE id = ?`, [status, req.params.id]);
+    res.json({ message: "Report updated." });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "A server error occurred." });
+  }
+});
+
+// ─── Submit feedback ───
+app.post("/api/feedback", async (req, res) => {
+  try {
+    const { authorId, content } = req.body;
+
+    if (!content || content.trim().length < 5) {
+      return res.status(400).json({ message: "Please enter at least 5 characters." });
+    }
+
+    await pool.query(
+      `INSERT INTO feedback (author_id, content) VALUES (?, ?)`,
+      [authorId || null, content.trim()]
+    );
+
+    res.status(201).json({ message: "Feedback submitted." });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "A server error occurred." });
+  }
+});
+
+// ─── Get all feedback (for the admin dashboard) ───
+app.get("/api/feedback", async (req, res) => {
+  try {
+    const [feedback] = await pool.query(
+      `SELECT f.id, f.content, f.status, f.created_at AS createdAt,
+              u.email AS authorEmail
+       FROM feedback f
+       LEFT JOIN users u ON u.id = f.author_id
+       ORDER BY f.id DESC`
+    );
+    res.json(feedback);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "A server error occurred." });
+  }
+});
+
+// ─── Update a feedback item's status (reviewed / archived) ───
+app.patch("/api/feedback/:id", async (req, res) => {
+  try {
+    const { status } = req.body;
+    if (!["new", "reviewed", "archived"].includes(status)) {
+      return res.status(400).json({ message: "Invalid status." });
+    }
+    await pool.query(`UPDATE feedback SET status = ? WHERE id = ?`, [status, req.params.id]);
+    res.json({ message: "Feedback updated." });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "A server error occurred." });
+  }
+});
+
+// ─── Delete a feedback item ───
+app.delete("/api/feedback/:id", async (req, res) => {
+  try {
+    await pool.query(`DELETE FROM feedback WHERE id = ?`, [req.params.id]);
+    res.json({ message: "Feedback deleted." });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "A server error occurred." });
+  }
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running: http://localhost:${PORT}`);

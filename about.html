@@ -1390,8 +1390,9 @@
     const feedbackForm = document.getElementById("feedbackForm");
     const feedbackInput = document.getElementById("feedback");
     const formMessage = document.getElementById("formMessage");
+    const FEEDBACK_API_BASE_URL = "http://localhost:3000";
 
-    feedbackForm.addEventListener("submit", (event) => {
+    feedbackForm.addEventListener("submit", async (event) => {
       event.preventDefault();
 
       const feedback = feedbackInput.value.trim();
@@ -1402,11 +1403,28 @@
         return;
       }
 
-      // Front-end demonstration only.
-      // Replace this section with a fetch() call when your backend is ready.
-      formMessage.textContent = "Thank you. Your feedback has been recorded for this demonstration.";
-      formMessage.style.color = "#28a66a";
-      feedbackForm.reset();
+      const authorId = localStorage.getItem("hd_userEmail") ? localStorage.getItem("hd_userId") : null;
+
+      try {
+        const response = await fetch(`${FEEDBACK_API_BASE_URL}/api/feedback`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ authorId, content: feedback })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.message || "Unable to submit feedback.");
+        }
+
+        formMessage.textContent = "Thank you. Your feedback has been recorded.";
+        formMessage.style.color = "#28a66a";
+        feedbackForm.reset();
+      } catch (error) {
+        formMessage.textContent = error.message || "Something went wrong. Please check that the server is running.";
+        formMessage.style.color = "#c04c4c";
+      }
     });
   </script>
 </body>

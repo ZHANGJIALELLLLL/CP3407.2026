@@ -974,7 +974,7 @@
               <button class="post-stat like-button" type="button" data-base-count="0">
                 <span class="heart-icon">❤️</span> <span class="count">0</span> Likes
               </button>
-              <button class="report-button" type="button">⚑ Report</button>
+              <button class="report-button" type="button" data-post-id="${post.id}">⚑ Report</button>
             </div>
 
             <div class="comments-section">
@@ -1121,11 +1121,36 @@
     });
 
     // Report button
-    document.addEventListener("click", (e) => {
+    document.addEventListener("click", async (e) => {
       const reportBtn = e.target.closest(".report-button");
       if (!reportBtn) return;
-      reportBtn.textContent = "✓ Reported";
+
+      const postId = Number(reportBtn.dataset.postId);
+      const reason = window.prompt("Why are you reporting this post? (optional)", "") || "Not specified";
+
       reportBtn.disabled = true;
+      reportBtn.textContent = "Reporting...";
+
+      try {
+        const storedUserId = localStorage.getItem("hd_userId");
+        const reporterId = localStorage.getItem("hd_userEmail") && !Number.isNaN(Number(storedUserId))
+          ? Number(storedUserId)
+          : null;
+
+        const response = await fetch(`${API_BASE_URL}/api/reports`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ postId, reporterId, reason })
+        });
+
+        if (!response.ok) throw new Error("Failed to submit report.");
+
+        reportBtn.textContent = "✓ Reported";
+      } catch (error) {
+        console.error(error);
+        reportBtn.textContent = "⚑ Report";
+        reportBtn.disabled = false;
+      }
     });
 
     // Initialize rendering

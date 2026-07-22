@@ -14,7 +14,7 @@
 <div class="shell"><header class="topbar"><div class="top-left"><button class="mobile" id="mobile">☰</button><div class="title"><h1 id="topTitle">Dashboard</h1><p id="topSub">Overview of platform activity and moderation tasks</p></div></div><div class="top-actions"><div class="search"><span>⌕</span><input id="globalSearch" placeholder="Search current section..."></div><button class="icon-btn">🔔</button><a class="icon-btn" href="index.html">↗</a></div></header>
 <main class="content">
 <section class="page active" id="dashboardSection"><div class="welcome"><div><h2>Good afternoon, Administrator</h2><p>Review moderation tasks and monitor the Hello Dear community.</p></div><button class="btn primary" data-link="reports">Review Reports</button></div><div class="stats"><article class="stat"><div class="stat-top"><div class="stat-icon">♙</div><span class="badge resolved">Live</span></div><h3 id="statUserCount">—</h3><p>Registered users</p></article><article class="stat"><div class="stat-top"><div class="stat-icon">▤</div><span class="badge resolved">Live</span></div><h3 id="statPostCount">—</h3><p>Published posts</p></article><article class="stat"><div class="stat-top"><div class="stat-icon">⚑</div><span class="badge pending">Needs review</span></div><h3 id="pendingCount">3</h3><p>Pending reports</p></article><article class="stat"><div class="stat-top"><div class="stat-icon">📚</div><span class="badge resolved">Active</span></div><h3>6</h3><p>Support resources</p></article><article class="stat"><div class="stat-top"><div class="stat-icon" style="color:var(--o);background:var(--ol)">✉</div><span class="badge pending">New</span></div><h3 id="feedbackCount">4</h3><p>Unread feedback</p></article></div><div class="dash-grid"><section class="panel"><div class="panel-head"><div><h3>Recent Reports</h3><p>Latest content submitted for review</p></div><button class="btn outline" data-link="reports">View All</button></div><div class="table-wrap"><table><thead><tr><th>ID</th><th>Content</th><th>Reason</th><th>Status</th><th>Action</th></tr></thead><tbody><tr><td>#124</td><td class="item">Feeling overwhelmed before final exams<small>Anonymous Panda</small></td><td>Harassment</td><td><span class="badge pending">Pending</span></td><td><button class="table-btn review" data-report="124">Review</button></td></tr><tr><td>#123</td><td class="item">Difficult friendship discussion<small>Anonymous Tiger</small></td><td>Abuse</td><td><span class="badge pending">Pending</span></td><td><button class="table-btn review" data-report="123">Review</button></td></tr><tr><td>#120</td><td class="item">Career discussion spam link<small>User #1024</small></td><td>Spam</td><td><span class="badge resolved">Resolved</span></td><td><button class="table-btn">View</button></td></tr></tbody></table></div></section><aside class="panel"><div class="panel-head"><div><h3>Moderation Alerts</h3><p>Items needing attention</p></div></div><div class="panel-body"><div class="alerts"><article class="alert high"><div class="alert-top"><strong>Repeated reports</strong><small>10 min ago</small></div><p>Comment #884 has received three abuse reports.</p></article><article class="alert"><div class="alert-top"><strong>Verify resource details</strong><small>Today</small></div><p>Confirm counselling contact information before deployment.</p></article></div><div class="quick"><button class="btn outline" data-link="users">Manage Users</button><button class="btn outline" data-link="resources">Manage Resources</button><button class="btn outline" data-link="feedback">View Feedback</button><a class="btn outline" href="community.html">View Community</a></div></div></aside></div></section>
-<section class="page" id="reportsSection"><div class="section-head"><div><h2>Reported Content</h2><p>Review reports and record moderation decisions.</p></div><div class="section-controls"><select id="reportFilter"><option value="all">All statuses</option><option value="pending">Pending</option><option value="resolved">Resolved</option></select></div></div><section class="panel"><div class="table-wrap"><table><thead><tr><th>Report</th><th>Content</th><th>Reason</th><th>Reporter</th><th>Status</th><th>Actions</th></tr></thead><tbody id="reportsBody"><tr data-status="pending"><td>#124</td><td class="item">Comment on exam stress post<small>“Stop complaining and just study.”</small></td><td>Harassment</td><td>Anonymous Rabbit</td><td><span class="badge pending">Pending</span></td><td class="actions"><button class="table-btn review" data-report="124">Review</button><button class="table-btn danger remove">Remove</button></td></tr><tr data-status="pending"><td>#123</td><td class="item">Comment on friendship post<small>Repeated insulting language</small></td><td>Abuse</td><td>Anonymous Panda</td><td><span class="badge pending">Pending</span></td><td class="actions"><button class="table-btn review" data-report="123">Review</button><button class="table-btn danger remove">Remove</button></td></tr><tr data-status="pending"><td>#121</td><td class="item">Earn money quickly from home<small>Unrelated promotion</small></td><td>Spam</td><td>User #1132</td><td><span class="badge pending">Pending</span></td><td class="actions"><button class="table-btn review" data-report="121">Review</button><button class="table-btn danger remove">Remove</button></td></tr><tr data-status="resolved"><td>#120</td><td class="item">External advertisement link</td><td>Spam</td><td>Anonymous Tiger</td><td><span class="badge resolved">Resolved</span></td><td><button class="table-btn">View</button></td></tr></tbody></table></div></section></section>
+<section class="page" id="reportsSection"><div class="section-head"><div><h2>Reported Content</h2><p>Review reports and record moderation decisions.</p></div><div class="section-controls"><select id="reportFilter"><option value="all">All statuses</option><option value="pending">Pending</option><option value="resolved">Resolved</option></select></div></div><section class="panel"><div class="table-wrap"><table><thead><tr><th>Report</th><th>Content</th><th>Reason</th><th>Reporter</th><th>Status</th><th>Actions</th></tr></thead><tbody id="reportsBody"></tbody></table></div></section></section>
 <section class="page" id="postsSection"><div class="section-head"><div><h2>Post Management</h2><p>Search, review, and remove posts when necessary.</p></div></div><section class="panel"><div class="table-wrap"><table><thead><tr><th>Post</th><th>Category</th><th>Author</th><th>Comments</th><th>Helpful</th><th>Actions</th></tr></thead><tbody><tr data-searchable><td class="item">Feeling overwhelmed before final exams<small>2 hours ago</small></td><td><span class="badge active-b">Academic</span></td><td>Anonymous Panda</td><td>12</td><td>18</td><td class="actions"><button class="table-btn">View</button><button class="table-btn danger remove">Delete</button></td></tr><tr data-searchable><td class="item">How to deal with a difficult friendship?<small>5 hours ago</small></td><td><span class="badge warning">Relationships</span></td><td>Anonymous Tiger</td><td>15</td><td>21</td><td class="actions"><button class="table-btn">View</button><button class="table-btn danger remove">Delete</button></td></tr><tr data-searchable><td class="item">Not sure about my career path<small>Yesterday</small></td><td><span class="badge resolved">Career</span></td><td>User #1024</td><td>8</td><td>14</td><td class="actions"><button class="table-btn">View</button><button class="table-btn danger remove">Delete</button></td></tr></tbody></table></div></section></section>
 <section class="page" id="usersSection"><div class="section-head"><div><h2>User Management</h2><p>Review activity and manage account status.</p></div></div><div class="user-grid"><article class="user-card" data-searchable><div class="user-top"><div class="user-avatar">🐼</div><div><h3>Anonymous Panda</h3><p>panda1024@university.edu</p></div></div><span class="badge active-b">Active</span><div class="user-meta"><div><strong>7</strong><small>Posts</small></div><div><strong>2</strong><small>Reports</small></div></div><div class="actions"><button class="btn outline">View Activity</button><button class="btn danger suspend">Suspend</button></div></article><article class="user-card" data-searchable><div class="user-top"><div class="user-avatar">🐯</div><div><h3>Anonymous Tiger</h3><p>tiger2048@university.edu</p></div></div><span class="badge active-b">Active</span><div class="user-meta"><div><strong>11</strong><small>Posts</small></div><div><strong>0</strong><small>Reports</small></div></div><div class="actions"><button class="btn outline">View Activity</button><button class="btn danger suspend">Suspend</button></div></article><article class="user-card" data-searchable><div class="user-top"><div class="user-avatar">#</div><div><h3>User #1132</h3><p>user1132@university.edu</p></div></div><span class="badge warning">Suspended</span><div class="user-meta"><div><strong>3</strong><small>Posts</small></div><div><strong>5</strong><small>Reports</small></div></div><div class="actions"><button class="btn outline">View Activity</button><button class="btn success restore">Restore</button></div></article></div></section>
 <section class="page" id="resourcesSection"><div class="section-head"><div><h2>Resource Management</h2><p>Maintain accurate university support information.</p></div><button class="btn primary" id="addResource">+ Add Resource</button></div><div class="resource-grid"><article class="resource-card" data-searchable><span class="badge active-b">Counselling</span><h3>Student Counselling Service</h3><p>Confidential personal and well-being support.</p><div class="resource-contact"><span>✉ counselling@university.edu</span><span>📍 Student Services Building</span></div><div class="actions"><button class="btn outline">Edit</button><button class="btn danger remove">Delete</button></div></article><article class="resource-card" data-searchable><span class="badge active-b">Academic</span><h3>Academic Support Centre</h3><p>Study skills, writing, and learning assistance.</p><div class="resource-contact"><span>✉ academicsupport@university.edu</span><span>📍 Library, Level 2</span></div><div class="actions"><button class="btn outline">Edit</button><button class="btn danger remove">Delete</button></div></article><article class="resource-card" data-searchable><span class="badge active-b">Career</span><h3>Career Development Centre</h3><p>Career planning and employment guidance.</p><div class="resource-contact"><span>✉ careers@university.edu</span><span>📍 Campus Hub, Room 104</span></div><div class="actions"><button class="btn outline">Edit</button><button class="btn danger remove">Delete</button></div></article></div></section>
@@ -27,12 +27,7 @@
   <section class="panel">
     <div class="table-wrap"><table>
       <thead><tr><th>ID</th><th>Feedback</th><th>Submitted by</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead>
-      <tbody id="feedbackBody">
-        <tr data-feedback-status="new" data-searchable><td>#F104</td><td class="item feedback-message">Please add clearer information about international student visa support.<small class="feedback-rating">★★★★★</small></td><td>Anonymous student</td><td>20 Jul 2026</td><td><span class="badge pending">New</span></td><td class="actions"><button class="table-btn view-feedback" data-id="F104" data-message="Please add clearer information about international student visa support." data-user="Anonymous student" data-date="20 Jul 2026">View</button><button class="table-btn mark-feedback">Mark Reviewed</button><button class="table-btn danger delete-feedback">Delete</button></td></tr>
-        <tr data-feedback-status="new" data-searchable><td>#F103</td><td class="item feedback-message">The category filters are useful, but a saved-posts page would make the community easier to use.<small class="feedback-rating">★★★★☆</small></td><td>User #1024</td><td>19 Jul 2026</td><td><span class="badge pending">New</span></td><td class="actions"><button class="table-btn view-feedback" data-id="F103" data-message="The category filters are useful, but a saved-posts page would make the community easier to use." data-user="User #1024" data-date="19 Jul 2026">View</button><button class="table-btn mark-feedback">Mark Reviewed</button><button class="table-btn danger delete-feedback">Delete</button></td></tr>
-        <tr data-feedback-status="new" data-searchable><td>#F102</td><td class="item feedback-message">Please make the mobile text slightly larger and improve contrast on some buttons.<small class="feedback-rating">★★★★☆</small></td><td>Anonymous Panda</td><td>18 Jul 2026</td><td><span class="badge pending">New</span></td><td class="actions"><button class="table-btn view-feedback" data-id="F102" data-message="Please make the mobile text slightly larger and improve contrast on some buttons." data-user="Anonymous Panda" data-date="18 Jul 2026">View</button><button class="table-btn mark-feedback">Mark Reviewed</button><button class="table-btn danger delete-feedback">Delete</button></td></tr>
-        <tr data-feedback-status="reviewed" data-searchable><td>#F101</td><td class="item feedback-message">The anonymous nickname system makes the platform feel safer to use.<small class="feedback-rating">★★★★★</small></td><td>Anonymous Tiger</td><td>16 Jul 2026</td><td><span class="badge resolved">Reviewed</span></td><td class="actions"><button class="table-btn view-feedback" data-id="F101" data-message="The anonymous nickname system makes the platform feel safer to use." data-user="Anonymous Tiger" data-date="16 Jul 2026">View</button><button class="table-btn archive-feedback">Archive</button><button class="table-btn danger delete-feedback">Delete</button></td></tr>
-      </tbody>
+      <tbody id="feedbackBody"></tbody>
     </table></div>
   </section>
 </section>
@@ -40,7 +35,7 @@
 </main></div>
 
 <div class="modal-bg" id="feedbackModal"><section class="modal"><div class="modal-head"><div><h2>Feedback Details</h2><p>Review the complete user suggestion.</p></div><button class="close" id="feedbackClose">✕</button></div><div class="feedback-detail"><blockquote id="feedbackMessage"></blockquote><div class="feedback-meta"><div><strong>Feedback ID</strong><span id="feedbackId"></span></div><div><strong>Submitted by</strong><span id="feedbackUser"></span></div><div><strong>Date</strong><span id="feedbackDate"></span></div><div><strong>Status</strong><span id="feedbackStatus">New</span></div></div></div><div class="modal-actions" style="margin-top:20px"><button class="btn outline" id="feedbackArchive">Archive</button><button class="btn primary" id="feedbackReviewed">Mark Reviewed</button></div></section></div>
-<div class="modal-bg" id="modal"><section class="modal"><div class="modal-head"><div><h2>Review Report</h2><p>Select a moderation action.</p></div><button class="close" id="close">✕</button></div><div class="modal-details"><div class="detail"><strong>Report ID</strong><span id="reportId">#124</span></div><div class="detail"><strong>Reason</strong><span>Harassment or abusive language</span></div><div class="detail"><strong>Reported content</strong><span>“Stop complaining and just study.”</span></div></div><div class="modal-actions"><button class="btn outline" id="dismiss">Dismiss</button><button class="btn danger" id="removeContent">Remove Content</button><button class="btn primary" id="resolve">Mark Resolved</button></div></section></div><div class="toast" id="toast"></div>
+<div class="modal-bg" id="modal"><section class="modal"><div class="modal-head"><div><h2>Review Report</h2><p>Select a moderation action.</p></div><button class="close" id="close">✕</button></div><div class="modal-details"><div class="detail"><strong>Report ID</strong><span id="reportId">#124</span></div><div class="detail"><strong>Reason</strong><span id="reportReason">Harassment or abusive language</span></div><div class="detail"><strong>Reported content</strong><span id="reportContent">"Stop complaining and just study."</span></div></div><div class="modal-actions"><button class="btn outline" id="dismiss">Dismiss</button><button class="btn danger" id="removeContent">Remove Content</button><button class="btn primary" id="resolve">Mark Resolved</button></div></section></div><div class="toast" id="toast"></div>
 <script>
 // ─── Load real dashboard stats from the backend ───
 const ADMIN_API_BASE_URL = "http://localhost:3000";
@@ -73,6 +68,233 @@ document.querySelectorAll('.mark-feedback').forEach(b=>b.onclick=()=>{const row=
 document.querySelectorAll('.archive-feedback').forEach(b=>b.onclick=()=>{setFeedbackStatus(b.closest('tr'),'archived');notify('Feedback archived.')});
 document.querySelectorAll('.delete-feedback').forEach(b=>b.onclick=()=>{b.closest('tr').remove();notify('Feedback deleted for this demonstration.',true);updateFeedbackCount()});
 document.getElementById('feedbackReviewed').onclick=()=>{if(currentFeedbackRow)setFeedbackStatus(currentFeedbackRow,'reviewed');feedbackModal.classList.remove('show');notify('Feedback marked as reviewed.')};document.getElementById('feedbackArchive').onclick=()=>{if(currentFeedbackRow)setFeedbackStatus(currentFeedbackRow,'archived');feedbackModal.classList.remove('show');notify('Feedback archived.')};updateFeedbackCount();
+</script>
+<script>
+// ─── Reports & Feedback: connect to the real backend ───
+function escapeHtml(str) {
+  const div = document.createElement("div");
+  div.textContent = str || "";
+  return div.innerHTML;
+}
+
+function statusBadge(status, labels) {
+  const cls = status === "pending" || status === "new" ? "pending" : "resolved";
+  return `<span class="badge ${cls}">${labels[status] || status}</span>`;
+}
+
+// ---- Reports ----
+let activeReportId = null;
+let activePostId = null;
+
+async function loadReports() {
+  try {
+    const res = await fetch(`${ADMIN_API_BASE_URL}/api/reports`);
+    if (!res.ok) throw new Error("Failed to load reports");
+    const reports = await res.json();
+    renderReports(reports);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+function renderReports(reports) {
+  const tbody = document.getElementById("reportsBody");
+  tbody.innerHTML = reports.map(r => `
+    <tr data-status="${r.status}">
+      <td>#${r.id}</td>
+      <td class="item">${escapeHtml((r.postContent || "(post removed)").slice(0, 80))}</td>
+      <td>${escapeHtml(r.reason)}</td>
+      <td>${escapeHtml(r.reporterEmail || "Anonymous")}</td>
+      <td>${statusBadge(r.status, { pending: "Pending", resolved: "Resolved", dismissed: "Dismissed" })}</td>
+      <td class="actions">
+        ${r.status === "pending"
+          ? `<button class="table-btn review" data-report="${r.id}" data-post="${r.postId}">Review</button>`
+          : `<button class="table-btn" disabled>Viewed</button>`}
+      </td>
+    </tr>`).join("");
+
+  document.getElementById("pendingCount").textContent =
+    reports.filter(r => r.status === "pending").length;
+}
+
+document.getElementById("reportsBody").addEventListener("click", (e) => {
+  const btn = e.target.closest(".review");
+  if (!btn) return;
+  activeReportId = btn.dataset.report;
+  activePostId = btn.dataset.post;
+  document.getElementById("reportId").textContent = "#" + activeReportId;
+  document.getElementById("reportReason").textContent =
+    btn.closest("tr").children[2].textContent;
+  document.getElementById("reportContent").textContent =
+    btn.closest("tr").children[1].textContent;
+  document.getElementById("modal").classList.add("show");
+});
+
+document.getElementById("close").onclick = () => document.getElementById("modal").classList.remove("show");
+
+document.getElementById("resolve").onclick = async () => {
+  if (!activeReportId) return;
+  try {
+    await fetch(`${ADMIN_API_BASE_URL}/api/reports/${activeReportId}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ status: "resolved" })
+    });
+    notify("Report marked as resolved.");
+  } catch (error) {
+    console.error(error);
+  }
+  document.getElementById("modal").classList.remove("show");
+  loadReports();
+};
+
+document.getElementById("dismiss").onclick = async () => {
+  if (!activeReportId) return;
+  try {
+    await fetch(`${ADMIN_API_BASE_URL}/api/reports/${activeReportId}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ status: "dismissed" })
+    });
+    notify("Report dismissed.");
+  } catch (error) {
+    console.error(error);
+  }
+  document.getElementById("modal").classList.remove("show");
+  loadReports();
+};
+
+document.getElementById("removeContent").onclick = async () => {
+  if (!activePostId) return;
+  try {
+    await fetch(`${ADMIN_API_BASE_URL}/api/posts/${activePostId}`, { method: "DELETE" });
+    notify("Reported content removed.", true);
+  } catch (error) {
+    console.error(error);
+  }
+  document.getElementById("modal").classList.remove("show");
+  loadReports();
+  loadDashboardStats();
+};
+
+// ---- Feedback ----
+let activeFeedbackId = null;
+
+async function loadFeedback() {
+  try {
+    const res = await fetch(`${ADMIN_API_BASE_URL}/api/feedback`);
+    if (!res.ok) throw new Error("Failed to load feedback");
+    const items = await res.json();
+    renderFeedback(items);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+function renderFeedback(items) {
+  const tbody = document.getElementById("feedbackBody");
+  tbody.innerHTML = items.map(f => {
+    const date = new Date(f.createdAt).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" });
+    const submittedBy = f.authorEmail || "Anonymous";
+    const actionBtn = f.status === "archived"
+      ? ""
+      : f.status === "new"
+        ? `<button class="table-btn mark-feedback" data-id="${f.id}">Mark Reviewed</button>`
+        : `<button class="table-btn archive-feedback" data-id="${f.id}">Archive</button>`;
+    return `
+      <tr data-feedback-status="${f.status}" data-searchable>
+        <td>#${f.id}</td>
+        <td class="item feedback-message">${escapeHtml(f.content)}</td>
+        <td>${escapeHtml(submittedBy)}</td>
+        <td>${date}</td>
+        <td>${statusBadge(f.status, { new: "New", reviewed: "Reviewed", archived: "Archived" })}</td>
+        <td class="actions">
+          <button class="table-btn view-feedback" data-id="${f.id}" data-message="${escapeHtml(f.content)}" data-user="${escapeHtml(submittedBy)}" data-date="${date}" data-status="${f.status}">View</button>
+          ${actionBtn}
+          <button class="table-btn danger delete-feedback" data-id="${f.id}">Delete</button>
+        </td>
+      </tr>`;
+  }).join("");
+
+  document.getElementById("feedbackCount").textContent =
+    items.filter(f => f.status === "new").length;
+}
+
+document.getElementById("feedbackBody").addEventListener("click", async (e) => {
+  const viewBtn = e.target.closest(".view-feedback");
+  const markBtn = e.target.closest(".mark-feedback");
+  const archiveBtn = e.target.closest(".archive-feedback");
+  const deleteBtn = e.target.closest(".delete-feedback");
+
+  if (viewBtn) {
+    activeFeedbackId = viewBtn.dataset.id;
+    document.getElementById("feedbackId").textContent = "#" + activeFeedbackId;
+    document.getElementById("feedbackMessage").textContent = viewBtn.dataset.message;
+    document.getElementById("feedbackUser").textContent = viewBtn.dataset.user;
+    document.getElementById("feedbackDate").textContent = viewBtn.dataset.date;
+    document.getElementById("feedbackStatus").textContent =
+      viewBtn.dataset.status.charAt(0).toUpperCase() + viewBtn.dataset.status.slice(1);
+    document.getElementById("feedbackModal").classList.add("show");
+    return;
+  }
+
+  if (markBtn) {
+    await fetch(`${ADMIN_API_BASE_URL}/api/feedback/${markBtn.dataset.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ status: "reviewed" })
+    });
+    notify("Feedback marked as reviewed.");
+    loadFeedback();
+    return;
+  }
+
+  if (archiveBtn) {
+    await fetch(`${ADMIN_API_BASE_URL}/api/feedback/${archiveBtn.dataset.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ status: "archived" })
+    });
+    notify("Feedback archived.");
+    loadFeedback();
+    return;
+  }
+
+  if (deleteBtn) {
+    await fetch(`${ADMIN_API_BASE_URL}/api/feedback/${deleteBtn.dataset.id}`, { method: "DELETE" });
+    notify("Feedback deleted.", true);
+    loadFeedback();
+  }
+});
+
+document.getElementById("feedbackClose").onclick = () => document.getElementById("feedbackModal").classList.remove("show");
+
+document.getElementById("feedbackReviewed").onclick = async () => {
+  if (!activeFeedbackId) return;
+  await fetch(`${ADMIN_API_BASE_URL}/api/feedback/${activeFeedbackId}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ status: "reviewed" })
+  });
+  notify("Feedback marked as reviewed.");
+  document.getElementById("feedbackModal").classList.remove("show");
+  loadFeedback();
+};
+
+document.getElementById("feedbackArchive").onclick = async () => {
+  if (!activeFeedbackId) return;
+  await fetch(`${ADMIN_API_BASE_URL}/api/feedback/${activeFeedbackId}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ status: "archived" })
+  });
+  notify("Feedback archived.");
+  document.getElementById("feedbackModal").classList.remove("show");
+  loadFeedback();
+};
+
+loadReports();
+loadFeedback();
 </script>
 </body>
 </html>
