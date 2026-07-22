@@ -67,7 +67,6 @@ All three planned user stories were completed during the iteration.
 
 ## Iteration 1 Burndown Chart
 
-<img width="1568" height="1003" alt="Burndown_Chart" src="https://github.com/user-attachments/assets/1d56c71e-d9d7-498d-83f7-9e0f092db3e7" />
 
 
 ---
