@@ -67,7 +67,7 @@ All three planned user stories were completed during the iteration.
 
 ## Iteration 1 Burndown Chart
 
-![Iteration 1 Burndown](images/iteration1_burndown.png)
+
 
 ---
 
