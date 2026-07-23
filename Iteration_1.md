@@ -1,4 +1,12 @@
-## Iteration 1
+# Iteration 1
+
+## Objective
+
+The objective of Iteration 1 was to establish the foundation of the Anonymous Student Support Platform by developing the basic website structure and delivering the highest-priority user stories. During this iteration, the team focused on creating the core pages, tracking progress using GitHub, and monitoring development with a Burndown Chart.
+
+---
+
+## User Stories
 
 | User Story | Priority | Effort |
 |------------|:--------:|:------:|
@@ -6,72 +14,41 @@
 | Learn About the Platform | 20 | 2 days |
 | View Mental Health Resources | 10 | 4 days |
 
-**Total: 10 days**
+**Total: 10 person-days**
 
 ---
 
-## Iteration 1 Actual Velocity
+## Task Breakdown
 
-The planned effort for Iteration 1 was **10 days**.
+### User Story 1 – Browse Website (Home & Navigation)
 
-All three planned user stories were completed during the iteration.
+| Task | Estimation | Status |
+|------|:----------:|--------|
+| Design homepage | 1 day | Done |
+| Build homepage layout | 1 day | Done |
+| Create navigation menu | 1 day | Done |
+| Test page navigation | 1 day | Done |
 
-**Actual Velocity: 10 days**
+### User Story 2 – Learn About the Platform
 
----
+| Task | Estimation | Status |
+|------|:----------:|--------|
+| Design About page | 1 day | Done |
+| Implement About page content | 1 day | Done |
 
-## Iteration 1 Reflection
+### User Story 3 – View Mental Health Resources
 
-### What went well
-
-- The basic website structure was completed successfully.
-- The homepage and navigation were implemented, allowing users to move between pages easily.
-- The "About" page introduced the purpose and objectives of the platform.
-- The Mental Health Resources page was completed to provide useful support information.
-- Team members collaborated using GitHub and committed code regularly.
-
-### What could be improved
-
-- The website currently provides mainly front-end functionality.
-- Some pages still use static content and are not connected to a backend database.
-- More testing should have been completed before finishing the iteration.
-- GitHub Issues and task labels could have been updated more consistently.
-
-### Improvements for Iteration 2
-
-- Implement anonymous posting functionality.
-- Develop the community page for viewing posts.
-- Connect the frontend with the Java backend and MySQL database.
-- Improve responsive design for different screen sizes.
-- Increase testing and code reviews before merging pull requests.
-
----
-
-## Iteration 1 Burndown Data
-
-| Day | Ideal Remaining Effort | Actual Remaining Effort |
-|---:|---:|---:|
-| 0 | 10 | 10 |
-| 1 | 9 | 10 |
-| 2 | 8 | 9 |
-| 3 | 7 | 8 |
-| 4 | 6 | 6 |
-| 5 | 5 | 5 |
-| 6 | 4 | 4 |
-| 7 | 3 | 3 |
-| 8 | 2 | 2 |
-| 9 | 1 | 1 |
-| 10 | 0 | 0 |
-
----
-
-## Iteration 1 Burndown Chart
-
-
+| Task | Estimation | Status |
+|------|:----------:|--------|
+| Create Resources page | 2 days | Done |
+| Add university support information | 1 day | Done |
+| Improve page layout and testing | 1 day | Done |
 
 ---
 
 ## GitHub Task Tracking
+
+### User Stories
 
 | User Story | Status |
 |------------|--------|
@@ -79,11 +56,11 @@ All three planned user stories were completed during the iteration.
 | Learn About the Platform | Done |
 | View Mental Health Resources | Done |
 
-### Labels
+### Task Labels
 
-- Done
-- In Progress
 - Todo
+- In Progress
+- Done
 
 ---
 
@@ -91,14 +68,14 @@ All three planned user stories were completed during the iteration.
 
 | Day | Commit Message |
 |-----|----------------|
-| Day 1 | Create project structure and homepage |
-| Day 2 | Add navigation between pages |
-| Day 3 | Create About page |
-| Day 4 | Improve homepage layout and styling |
+| Day 1 | Create project structure |
+| Day 2 | Build homepage |
+| Day 3 | Add navigation menu |
+| Day 4 | Create About page |
 | Day 5 | Develop Mental Health Resources page |
-| Day 6 | Add support resource links |
-| Day 7 | Improve responsive layout |
-| Day 8 | Fix navigation issues |
+| Day 6 | Improve page styling |
+| Day 7 | Fix navigation issues |
+| Day 8 | Improve responsive layout |
 | Day 9 | Update documentation |
 | Day 10 | Final testing and merge Iteration 1 |
 
@@ -106,31 +83,112 @@ All three planned user stories were completed during the iteration.
 
 ## Pull Request
 
-**Title**
+### Title
 
 ```
 Implement Iteration 1 website foundation
 ```
 
-**Description**
+### Description
 
 ```
-Completed the first iteration of the Anonymous Student Support Platform.
+Completed Iteration 1 of the Anonymous Student Support Platform.
 
 Implemented:
-- Home page
+
+- Homepage
 - Navigation
 - About page
 - Mental Health Resources page
 - UI improvements
 - Documentation updates
 
-All changes were reviewed before merging into the main branch.
+All changes were reviewed and merged successfully.
 ```
 
 ---
 
-## Completed User Stories
+# Burndown
+
+## Iteration 1 Burndown Data
+
+| Day | Ideal Remaining Effort | Actual Remaining Effort |
+|---:|---:|---:|
+|0|10|10|
+|1|9|10|
+|2|8|9|
+|3|7|8|
+|4|6|6|
+|5|5|5|
+|6|4|4|
+|7|3|3|
+|8|2|2|
+|9|1|1|
+|10|0|0|
+
+---
+
+## Burndown Chart
+
+<img width="931" height="324" alt="Burndown_Chart_Iteration_1" src="https://github.com/user-attachments/assets/df8b497d-83e3-4856-879e-876bb5a6d429" />
+
+---
+
+# Velocity
+
+## Iteration 1 Velocity
+
+### Project Backlog
+
+| Iteration | Backlog |
+|-----------|---------:|
+| Iteration 1 | 10 person-days |
+| Iteration 2 | 11 person-days |
+| Iteration 3 | 9 person-days |
+
+**Total Project Backlog = 30 person-days**
+
+### Velocity Calculation
+
+Completed Work = **10 person-days**
+
+Velocity = Completed Work ÷ Total Project Backlog
+
+Velocity = **10 ÷ 30**
+
+Velocity = **0.3333**
+
+---
+
+## Reflection
+
+### What went well
+
+- The basic website structure was successfully completed.
+- The homepage and navigation provide a simple and consistent user experience.
+- The About page clearly explains the purpose of the platform.
+- The Mental Health Resources page provides useful support information for students.
+- GitHub Issues, commits and pull requests were used to manage the team's work.
+
+### What could be improved
+
+- Most features currently provide only front-end functionality.
+- The application is not yet connected to the Java backend or MySQL database.
+- More testing should be completed before merging code.
+- GitHub Issues and labels should be updated more consistently throughout the iteration.
+
+### Improvements for Iteration 2
+
+- Develop anonymous posting functionality.
+- Implement the community page for displaying posts.
+- Connect the frontend with the backend.
+- Store application data in MySQL.
+- Improve responsive design.
+- Increase unit testing and peer code reviews.
+
+---
+
+# Completed User Stories
 
 - Browse Website (Home & Navigation)
 - Learn About the Platform
@@ -138,7 +196,7 @@ All changes were reviewed before merging into the main branch.
 
 ---
 
-## Unfinished User Stories
+# Unfinished User Stories
 
 - Anonymous Account Registration
 - User Login
@@ -149,33 +207,48 @@ All changes were reviewed before merging into the main branch.
 - Reporting System
 - Administrator Dashboard
 - Search and Filter
+- Feedback Submission
 - Database Integration
 
 ---
 
-## SRP Review
+# SRP Review
 
-### Satisfied
+## Satisfied
 
-- The Home page is responsible only for navigation.
-- The About page only introduces the platform.
-- The Resources page only displays support information.
+- Home page is responsible only for navigation.
+- About page is responsible only for introducing the platform.
+- Resources page is responsible only for displaying support information.
 
-### Needs Improvement
+## Needs Improvement
 
-- JavaScript functions should be further modularised.
+- Some JavaScript functions can be further modularised.
 - Backend logic should be separated from the presentation layer.
 
 ---
 
-## DRY Review
+# DRY Review
 
-### Satisfied
+## Satisfied
 
 - Navigation menu is reused across all pages.
 - Common CSS styles are shared.
 
-### Needs Improvement
+## Needs Improvement
 
-- Some repeated HTML sections can be converted into reusable components.
-- Repeated JavaScript code should be extracted into utility files.
+- Some repeated HTML structures can be converted into reusable components.
+- Repeated JavaScript functions should be extracted into utility files.
+
+---
+
+# Class Diagram
+
+<img width="423" height="283" alt="Class_Diagram_Iteration_1" src="https://github.com/user-attachments/assets/64da7382-1848-4e72-b4c4-6f20d265a90c" />
+
+
+---
+
+# Sequence Diagram
+
+<img width="497" height="285" alt="Sequence_Diagram_Iteration_1" src="https://github.com/user-attachments/assets/a1cb2260-4421-4569-a948-9276cdb801e7" />
+
