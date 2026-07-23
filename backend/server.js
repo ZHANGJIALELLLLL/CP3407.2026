@@ -57,6 +57,10 @@ app.post("/api/login", async (req, res) => {
       return res.status(401).json({ message: "Incorrect password." });
     }
 
+    if (user.status === "suspended") {
+      return res.status(403).json({ message: "This account has been suspended. Please contact an administrator." });
+    }
+
     res.json({ message: "Login successful", id: user.id, email: user.email, nickname: user.nickname });
   } catch (error) {
     console.error(error);
@@ -217,6 +221,38 @@ app.get("/api/admin/posts", async (req, res) => {
        ORDER BY p.id DESC`
     );
     res.json(posts);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "A server error occurred." });
+  }
+});
+
+// ─── Get all users (admin view — includes post count and report count) ───
+app.get("/api/admin/users", async (req, res) => {
+  try {
+    const [users] = await pool.query(
+      `SELECT u.id, u.email, u.nickname, u.status,
+              (SELECT COUNT(*) FROM posts p WHERE p.author_id = u.id) AS postCount,
+              (SELECT COUNT(*) FROM reports r JOIN posts p ON p.id = r.post_id WHERE p.author_id = u.id) AS reportCount
+       FROM users u
+       ORDER BY u.id DESC`
+    );
+    res.json(users);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "A server error occurred." });
+  }
+});
+
+// ─── Suspend / restore a user account ───
+app.patch("/api/admin/users/:id", async (req, res) => {
+  try {
+    const { status } = req.body;
+    if (!["active", "suspended"].includes(status)) {
+      return res.status(400).json({ message: "Invalid status." });
+    }
+    await pool.query(`UPDATE users SET status = ? WHERE id = ?`, [status, req.params.id]);
+    res.json({ message: "User updated." });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "A server error occurred." });

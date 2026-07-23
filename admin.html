@@ -16,7 +16,7 @@
 <section class="page active" id="dashboardSection"><div class="welcome"><div><h2>Good afternoon, Administrator</h2><p>Review moderation tasks and monitor the Hello Dear community.</p></div><button class="btn primary" data-link="reports">Review Reports</button></div><div class="stats"><article class="stat"><div class="stat-top"><div class="stat-icon">♙</div><span class="badge resolved">Live</span></div><h3 id="statUserCount">—</h3><p>Registered users</p></article><article class="stat"><div class="stat-top"><div class="stat-icon">▤</div><span class="badge resolved">Live</span></div><h3 id="statPostCount">—</h3><p>Published posts</p></article><article class="stat"><div class="stat-top"><div class="stat-icon">⚑</div><span class="badge pending">Needs review</span></div><h3 id="pendingCount">3</h3><p>Pending reports</p></article><article class="stat"><div class="stat-top"><div class="stat-icon">📚</div><span class="badge resolved">Active</span></div><h3>6</h3><p>Support resources</p></article><article class="stat"><div class="stat-top"><div class="stat-icon" style="color:var(--o);background:var(--ol)">✉</div><span class="badge pending">New</span></div><h3 id="feedbackCount">4</h3><p>Unread feedback</p></article></div><div class="dash-grid"><section class="panel"><div class="panel-head"><div><h3>Recent Reports</h3><p>Latest content submitted for review</p></div><button class="btn outline" data-link="reports">View All</button></div><div class="table-wrap"><table><thead><tr><th>ID</th><th>Content</th><th>Reason</th><th>Status</th><th>Action</th></tr></thead><tbody><tr><td>#124</td><td class="item">Feeling overwhelmed before final exams<small>Anonymous Panda</small></td><td>Harassment</td><td><span class="badge pending">Pending</span></td><td><button class="table-btn review" data-report="124">Review</button></td></tr><tr><td>#123</td><td class="item">Difficult friendship discussion<small>Anonymous Tiger</small></td><td>Abuse</td><td><span class="badge pending">Pending</span></td><td><button class="table-btn review" data-report="123">Review</button></td></tr><tr><td>#120</td><td class="item">Career discussion spam link<small>User #1024</small></td><td>Spam</td><td><span class="badge resolved">Resolved</span></td><td><button class="table-btn">View</button></td></tr></tbody></table></div></section><aside class="panel"><div class="panel-head"><div><h3>Moderation Alerts</h3><p>Items needing attention</p></div></div><div class="panel-body"><div class="alerts"><article class="alert high"><div class="alert-top"><strong>Repeated reports</strong><small>10 min ago</small></div><p>Comment #884 has received three abuse reports.</p></article><article class="alert"><div class="alert-top"><strong>Verify resource details</strong><small>Today</small></div><p>Confirm counselling contact information before deployment.</p></article></div><div class="quick"><button class="btn outline" data-link="users">Manage Users</button><button class="btn outline" data-link="resources">Manage Resources</button><button class="btn outline" data-link="feedback">View Feedback</button><a class="btn outline" href="community.html">View Community</a></div></div></aside></div></section>
 <section class="page" id="reportsSection"><div class="section-head"><div><h2>Reported Content</h2><p>Review reports and record moderation decisions.</p></div><div class="section-controls"><select id="reportFilter"><option value="all">All statuses</option><option value="pending">Pending</option><option value="resolved">Resolved</option></select></div></div><section class="panel"><div class="table-wrap"><table><thead><tr><th>Report</th><th>Content</th><th>Reason</th><th>Reporter</th><th>Status</th><th>Actions</th></tr></thead><tbody id="reportsBody"></tbody></table></div></section></section>
 <section class="page" id="postsSection"><div class="section-head"><div><h2>Post Management</h2><p>Search, review, and remove posts when necessary.</p></div></div><section class="panel"><div class="table-wrap"><table><thead><tr><th>Post</th><th>Category</th><th>Author</th><th>Comments</th><th>Helpful</th><th>Actions</th></tr></thead><tbody id="postsBody"></tbody></table></div></section></section>
-<section class="page" id="usersSection"><div class="section-head"><div><h2>User Management</h2><p>Review activity and manage account status.</p></div></div><div class="user-grid"><article class="user-card" data-searchable><div class="user-top"><div class="user-avatar">🐼</div><div><h3>Anonymous Panda</h3><p>panda1024@university.edu</p></div></div><span class="badge active-b">Active</span><div class="user-meta"><div><strong>7</strong><small>Posts</small></div><div><strong>2</strong><small>Reports</small></div></div><div class="actions"><button class="btn outline">View Activity</button><button class="btn danger suspend">Suspend</button></div></article><article class="user-card" data-searchable><div class="user-top"><div class="user-avatar">🐯</div><div><h3>Anonymous Tiger</h3><p>tiger2048@university.edu</p></div></div><span class="badge active-b">Active</span><div class="user-meta"><div><strong>11</strong><small>Posts</small></div><div><strong>0</strong><small>Reports</small></div></div><div class="actions"><button class="btn outline">View Activity</button><button class="btn danger suspend">Suspend</button></div></article><article class="user-card" data-searchable><div class="user-top"><div class="user-avatar">#</div><div><h3>User #1132</h3><p>user1132@university.edu</p></div></div><span class="badge warning">Suspended</span><div class="user-meta"><div><strong>3</strong><small>Posts</small></div><div><strong>5</strong><small>Reports</small></div></div><div class="actions"><button class="btn outline">View Activity</button><button class="btn success restore">Restore</button></div></article></div></section>
+<section class="page" id="usersSection"><div class="section-head"><div><h2>User Management</h2><p>Review activity and manage account status.</p></div></div><div class="user-grid" id="usersGrid"></div></section>
 <section class="page" id="resourcesSection"><div class="section-head"><div><h2>Resource Management</h2><p>Maintain accurate university support information.</p></div><button class="btn primary" id="addResource">+ Add Resource</button></div><div class="resource-grid"><article class="resource-card" data-searchable><span class="badge active-b">Counselling</span><h3>Student Counselling Service</h3><p>Confidential personal and well-being support.</p><div class="resource-contact"><span>✉ counselling@university.edu</span><span>📍 Student Services Building</span></div><div class="actions"><button class="btn outline">Edit</button><button class="btn danger remove">Delete</button></div></article><article class="resource-card" data-searchable><span class="badge active-b">Academic</span><h3>Academic Support Centre</h3><p>Study skills, writing, and learning assistance.</p><div class="resource-contact"><span>✉ academicsupport@university.edu</span><span>📍 Library, Level 2</span></div><div class="actions"><button class="btn outline">Edit</button><button class="btn danger remove">Delete</button></div></article><article class="resource-card" data-searchable><span class="badge active-b">Career</span><h3>Career Development Centre</h3><p>Career planning and employment guidance.</p><div class="resource-contact"><span>✉ careers@university.edu</span><span>📍 Campus Hub, Room 104</span></div><div class="actions"><button class="btn outline">Edit</button><button class="btn danger remove">Delete</button></div></article></div></section>
 
 <section class="page" id="feedbackSection">
@@ -296,6 +296,64 @@ document.getElementById("feedbackArchive").onclick = async () => {
 loadReports();
 loadFeedback();
 loadAllPosts();
+loadAllUsers();
+
+// ---- User Management ----
+async function loadAllUsers() {
+  try {
+    const res = await fetch(`${ADMIN_API_BASE_URL}/api/admin/users`);
+    if (!res.ok) throw new Error("Failed to load users");
+    const users = await res.json();
+    renderAllUsers(users);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+function renderAllUsers(users) {
+  const grid = document.getElementById("usersGrid");
+  grid.innerHTML = users.map(u => {
+    const isActive = u.status === "active";
+    return `
+      <article class="user-card" data-searchable>
+        <div class="user-top">
+          <div class="user-avatar">${(u.nickname || u.email || "?").charAt(0).toUpperCase()}</div>
+          <div><h3>${escapeHtml(u.nickname || "Anonymous")}</h3><p>${escapeHtml(u.email)}</p></div>
+        </div>
+        <span class="badge ${isActive ? "active-b" : "warning"}">${isActive ? "Active" : "Suspended"}</span>
+        <div class="user-meta">
+          <div><strong>${u.postCount}</strong><small>Posts</small></div>
+          <div><strong>${u.reportCount}</strong><small>Reports</small></div>
+        </div>
+        <div class="actions">
+          ${isActive
+            ? `<button class="btn danger suspend" data-id="${u.id}">Suspend</button>`
+            : `<button class="btn success restore" data-id="${u.id}">Restore</button>`}
+        </div>
+      </article>`;
+  }).join("");
+}
+
+document.getElementById("usersGrid").addEventListener("click", async (e) => {
+  const suspendBtn = e.target.closest(".suspend");
+  const restoreBtn = e.target.closest(".restore");
+  const btn = suspendBtn || restoreBtn;
+  if (!btn) return;
+
+  const newStatus = suspendBtn ? "suspended" : "active";
+
+  try {
+    await fetch(`${ADMIN_API_BASE_URL}/api/admin/users/${btn.dataset.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ status: newStatus })
+    });
+    notify(newStatus === "suspended" ? "User suspended." : "User restored.", newStatus === "suspended");
+    loadAllUsers();
+  } catch (error) {
+    console.error(error);
+  }
+});
 
 // ---- Post Management ----
 async function loadAllPosts() {
