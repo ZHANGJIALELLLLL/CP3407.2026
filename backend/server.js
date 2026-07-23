@@ -205,6 +205,24 @@ app.get("/api/admin/stats", async (req, res) => {
   }
 });
 
+// ─── Get all posts (admin view — includes private posts and author info) ───
+app.get("/api/admin/posts", async (req, res) => {
+  try {
+    const [posts] = await pool.query(
+      `SELECT p.id, p.category, p.content, p.is_public AS isPublic, p.created_at AS createdAt,
+              u.email AS authorEmail,
+              (SELECT COUNT(*) FROM comments c WHERE c.post_id = p.id) AS commentCount
+       FROM posts p
+       LEFT JOIN users u ON u.id = p.author_id
+       ORDER BY p.id DESC`
+    );
+    res.json(posts);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "A server error occurred." });
+  }
+});
+
 // ─── Delete a post (used by admin to remove reported content) ───
 app.delete("/api/posts/:id", async (req, res) => {
   try {

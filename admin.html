@@ -15,7 +15,7 @@
 <main class="content">
 <section class="page active" id="dashboardSection"><div class="welcome"><div><h2>Good afternoon, Administrator</h2><p>Review moderation tasks and monitor the Hello Dear community.</p></div><button class="btn primary" data-link="reports">Review Reports</button></div><div class="stats"><article class="stat"><div class="stat-top"><div class="stat-icon">♙</div><span class="badge resolved">Live</span></div><h3 id="statUserCount">—</h3><p>Registered users</p></article><article class="stat"><div class="stat-top"><div class="stat-icon">▤</div><span class="badge resolved">Live</span></div><h3 id="statPostCount">—</h3><p>Published posts</p></article><article class="stat"><div class="stat-top"><div class="stat-icon">⚑</div><span class="badge pending">Needs review</span></div><h3 id="pendingCount">3</h3><p>Pending reports</p></article><article class="stat"><div class="stat-top"><div class="stat-icon">📚</div><span class="badge resolved">Active</span></div><h3>6</h3><p>Support resources</p></article><article class="stat"><div class="stat-top"><div class="stat-icon" style="color:var(--o);background:var(--ol)">✉</div><span class="badge pending">New</span></div><h3 id="feedbackCount">4</h3><p>Unread feedback</p></article></div><div class="dash-grid"><section class="panel"><div class="panel-head"><div><h3>Recent Reports</h3><p>Latest content submitted for review</p></div><button class="btn outline" data-link="reports">View All</button></div><div class="table-wrap"><table><thead><tr><th>ID</th><th>Content</th><th>Reason</th><th>Status</th><th>Action</th></tr></thead><tbody><tr><td>#124</td><td class="item">Feeling overwhelmed before final exams<small>Anonymous Panda</small></td><td>Harassment</td><td><span class="badge pending">Pending</span></td><td><button class="table-btn review" data-report="124">Review</button></td></tr><tr><td>#123</td><td class="item">Difficult friendship discussion<small>Anonymous Tiger</small></td><td>Abuse</td><td><span class="badge pending">Pending</span></td><td><button class="table-btn review" data-report="123">Review</button></td></tr><tr><td>#120</td><td class="item">Career discussion spam link<small>User #1024</small></td><td>Spam</td><td><span class="badge resolved">Resolved</span></td><td><button class="table-btn">View</button></td></tr></tbody></table></div></section><aside class="panel"><div class="panel-head"><div><h3>Moderation Alerts</h3><p>Items needing attention</p></div></div><div class="panel-body"><div class="alerts"><article class="alert high"><div class="alert-top"><strong>Repeated reports</strong><small>10 min ago</small></div><p>Comment #884 has received three abuse reports.</p></article><article class="alert"><div class="alert-top"><strong>Verify resource details</strong><small>Today</small></div><p>Confirm counselling contact information before deployment.</p></article></div><div class="quick"><button class="btn outline" data-link="users">Manage Users</button><button class="btn outline" data-link="resources">Manage Resources</button><button class="btn outline" data-link="feedback">View Feedback</button><a class="btn outline" href="community.html">View Community</a></div></div></aside></div></section>
 <section class="page" id="reportsSection"><div class="section-head"><div><h2>Reported Content</h2><p>Review reports and record moderation decisions.</p></div><div class="section-controls"><select id="reportFilter"><option value="all">All statuses</option><option value="pending">Pending</option><option value="resolved">Resolved</option></select></div></div><section class="panel"><div class="table-wrap"><table><thead><tr><th>Report</th><th>Content</th><th>Reason</th><th>Reporter</th><th>Status</th><th>Actions</th></tr></thead><tbody id="reportsBody"></tbody></table></div></section></section>
-<section class="page" id="postsSection"><div class="section-head"><div><h2>Post Management</h2><p>Search, review, and remove posts when necessary.</p></div></div><section class="panel"><div class="table-wrap"><table><thead><tr><th>Post</th><th>Category</th><th>Author</th><th>Comments</th><th>Helpful</th><th>Actions</th></tr></thead><tbody><tr data-searchable><td class="item">Feeling overwhelmed before final exams<small>2 hours ago</small></td><td><span class="badge active-b">Academic</span></td><td>Anonymous Panda</td><td>12</td><td>18</td><td class="actions"><button class="table-btn">View</button><button class="table-btn danger remove">Delete</button></td></tr><tr data-searchable><td class="item">How to deal with a difficult friendship?<small>5 hours ago</small></td><td><span class="badge warning">Relationships</span></td><td>Anonymous Tiger</td><td>15</td><td>21</td><td class="actions"><button class="table-btn">View</button><button class="table-btn danger remove">Delete</button></td></tr><tr data-searchable><td class="item">Not sure about my career path<small>Yesterday</small></td><td><span class="badge resolved">Career</span></td><td>User #1024</td><td>8</td><td>14</td><td class="actions"><button class="table-btn">View</button><button class="table-btn danger remove">Delete</button></td></tr></tbody></table></div></section></section>
+<section class="page" id="postsSection"><div class="section-head"><div><h2>Post Management</h2><p>Search, review, and remove posts when necessary.</p></div></div><section class="panel"><div class="table-wrap"><table><thead><tr><th>Post</th><th>Category</th><th>Author</th><th>Comments</th><th>Helpful</th><th>Actions</th></tr></thead><tbody id="postsBody"></tbody></table></div></section></section>
 <section class="page" id="usersSection"><div class="section-head"><div><h2>User Management</h2><p>Review activity and manage account status.</p></div></div><div class="user-grid"><article class="user-card" data-searchable><div class="user-top"><div class="user-avatar">🐼</div><div><h3>Anonymous Panda</h3><p>panda1024@university.edu</p></div></div><span class="badge active-b">Active</span><div class="user-meta"><div><strong>7</strong><small>Posts</small></div><div><strong>2</strong><small>Reports</small></div></div><div class="actions"><button class="btn outline">View Activity</button><button class="btn danger suspend">Suspend</button></div></article><article class="user-card" data-searchable><div class="user-top"><div class="user-avatar">🐯</div><div><h3>Anonymous Tiger</h3><p>tiger2048@university.edu</p></div></div><span class="badge active-b">Active</span><div class="user-meta"><div><strong>11</strong><small>Posts</small></div><div><strong>0</strong><small>Reports</small></div></div><div class="actions"><button class="btn outline">View Activity</button><button class="btn danger suspend">Suspend</button></div></article><article class="user-card" data-searchable><div class="user-top"><div class="user-avatar">#</div><div><h3>User #1132</h3><p>user1132@university.edu</p></div></div><span class="badge warning">Suspended</span><div class="user-meta"><div><strong>3</strong><small>Posts</small></div><div><strong>5</strong><small>Reports</small></div></div><div class="actions"><button class="btn outline">View Activity</button><button class="btn success restore">Restore</button></div></article></div></section>
 <section class="page" id="resourcesSection"><div class="section-head"><div><h2>Resource Management</h2><p>Maintain accurate university support information.</p></div><button class="btn primary" id="addResource">+ Add Resource</button></div><div class="resource-grid"><article class="resource-card" data-searchable><span class="badge active-b">Counselling</span><h3>Student Counselling Service</h3><p>Confidential personal and well-being support.</p><div class="resource-contact"><span>✉ counselling@university.edu</span><span>📍 Student Services Building</span></div><div class="actions"><button class="btn outline">Edit</button><button class="btn danger remove">Delete</button></div></article><article class="resource-card" data-searchable><span class="badge active-b">Academic</span><h3>Academic Support Centre</h3><p>Study skills, writing, and learning assistance.</p><div class="resource-contact"><span>✉ academicsupport@university.edu</span><span>📍 Library, Level 2</span></div><div class="actions"><button class="btn outline">Edit</button><button class="btn danger remove">Delete</button></div></article><article class="resource-card" data-searchable><span class="badge active-b">Career</span><h3>Career Development Centre</h3><p>Career planning and employment guidance.</p><div class="resource-contact"><span>✉ careers@university.edu</span><span>📍 Campus Hub, Room 104</span></div><div class="actions"><button class="btn outline">Edit</button><button class="btn danger remove">Delete</button></div></article></div></section>
 
@@ -295,6 +295,71 @@ document.getElementById("feedbackArchive").onclick = async () => {
 
 loadReports();
 loadFeedback();
+loadAllPosts();
+
+// ---- Post Management ----
+async function loadAllPosts() {
+  try {
+    const res = await fetch(`${ADMIN_API_BASE_URL}/api/admin/posts`);
+    if (!res.ok) throw new Error("Failed to load posts");
+    const posts = await res.json();
+    renderAllPosts(posts);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+function renderAllPosts(posts) {
+  const tbody = document.getElementById("postsBody");
+  const categoryClass = {
+    "academic": "active-b",
+    "friendship": "warning",
+    "mental-health": "resolved",
+    "other": "pending"
+  };
+
+  tbody.innerHTML = posts.map(p => {
+    const date = new Date(p.createdAt).toLocaleString("en-GB", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" });
+    const author = p.authorEmail || "Deleted user";
+    const badgeClass = categoryClass[p.category] || "pending";
+    const visibility = p.isPublic ? "" : " · 🔒 Private";
+    return `
+      <tr data-searchable>
+        <td class="item">${escapeHtml(p.content.slice(0, 100))}<small>${date}${visibility}</small></td>
+        <td><span class="badge ${badgeClass}">${escapeHtml(p.category || "other")}</span></td>
+        <td>${escapeHtml(author)}</td>
+        <td>${p.commentCount}</td>
+        <td>—</td>
+        <td class="actions">
+          <button class="table-btn view-post" data-content="${escapeHtml(p.content)}">View</button>
+          <button class="table-btn danger delete-post" data-id="${p.id}">Delete</button>
+        </td>
+      </tr>`;
+  }).join("");
+}
+
+document.getElementById("postsBody").addEventListener("click", async (e) => {
+  const viewBtn = e.target.closest(".view-post");
+  const deleteBtn = e.target.closest(".delete-post");
+
+  if (viewBtn) {
+    window.alert(viewBtn.dataset.content);
+    return;
+  }
+
+  if (deleteBtn) {
+    if (!window.confirm("Delete this post? This cannot be undone.")) return;
+    try {
+      await fetch(`${ADMIN_API_BASE_URL}/api/posts/${deleteBtn.dataset.id}`, { method: "DELETE" });
+      notify("Post deleted.", true);
+      loadAllPosts();
+      loadReports();
+      loadDashboardStats();
+    } catch (error) {
+      console.error(error);
+    }
+  }
+});
 </script>
 </body>
 </html>
