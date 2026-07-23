@@ -705,10 +705,22 @@
 </head>
 
 <body>
+  <div id="loginGate" style="display:none; position:fixed; inset:0; z-index:9999; background:#f7f7fb; align-items:center; justify-content:center; padding:24px;">
+    <div style="max-width:420px; width:100%; background:#fff; border-radius:16px; padding:40px 32px; text-align:center; box-shadow:0 10px 30px rgba(0,0,0,0.08);">
+      <div style="font-size:40px; margin-bottom:16px;">💙</div>
+      <h1 style="font-size:22px; margin:0 0 8px; color:#1a1a2e;">Members only</h1>
+      <p style="color:#666; margin:0 0 28px; line-height:1.5;">
+        You need to be a member to view this page.<br>Please log in to continue.
+      </p>
+      <a class="button button-primary" style="display:block; margin-bottom:12px;" href="login.html">Log in</a>
+      <a style="color:#6a5cf7; font-size:14px; text-decoration:none;" href="signup.html">New to Hello Dear? Create an account</a>
+    </div>
+  </div>
   <script>
-    // ─── Members-only gate: redirect to login if not signed in ───
+    // ─── Members-only gate: show a message instead of redirecting silently ───
     if (!localStorage.getItem("hd_userEmail")) {
-      window.location.href = "login.html";
+      document.getElementById("loginGate").style.display = "flex";
+      document.body.style.overflow = "hidden";
     }
   </script>
   <header class="site-header">
