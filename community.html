@@ -705,6 +705,12 @@
 </head>
 
 <body>
+  <script>
+    // ─── Members-only gate: redirect to login if not signed in ───
+    if (!localStorage.getItem("hd_userEmail")) {
+      window.location.href = "login.html";
+    }
+  </script>
   <header class="site-header">
     <div class="container navbar">
       <a class="brand" href="index.html" aria-label="Hello Dear home">
