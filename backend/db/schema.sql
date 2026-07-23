@@ -68,3 +68,20 @@ CREATE TABLE IF NOT EXISTS feedback (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (author_id) REFERENCES users(id) ON DELETE SET NULL
 );
+
+-- Support resources shown on the Resources page / managed by admins
+CREATE TABLE IF NOT EXISTS resources (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  category VARCHAR(50) NOT NULL,
+  title VARCHAR(150) NOT NULL,
+  description VARCHAR(300),
+  contact_email VARCHAR(190),
+  location VARCHAR(150),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Platform settings (simple key/value toggles managed from the admin dashboard)
+CREATE TABLE IF NOT EXISTS settings (
+  setting_key VARCHAR(50) PRIMARY KEY,
+  setting_value BOOLEAN NOT NULL DEFAULT TRUE
+);

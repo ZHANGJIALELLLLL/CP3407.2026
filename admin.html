@@ -17,7 +17,7 @@
 <section class="page" id="reportsSection"><div class="section-head"><div><h2>Reported Content</h2><p>Review reports and record moderation decisions.</p></div><div class="section-controls"><select id="reportFilter"><option value="all">All statuses</option><option value="pending">Pending</option><option value="resolved">Resolved</option></select></div></div><section class="panel"><div class="table-wrap"><table><thead><tr><th>Report</th><th>Content</th><th>Reason</th><th>Reporter</th><th>Status</th><th>Actions</th></tr></thead><tbody id="reportsBody"></tbody></table></div></section></section>
 <section class="page" id="postsSection"><div class="section-head"><div><h2>Post Management</h2><p>Search, review, and remove posts when necessary.</p></div></div><section class="panel"><div class="table-wrap"><table><thead><tr><th>Post</th><th>Category</th><th>Author</th><th>Comments</th><th>Helpful</th><th>Actions</th></tr></thead><tbody id="postsBody"></tbody></table></div></section></section>
 <section class="page" id="usersSection"><div class="section-head"><div><h2>User Management</h2><p>Review activity and manage account status.</p></div></div><div class="user-grid" id="usersGrid"></div></section>
-<section class="page" id="resourcesSection"><div class="section-head"><div><h2>Resource Management</h2><p>Maintain accurate university support information.</p></div><button class="btn primary" id="addResource">+ Add Resource</button></div><div class="resource-grid"><article class="resource-card" data-searchable><span class="badge active-b">Counselling</span><h3>Student Counselling Service</h3><p>Confidential personal and well-being support.</p><div class="resource-contact"><span>✉ counselling@university.edu</span><span>📍 Student Services Building</span></div><div class="actions"><button class="btn outline">Edit</button><button class="btn danger remove">Delete</button></div></article><article class="resource-card" data-searchable><span class="badge active-b">Academic</span><h3>Academic Support Centre</h3><p>Study skills, writing, and learning assistance.</p><div class="resource-contact"><span>✉ academicsupport@university.edu</span><span>📍 Library, Level 2</span></div><div class="actions"><button class="btn outline">Edit</button><button class="btn danger remove">Delete</button></div></article><article class="resource-card" data-searchable><span class="badge active-b">Career</span><h3>Career Development Centre</h3><p>Career planning and employment guidance.</p><div class="resource-contact"><span>✉ careers@university.edu</span><span>📍 Campus Hub, Room 104</span></div><div class="actions"><button class="btn outline">Edit</button><button class="btn danger remove">Delete</button></div></article></div></section>
+<section class="page" id="resourcesSection"><div class="section-head"><div><h2>Resource Management</h2><p>Maintain accurate university support information.</p></div><button class="btn primary" id="addResource">+ Add Resource</button></div><div class="resource-grid" id="resourcesGrid"></div></section>
 
 <section class="page" id="feedbackSection">
   <div class="section-head">
@@ -31,7 +31,7 @@
     </table></div>
   </section>
 </section>
-<section class="page" id="settingsSection"><div class="section-head"><div><h2>Platform Settings</h2><p>Configure practical community and moderation options.</p></div><button class="btn primary" id="saveSettings">Save Settings</button></div><div class="settings"><article class="setting"><h3>Community Protection</h3><p>Enable or disable safety functions.</p><div class="setting-row"><span>Profanity filtering</span><label class="switch"><input type="checkbox" checked><span class="slider"></span></label></div><div class="setting-row"><span>User reporting</span><label class="switch"><input type="checkbox" checked><span class="slider"></span></label></div><div class="setting-row"><span>Comment replies</span><label class="switch"><input type="checkbox" checked><span class="slider"></span></label></div></article><article class="setting"><h3>Account Access</h3><p>Control who can register and participate.</p><div class="setting-row"><span>Require university email</span><label class="switch"><input type="checkbox" checked><span class="slider"></span></label></div><div class="setting-row"><span>Allow guest browsing</span><label class="switch"><input type="checkbox" checked><span class="slider"></span></label></div><div class="setting-row"><span>Allow anonymous posting</span><label class="switch"><input type="checkbox" checked><span class="slider"></span></label></div></article></div></section>
+<section class="page" id="settingsSection"><div class="section-head"><div><h2>Platform Settings</h2><p>Configure practical community and moderation options.</p></div><button class="btn primary" id="saveSettings">Save Settings</button></div><div class="settings"><article class="setting"><h3>Community Protection</h3><p>Enable or disable safety functions.</p><div class="setting-row"><span>Profanity filtering</span><label class="switch"><input type="checkbox" id="settingProfanityFilter" checked><span class="slider"></span></label></div><div class="setting-row"><span>User reporting</span><label class="switch"><input type="checkbox" id="settingUserReporting" checked><span class="slider"></span></label></div><div class="setting-row"><span>Comment replies</span><label class="switch"><input type="checkbox" id="settingCommentReplies" checked><span class="slider"></span></label></div></article><article class="setting"><h3>Account Access</h3><p>Control who can register and participate.</p><div class="setting-row"><span>Require university email</span><label class="switch"><input type="checkbox" id="settingRequireUniversityEmail" checked><span class="slider"></span></label></div><div class="setting-row"><span>Allow guest browsing</span><label class="switch"><input type="checkbox" id="settingAllowGuestBrowsing" checked><span class="slider"></span></label></div><div class="setting-row"><span>Allow anonymous posting</span><label class="switch"><input type="checkbox" id="settingAllowAnonymousPosting" checked><span class="slider"></span></label></div></article></div></section>
 </main></div>
 
 <div class="modal-bg" id="feedbackModal"><section class="modal"><div class="modal-head"><div><h2>Feedback Details</h2><p>Review the complete user suggestion.</p></div><button class="close" id="feedbackClose">✕</button></div><div class="feedback-detail"><blockquote id="feedbackMessage"></blockquote><div class="feedback-meta"><div><strong>Feedback ID</strong><span id="feedbackId"></span></div><div><strong>Submitted by</strong><span id="feedbackUser"></span></div><div><strong>Date</strong><span id="feedbackDate"></span></div><div><strong>Status</strong><span id="feedbackStatus">New</span></div></div></div><div class="modal-actions" style="margin-top:20px"><button class="btn outline" id="feedbackArchive">Archive</button><button class="btn primary" id="feedbackReviewed">Mark Reviewed</button></div></section></div>
@@ -297,6 +297,147 @@ loadReports();
 loadFeedback();
 loadAllPosts();
 loadAllUsers();
+loadAllResources();
+loadAllSettings();
+
+// ---- Resource Management ----
+async function loadAllResources() {
+  try {
+    const res = await fetch(`${ADMIN_API_BASE_URL}/api/resources`);
+    if (!res.ok) throw new Error("Failed to load resources");
+    const resources = await res.json();
+    renderAllResources(resources);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+function renderAllResources(resources) {
+  const grid = document.getElementById("resourcesGrid");
+  if (resources.length === 0) {
+    grid.innerHTML = `<p style="color:var(--muted)">No resources yet. Click "+ Add Resource" to create one.</p>`;
+    return;
+  }
+  grid.innerHTML = resources.map(r => `
+    <article class="resource-card" data-searchable>
+      <span class="badge active-b">${escapeHtml(r.category)}</span>
+      <h3>${escapeHtml(r.title)}</h3>
+      <p>${escapeHtml(r.description || "")}</p>
+      <div class="resource-contact">
+        ${r.contact_email ? `<span>✉ ${escapeHtml(r.contact_email)}</span>` : ""}
+        ${r.location ? `<span>📍 ${escapeHtml(r.location)}</span>` : ""}
+      </div>
+      <div class="actions">
+        <button class="btn outline edit-resource" data-id="${r.id}" data-category="${escapeHtml(r.category)}" data-title="${escapeHtml(r.title)}" data-description="${escapeHtml(r.description || "")}" data-email="${escapeHtml(r.contact_email || "")}" data-location="${escapeHtml(r.location || "")}">Edit</button>
+        <button class="btn danger remove-resource" data-id="${r.id}">Delete</button>
+      </div>
+    </article>`).join("");
+}
+
+document.getElementById("addResource").onclick = async () => {
+  const category = window.prompt("Category (e.g. Counselling, Academic, Career):");
+  if (!category) return;
+  const title = window.prompt("Resource title:");
+  if (!title) return;
+  const description = window.prompt("Short description:", "") || "";
+  const contactEmail = window.prompt("Contact email:", "") || "";
+  const location = window.prompt("Location:", "") || "";
+
+  try {
+    await fetch(`${ADMIN_API_BASE_URL}/api/resources`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ category, title, description, contactEmail, location })
+    });
+    notify("Resource added.");
+    loadAllResources();
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+document.getElementById("resourcesGrid").addEventListener("click", async (e) => {
+  const editBtn = e.target.closest(".edit-resource");
+  const deleteBtn = e.target.closest(".remove-resource");
+
+  if (editBtn) {
+    const d = editBtn.dataset;
+    const category = window.prompt("Category:", d.category);
+    if (category === null) return;
+    const title = window.prompt("Title:", d.title);
+    if (title === null) return;
+    const description = window.prompt("Description:", d.description) || "";
+    const contactEmail = window.prompt("Contact email:", d.email) || "";
+    const location = window.prompt("Location:", d.location) || "";
+
+    try {
+      await fetch(`${ADMIN_API_BASE_URL}/api/resources/${d.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ category, title, description, contactEmail, location })
+      });
+      notify("Resource updated.");
+      loadAllResources();
+    } catch (error) {
+      console.error(error);
+    }
+    return;
+  }
+
+  if (deleteBtn) {
+    if (!window.confirm("Delete this resource?")) return;
+    try {
+      await fetch(`${ADMIN_API_BASE_URL}/api/resources/${deleteBtn.dataset.id}`, { method: "DELETE" });
+      notify("Resource deleted.", true);
+      loadAllResources();
+    } catch (error) {
+      console.error(error);
+    }
+  }
+});
+
+// ---- Settings ----
+const settingCheckboxIds = {
+  profanityFilter: "settingProfanityFilter",
+  userReporting: "settingUserReporting",
+  commentReplies: "settingCommentReplies",
+  requireUniversityEmail: "settingRequireUniversityEmail",
+  allowGuestBrowsing: "settingAllowGuestBrowsing",
+  allowAnonymousPosting: "settingAllowAnonymousPosting"
+};
+
+async function loadAllSettings() {
+  try {
+    const res = await fetch(`${ADMIN_API_BASE_URL}/api/settings`);
+    if (!res.ok) throw new Error("Failed to load settings");
+    const settings = await res.json();
+    Object.entries(settingCheckboxIds).forEach(([key, id]) => {
+      const checkbox = document.getElementById(id);
+      if (checkbox) checkbox.checked = !!settings[key];
+    });
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+document.getElementById("saveSettings").onclick = async () => {
+  const payload = {};
+  Object.entries(settingCheckboxIds).forEach(([key, id]) => {
+    const checkbox = document.getElementById(id);
+    if (checkbox) payload[key] = checkbox.checked;
+  });
+
+  try {
+    await fetch(`${ADMIN_API_BASE_URL}/api/settings`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+    notify("Settings saved.");
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 // ---- User Management ----
 async function loadAllUsers() {
