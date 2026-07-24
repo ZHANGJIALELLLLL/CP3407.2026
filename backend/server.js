@@ -57,6 +57,10 @@ app.post("/api/login", async (req, res) => {
       return res.status(401).json({ message: "Incorrect password." });
     }
 
+    if (user.status === "suspended") {
+      return res.status(403).json({ message: "This account has been suspended. Please contact an administrator." });
+    }
+
     res.json({ message: "Login successful", id: user.id, email: user.email, nickname: user.nickname });
   } catch (error) {
     console.error(error);
@@ -199,6 +203,151 @@ app.get("/api/admin/stats", async (req, res) => {
       privatePostCount: postCount - publicPostCount,
       commentCount
     });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "A server error occurred." });
+  }
+});
+
+// ─── Resources: list all ───
+app.get("/api/resources", async (req, res) => {
+  try {
+    const [resources] = await pool.query(`SELECT * FROM resources ORDER BY id DESC`);
+    res.json(resources);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "A server error occurred." });
+  }
+});
+
+// ─── Resources: create ───
+app.post("/api/resources", async (req, res) => {
+  try {
+    const { category, title, description, contactEmail, location } = req.body;
+    if (!category || !title) {
+      return res.status(400).json({ message: "Category and title are required." });
+    }
+    const [result] = await pool.query(
+      `INSERT INTO resources (category, title, description, contact_email, location) VALUES (?, ?, ?, ?, ?)`,
+      [category, title, description || null, contactEmail || null, location || null]
+    );
+    res.status(201).json({ id: result.insertId });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "A server error occurred." });
+  }
+});
+
+// ─── Resources: update ───
+app.put("/api/resources/:id", async (req, res) => {
+  try {
+    const { category, title, description, contactEmail, location } = req.body;
+    await pool.query(
+      `UPDATE resources SET category = ?, title = ?, description = ?, contact_email = ?, location = ? WHERE id = ?`,
+      [category, title, description || null, contactEmail || null, location || null, req.params.id]
+    );
+    res.json({ message: "Resource updated." });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "A server error occurred." });
+  }
+});
+
+// ─── Resources: delete ───
+app.delete("/api/resources/:id", async (req, res) => {
+  try {
+    await pool.query(`DELETE FROM resources WHERE id = ?`, [req.params.id]);
+    res.json({ message: "Resource deleted." });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "A server error occurred." });
+  }
+});
+
+// ─── Settings: get all (with sensible defaults) ───
+const DEFAULT_SETTINGS = {
+  profanityFilter: true,
+  userReporting: true,
+  commentReplies: true,
+  requireUniversityEmail: true,
+  allowGuestBrowsing: true,
+  allowAnonymousPosting: true
+};
+
+app.get("/api/settings", async (req, res) => {
+  try {
+    const [rows] = await pool.query(`SELECT setting_key AS \`key\`, setting_value AS value FROM settings`);
+    const settings = { ...DEFAULT_SETTINGS };
+    rows.forEach(r => { settings[r.key] = !!r.value; });
+    res.json(settings);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "A server error occurred." });
+  }
+});
+
+// ─── Settings: save all ───
+app.put("/api/settings", async (req, res) => {
+  try {
+    const entries = Object.entries(req.body);
+    for (const [key, value] of entries) {
+      await pool.query(
+        `INSERT INTO settings (setting_key, setting_value) VALUES (?, ?)
+         ON DUPLICATE KEY UPDATE setting_value = VALUES(setting_value)`,
+        [key, !!value]
+      );
+    }
+    res.json({ message: "Settings saved." });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "A server error occurred." });
+  }
+});
+
+// ─── Get all posts (admin view — includes private posts and author info) ───
+app.get("/api/admin/posts", async (req, res) => {
+  try {
+    const [posts] = await pool.query(
+      `SELECT p.id, p.category, p.content, p.is_public AS isPublic, p.created_at AS createdAt,
+              u.email AS authorEmail,
+              (SELECT COUNT(*) FROM comments c WHERE c.post_id = p.id) AS commentCount
+       FROM posts p
+       LEFT JOIN users u ON u.id = p.author_id
+       ORDER BY p.id DESC`
+    );
+    res.json(posts);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "A server error occurred." });
+  }
+});
+
+// ─── Get all users (admin view — includes post count and report count) ───
+app.get("/api/admin/users", async (req, res) => {
+  try {
+    const [users] = await pool.query(
+      `SELECT u.id, u.email, u.nickname, u.status,
+              (SELECT COUNT(*) FROM posts p WHERE p.author_id = u.id) AS postCount,
+              (SELECT COUNT(*) FROM reports r JOIN posts p ON p.id = r.post_id WHERE p.author_id = u.id) AS reportCount
+       FROM users u
+       ORDER BY u.id DESC`
+    );
+    res.json(users);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "A server error occurred." });
+  }
+});
+
+// ─── Suspend / restore a user account ───
+app.patch("/api/admin/users/:id", async (req, res) => {
+  try {
+    const { status } = req.body;
+    if (!["active", "suspended"].includes(status)) {
+      return res.status(400).json({ message: "Invalid status." });
+    }
+    await pool.query(`UPDATE users SET status = ? WHERE id = ?`, [status, req.params.id]);
+    res.json({ message: "User updated." });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "A server error occurred." });
