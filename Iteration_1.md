@@ -243,7 +243,8 @@ Velocity = **0.3333**
 
 # Class Diagram
 
-<img width="423" height="283" alt="Class_Diagram_Iteration_1" src="https://github.com/user-attachments/assets/64da7382-1848-4e72-b4c4-6f20d265a90c" />
+<img width="1305" height="1280" alt="1112efcc438499cad5fe20475b108e71" src="https://github.com/user-attachments/assets/8b11711a-2ccc-4081-9506-e7ac586f9652" />
+
 
 
 ---
