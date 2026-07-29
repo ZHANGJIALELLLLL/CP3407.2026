@@ -27,14 +27,14 @@ This document defines how the team plans, executes, and tracks system-level test
 
 ## 2. Test Environment
 
-| Item | Value |
-|---|---|
-| Backend | `node server.js` (Express, port 3000, `.env` configured per `db.js`) |
-| Database | MySQL, schema loaded from `schema.sql`, seeded via `seed-admin.js` and `seed-resources.js` |
-| Frontend | Static HTML files served directly / via local server, calling `http://localhost:3000` |
-| Browser | Latest Chrome (desktop), manual pass also on latest Firefox and mobile viewport (DevTools emulation) |
-| Test runner | `node test.js` (API-level automated tests, Node ≥ 18 for built-in `fetch`) |
-| Bug tracker | GitHub Issues + GitHub Projects board (see §6) |
+| Item        | Value                                                                                                |
+| ----------- | ---------------------------------------------------------------------------------------------------- |
+| Backend     | `node server.js` (Express, port 3000, `.env` configured per `db.js`)                                 |
+| Database    | MySQL, schema loaded from `schema.sql`, seeded via `seed-admin.js` and `seed-resources.js`           |
+| Frontend    | Static HTML files served directly / via local server, calling `http://localhost:3000`                |
+| Browser     | Latest Chrome (desktop), manual pass also on latest Firefox and mobile viewport (DevTools emulation) |
+| Test runner | `node test.js` (API-level automated tests, Node ≥ 18 for built-in `fetch`)                           |
+| Bug tracker | GitHub Issues + GitHub Projects board (see §6)                                                       |
 
 **Preconditions before any test run**
 
@@ -58,26 +58,26 @@ Two layers, both required before sign-off on a feature:
 
 ## 4. Traceability: User Stories → Test Cases
 
-| ID | User story | Automated (test.js) | Manual (checklist §5) |
-|----|---|---|---|
-| US-01 | As a student, I can sign up with an email, nickname and password. | TC-01, TC-02 | M-01 |
-| US-02 | As a student, I can log in with my email/password. | TC-03, TC-04 | M-02 |
-| US-03 | As an admin, I can log in with a separate admin ID/password. | TC-05, TC-06 | M-03 |
-| US-04 | As a suspended user, I cannot log in. | TC-07 | — |
-| US-05 | As a student, I can create a post (public or private) while logged in. | TC-08, TC-09 | M-04 |
-| US-06 | As a visitor, I cannot create a post while logged out. | TC-10 | M-04 |
-| US-07 | As a student, I can browse public posts; private posts are only visible to their author. | TC-11, TC-12 | M-05 |
-| US-08 | As a student, I can comment on a post. | TC-13 | M-06 |
-| US-09 | As a student, I can report a post. | TC-14 | M-07 |
-| US-10 | As a student/visitor, I can browse the resources directory. | TC-15 | M-08 |
-| US-11 | As a visitor, I can submit platform feedback. | TC-16 | M-09 |
-| US-12 | As an admin, I can view live dashboard stats. | TC-17 | M-10 |
-| US-13 | As an admin, I can view/resolve/dismiss reports and remove reported content. | TC-18, TC-19 | M-11 |
-| US-14 | As an admin, I can suspend/restore a user. | TC-20 | M-12 |
-| US-15 | As an admin, I can add/edit/delete a resource. | TC-21, TC-22, TC-23 | M-13 |
-| US-16 | As an admin, I can view/mark-reviewed/archive/delete feedback. | TC-24 | M-14 |
-| US-17 | As an admin, I can toggle and save platform settings. | TC-25 | M-15 |
-| US-18 | As a logged-in student, my nickname is shown in the nav bar **on every page**, not only Community. | — | M-16 (regression — see §6) |
+| ID    | User story                                                                                         | Automated (test.js) | Manual (checklist §5)      |
+| ----- | -------------------------------------------------------------------------------------------------- | ------------------- | -------------------------- |
+| US-01 | As a student, I can sign up with an email, nickname and password.                                  | TC-01, TC-02        | M-01                       |
+| US-02 | As a student, I can log in with my email/password.                                                 | TC-03, TC-04        | M-02                       |
+| US-03 | As an admin, I can log in with a separate admin ID/password.                                       | TC-05, TC-06        | M-03                       |
+| US-04 | As a suspended user, I cannot log in.                                                              | TC-07               | —                          |
+| US-05 | As a student, I can create a post (public or private) while logged in.                             | TC-08, TC-09        | M-04                       |
+| US-06 | As a visitor, I cannot create a post while logged out.                                             | TC-10               | M-04                       |
+| US-07 | As a student, I can browse public posts; private posts are only visible to their author.           | TC-11, TC-12        | M-05                       |
+| US-08 | As a student, I can comment on a post.                                                             | TC-13               | M-06                       |
+| US-09 | As a student, I can report a post.                                                                 | TC-14               | M-07                       |
+| US-10 | As a student/visitor, I can browse the resources directory.                                        | TC-15               | M-08                       |
+| US-11 | As a visitor, I can submit platform feedback.                                                      | TC-16               | M-09                       |
+| US-12 | As an admin, I can view live dashboard stats.                                                      | TC-17               | M-10                       |
+| US-13 | As an admin, I can view/resolve/dismiss reports and remove reported content.                       | TC-18, TC-19        | M-11                       |
+| US-14 | As an admin, I can suspend/restore a user.                                                         | TC-20               | M-12                       |
+| US-15 | As an admin, I can add/edit/delete a resource.                                                     | TC-21, TC-22, TC-23 | M-13                       |
+| US-16 | As an admin, I can view/mark-reviewed/archive/delete feedback.                                     | TC-24               | M-14                       |
+| US-17 | As an admin, I can toggle and save platform settings.                                              | TC-25               | M-15                       |
+| US-18 | As a logged-in student, my nickname is shown in the nav bar **on every page**, not only Community. | —                   | M-16 (regression — see §6) |
 
 ---
 
@@ -85,23 +85,23 @@ Two layers, both required before sign-off on a feature:
 
 Run in a real browser, one row = one pass/fail entered by tester + date. Any failure becomes a GitHub Issue (see §6) linked back to its row.
 
-| ID | Page(s) | Step | Expected result |
-|---|---|---|---|
-| M-01 | signup.html | Submit form with mismatched passwords | Inline error shown, no request sent |
-| M-02 | login.html | Submit with wrong password | Error banner shown, stays on page |
-| M-03 | login.html | Submit valid admin ID/password | Redirects to `admin.html` |
-| M-04 | create-post.html | Visit while logged out | "Members only" gate shown, cannot submit |
-| M-05 | community.html | Create a private post, log out, view as guest | Private post is not visible |
-| M-06 | community.html | Add a comment, refresh page | Comment persists and count updates |
-| M-07 | community.html | Click Report, enter reason | Button shows "✓ Reported", disabled |
-| M-08 | resources.html | Filter by category + search keyword together | Grid narrows correctly, empty state shows when no match |
-| M-09 | about.html | Submit feedback < 5 characters | Inline validation message, no request sent |
-| M-10 | admin.html | Open dashboard | User/post counts match DB row counts |
-| M-11 | admin.html | Resolve a pending report | Row badge updates to "Resolved" without page reload |
-| M-12 | admin.html | Suspend a user, then try logging in as that user | Login blocked with "account suspended" message |
-| M-13 | admin.html | Add a resource, check it appears on resources.html | New card visible after refresh |
-| M-14 | admin.html | Archive a feedback item | Badge updates, item excluded from "New" count |
-| M-15 | admin.html | Toggle a setting off, save, reload page | Toggle stays off after reload |
+| ID   | Page(s)                                                         | Step                                                      | Expected result                                            |
+| ---- | --------------------------------------------------------------- | --------------------------------------------------------- | ---------------------------------------------------------- |
+| M-01 | signup.html                                                     | Submit form with mismatched passwords                     | Inline error shown, no request sent                        |
+| M-02 | login.html                                                      | Submit with wrong password                                | Error banner shown, stays on page                          |
+| M-03 | login.html                                                      | Submit valid admin ID/password                            | Redirects to `admin.html`                                  |
+| M-04 | create-post.html                                                | Visit while logged out                                    | "Members only" gate shown, cannot submit                   |
+| M-05 | community.html                                                  | Create a private post, log out, view as guest             | Private post is not visible                                |
+| M-06 | community.html                                                  | Add a comment, refresh page                               | Comment persists and count updates                         |
+| M-07 | community.html                                                  | Click Report, enter reason                                | Button shows "✓ Reported", disabled                        |
+| M-08 | resources.html                                                  | Filter by category + search keyword together              | Grid narrows correctly, empty state shows when no match    |
+| M-09 | about.html                                                      | Submit feedback < 5 characters                            | Inline validation message, no request sent                 |
+| M-10 | admin.html                                                      | Open dashboard                                            | User/post counts match DB row counts                       |
+| M-11 | admin.html                                                      | Resolve a pending report                                  | Row badge updates to "Resolved" without page reload        |
+| M-12 | admin.html                                                      | Suspend a user, then try logging in as that user          | Login blocked with "account suspended" message             |
+| M-13 | admin.html                                                      | Add a resource, check it appears on resources.html        | New card visible after refresh                             |
+| M-14 | admin.html                                                      | Archive a feedback item                                   | Badge updates, item excluded from "New" count              |
+| M-15 | admin.html                                                      | Toggle a setting off, save, reload page                   | Toggle stays off after reload                              |
 | M-16 | index.html, resources.html, login.html, signup.html, about.html | Log in, then visit each page directly (not via Community) | Nav shows "Hi, <nickname>" and "Log out" on **every** page |
 
 ---
@@ -143,12 +143,12 @@ Every bug is still recorded on its relevant user-story GitHub page (issue refere
 
 ## 7. Schedule (toward Week 10 demo)
 
-| Week | Activity |
-|---|---|
-| 8 | Finalize `test.js`/`test.md`, open GitHub Issues for all currently known bugs, set up Projects board |
-| 9 | Run full automated + manual pass, fix Blocker/Major issues, re-test |
-| 9 (end) | Freeze scope for demo; only Blocker fixes allowed after this point |
-| 10 | Final automated run (`node test.js`) the morning of the demo; demo walks through §4 traceability table live from the Projects board |
+| Week    | Activity                                                                                                                            |
+| ------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| 8       | Finalize `test.js`/`test.md`, open GitHub Issues for all currently known bugs, set up Projects board                                |
+| 9       | Run full automated + manual pass, fix Blocker/Major issues, re-test                                                                 |
+| 9 (end) | Freeze scope for demo; only Blocker fixes allowed after this point                                                                  |
+| 10      | Final automated run (`node test.js`) the morning of the demo; demo walks through §4 traceability table live from the Projects board |
 
 ---
 
