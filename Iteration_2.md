@@ -214,6 +214,7 @@ Reviewed and merged successfully.
 
 ## Burndown Chart
 
+<img width="681" height="450" alt="Iteration 2" src="https://github.com/user-attachments/assets/edffe8d8-dee2-4498-a56a-8d09d9487868" />
 
 
 ---
