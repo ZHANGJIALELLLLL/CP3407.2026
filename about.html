@@ -1370,6 +1370,31 @@
   </footer>
 
   <script>
+    // ---- Show "Log out" instead of "Log in / Sign up" when a user is logged in ----
+    function updateNavForLoginState() {
+      const nickname = localStorage.getItem("hd_userNickname");
+      const email = localStorage.getItem("hd_userEmail");
+      const loginLink = document.getElementById("loginNavLink");
+      const signupLink = document.getElementById("signupNavLink");
+
+      if (email && loginLink && signupLink) {
+        loginLink.textContent = nickname ? `Hi, ${nickname}` : "Account";
+        loginLink.removeAttribute("href");
+        loginLink.style.cursor = "default";
+
+        signupLink.textContent = "Log out";
+        signupLink.href = "#";
+        signupLink.addEventListener("click", (e) => {
+          e.preventDefault();
+          localStorage.removeItem("hd_userId");
+          localStorage.removeItem("hd_userEmail");
+          localStorage.removeItem("hd_userNickname");
+          window.location.href = "login.html";
+        });
+      }
+    }
+    updateNavForLoginState();
+
     const menuToggle = document.getElementById("menuToggle");
     const navLinks = document.getElementById("navLinks");
 
