@@ -558,6 +558,139 @@
       .cta-panel { padding: 38px 24px; }
       .footer-bottom { padding: 20px 0; flex-direction: column; align-items: flex-start; gap: 8px; }
     }
+
+    /* Clickable core feature cards */
+    .feature-card-clickable {
+      cursor: pointer;
+      outline: none;
+    }
+
+    .feature-card-clickable:focus-visible {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(98, 87, 232, 0.13), var(--shadow);
+    }
+
+    .feature-card-clickable::after {
+      content: "View details →";
+      display: block;
+      margin-top: 18px;
+      color: var(--primary);
+      font-size: 0.8rem;
+      font-weight: 780;
+    }
+
+    .feature-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: rgba(17, 25, 54, 0.58);
+      backdrop-filter: blur(5px);
+    }
+
+    .feature-modal.open {
+      display: flex;
+    }
+
+    .feature-modal-dialog {
+      width: min(100%, 620px);
+      max-height: min(82vh, 720px);
+      overflow-y: auto;
+      padding: 30px;
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      background: var(--white);
+      box-shadow: 0 28px 80px rgba(17, 25, 54, 0.28);
+      outline: none;
+    }
+
+    .feature-modal-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .feature-modal-heading {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .feature-modal-heading .icon-badge {
+      flex: 0 0 auto;
+    }
+
+    .feature-modal-title {
+      font-size: 1.55rem;
+      letter-spacing: -0.04em;
+    }
+
+    .feature-modal-subtitle {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+
+    .feature-modal-close {
+      flex: 0 0 auto;
+      width: 40px;
+      height: 40px;
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      color: var(--navy);
+      background: var(--white);
+      font-size: 1.35rem;
+      cursor: pointer;
+    }
+
+    .feature-modal-close:hover {
+      color: var(--primary);
+      border-color: var(--primary);
+      background: var(--primary-light);
+    }
+
+    .feature-modal-content {
+      display: grid;
+      gap: 17px;
+      color: var(--text);
+      font-size: 0.93rem;
+      line-height: 1.72;
+    }
+
+    .feature-modal-content h3 {
+      color: var(--navy);
+      font-size: 1rem;
+    }
+
+    .feature-modal-content ul {
+      display: grid;
+      gap: 8px;
+      padding-left: 21px;
+    }
+
+    .feature-modal-action {
+      margin-top: 4px;
+    }
+
+    body.feature-modal-open {
+      overflow: hidden;
+    }
+
+    @media (max-width: 640px) {
+      .feature-modal {
+        padding: 12px;
+      }
+
+      .feature-modal-dialog {
+        padding: 24px 20px;
+      }
+    }
+
   </style>
 </head>
 
@@ -647,22 +780,22 @@
           <p>A realistic first version that a three-person team can implement, test, and demonstrate properly.</p>
         </div>
         <div class="features-grid">
-          <article class="feature-card">
+          <article class="feature-card feature-card-clickable" role="button" tabindex="0" data-feature="anonymous-posting" aria-label="Open Anonymous Posting details">
             <div class="icon-badge">✎</div>
             <h3>Anonymous Posting</h3>
             <p>Students create posts using generated anonymous nicknames and clear topic categories.</p>
           </article>
-          <article class="feature-card">
+          <article class="feature-card feature-card-clickable" role="button" tabindex="0" data-feature="comments-votes" aria-label="Open Comments and Helpful Votes details">
             <div class="icon-badge" style="background:var(--pink-light);color:var(--pink);">💬</div>
             <h3>Comments &amp; Helpful Votes</h3>
             <p>Students reply respectfully, share experiences, and mark useful contributions as helpful.</p>
           </article>
-          <article class="feature-card">
+          <article class="feature-card feature-card-clickable" role="button" tabindex="0" data-feature="reporting-moderation" aria-label="Open Reporting and Moderation details">
             <div class="icon-badge" style="background:var(--green-light);color:var(--green);">⚑</div>
             <h3>Reporting &amp; Moderation</h3>
             <p>Users can report inappropriate content and administrators can review community reports.</p>
           </article>
-          <article class="feature-card">
+          <article class="feature-card feature-card-clickable" role="button" tabindex="0" data-feature="resource-directory" aria-label="Open Resource Directory details">
             <div class="icon-badge" style="background:var(--orange-light);color:var(--orange);">▤</div>
             <h3>Resource Directory</h3>
             <p>Students can browse counselling, academic, career, and international support services.</p>
@@ -778,6 +911,41 @@
       </div>
     </section>
   </main>
+
+
+  <!-- Core feature detail modal -->
+  <div
+    class="feature-modal"
+    id="featureModal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="featureModalTitle"
+    aria-hidden="true"
+  >
+    <div class="feature-modal-dialog" tabindex="-1">
+      <div class="feature-modal-header">
+        <div class="feature-modal-heading">
+          <div class="icon-badge" id="featureModalIcon">✎</div>
+          <div>
+            <h2 class="feature-modal-title" id="featureModalTitle">Feature details</h2>
+            <p class="feature-modal-subtitle" id="featureModalSubtitle">Hello Dear core feature</p>
+          </div>
+        </div>
+
+        <button
+          class="feature-modal-close"
+          id="featureModalClose"
+          type="button"
+          aria-label="Close feature details"
+        >
+          ×
+        </button>
+      </div>
+
+      <div class="feature-modal-content" id="featureModalContent"></div>
+    </div>
+  </div>
+
 
   <footer class="site-footer">
     <div class="container footer-grid">
@@ -914,6 +1082,162 @@
 
     updateNavForLoginState();
     window.addEventListener("pageshow", updateNavForLoginState);
+
+
+    // Core feature card detail popups
+    const featureDetails = {
+      "anonymous-posting": {
+        icon: "✎",
+        iconStyle: "background:var(--primary-light);color:var(--primary);",
+        title: "Anonymous Posting",
+        subtitle: "Share concerns without showing your real identity",
+        content: `
+          <p>Students can create community posts using their Hello Dear nickname instead of their real name or university email.</p>
+          <h3>How it works</h3>
+          <ul>
+            <li>Log in with a registered account.</li>
+            <li>Choose a clear topic category.</li>
+            <li>Write and submit the concern anonymously.</li>
+            <li>The post appears in the community using an anonymous nickname.</li>
+          </ul>
+          <h3>Privacy design</h3>
+          <p>Other students can see the nickname and post content, but the account email and real identity are not displayed publicly.</p>
+          <div class="feature-modal-action">
+            <a class="button button-primary" href="create-post.html">Create an Anonymous Post</a>
+          </div>
+        `
+      },
+
+      "comments-votes": {
+        icon: "💬",
+        iconStyle: "background:var(--pink-light);color:var(--pink);",
+        title: "Comments & Helpful Votes",
+        subtitle: "Respond respectfully and recognise useful support",
+        content: `
+          <p>Students can reply to community posts, share similar experiences and provide supportive suggestions.</p>
+          <h3>Main functions</h3>
+          <ul>
+            <li>Add a comment below a community post.</li>
+            <li>Read responses from other students.</li>
+            <li>Mark supportive contributions as helpful.</li>
+            <li>Continue the discussion without displaying a real identity.</li>
+          </ul>
+          <h3>Community purpose</h3>
+          <p>These tools help students understand that they are not alone and make useful peer-support responses easier to recognise.</p>
+          <div class="feature-modal-action">
+            <a class="button button-primary" href="community.html">Open Community</a>
+          </div>
+        `
+      },
+
+      "reporting-moderation": {
+        icon: "⚑",
+        iconStyle: "background:var(--green-light);color:var(--green);",
+        title: "Reporting & Moderation",
+        subtitle: "Support a safer and more respectful community",
+        content: `
+          <p>Users can report content that appears inappropriate, abusive or unrelated to the purpose of the platform.</p>
+          <h3>Reporting process</h3>
+          <ul>
+            <li>Select the report option on a community post.</li>
+            <li>Provide a reason when necessary.</li>
+            <li>The report is stored for administrator review.</li>
+            <li>An administrator can review the reported content.</li>
+          </ul>
+          <h3>Moderation goal</h3>
+          <p>Reporting gives administrators information they can review before taking appropriate action.</p>
+          <div class="feature-modal-action">
+            <a class="button button-primary" href="community.html">Browse Community</a>
+          </div>
+        `
+      },
+
+      "resource-directory": {
+        icon: "▤",
+        iconStyle: "background:var(--orange-light);color:var(--orange);",
+        title: "Resource Directory",
+        subtitle: "Find official university support more easily",
+        content: `
+          <p>Hello Dear provides a directory of university services so students can find professional support in addition to peer discussion.</p>
+          <h3>Available resource types</h3>
+          <ul>
+            <li>Counselling and well-being support.</li>
+            <li>Academic and study assistance.</li>
+            <li>Career planning and employment guidance.</li>
+            <li>International student support services.</li>
+          </ul>
+          <h3>Important distinction</h3>
+          <p>Peer support can be valuable, but it does not replace qualified professional or university services.</p>
+          <div class="feature-modal-action">
+            <a class="button button-primary" href="resources.html">View Resources</a>
+          </div>
+        `
+      }
+    };
+
+    const featureCards = document.querySelectorAll("[data-feature]");
+    const featureModal = document.getElementById("featureModal");
+    const featureModalDialog = featureModal.querySelector(".feature-modal-dialog");
+    const featureModalIcon = document.getElementById("featureModalIcon");
+    const featureModalTitle = document.getElementById("featureModalTitle");
+    const featureModalSubtitle = document.getElementById("featureModalSubtitle");
+    const featureModalContent = document.getElementById("featureModalContent");
+    const featureModalClose = document.getElementById("featureModalClose");
+    let lastFeatureCard = null;
+
+    function openFeatureModal(featureId, sourceCard) {
+      const feature = featureDetails[featureId];
+      if (!feature) return;
+
+      lastFeatureCard = sourceCard;
+      featureModalIcon.textContent = feature.icon;
+      featureModalIcon.setAttribute("style", feature.iconStyle);
+      featureModalTitle.textContent = feature.title;
+      featureModalSubtitle.textContent = feature.subtitle;
+      featureModalContent.innerHTML = feature.content;
+
+      featureModal.classList.add("open");
+      featureModal.setAttribute("aria-hidden", "false");
+      document.body.classList.add("feature-modal-open");
+      featureModalDialog.focus();
+    }
+
+    function closeFeatureModal() {
+      featureModal.classList.remove("open");
+      featureModal.setAttribute("aria-hidden", "true");
+      document.body.classList.remove("feature-modal-open");
+
+      if (lastFeatureCard) {
+        lastFeatureCard.focus();
+      }
+    }
+
+    featureCards.forEach((card) => {
+      card.addEventListener("click", () => {
+        openFeatureModal(card.dataset.feature, card);
+      });
+
+      card.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          openFeatureModal(card.dataset.feature, card);
+        }
+      });
+    });
+
+    featureModalClose.addEventListener("click", closeFeatureModal);
+
+    featureModal.addEventListener("click", (event) => {
+      if (event.target === featureModal) {
+        closeFeatureModal();
+      }
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && featureModal.classList.contains("open")) {
+        closeFeatureModal();
+      }
+    });
 
   </script>
 </body>
