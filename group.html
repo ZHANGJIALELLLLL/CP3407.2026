@@ -1,0 +1,1642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta
+    name="description"
+    content="Join anonymous peer-support groups and chat with students who share similar experiences on Hello Dear."
+  />
+  <title>Groups | Hello Dear</title>
+
+  <style>
+    :root {
+      --primary: #6257e8;
+      --primary-dark: #493ec9;
+      --primary-light: #eeecff;
+      --navy: #111936;
+      --text: #4f5873;
+      --muted: #8790a8;
+      --border: #dfe3f1;
+      --background: #f8f9fd;
+      --white: #ffffff;
+      --green: #28a66a;
+      --green-light: #eaf8f0;
+      --pink: #e85d93;
+      --pink-light: #fff0f6;
+      --blue: #3f79e8;
+      --blue-light: #edf4ff;
+      --orange: #ef8f2f;
+      --orange-light: #fff5e8;
+      --danger: #d85262;
+      --danger-light: #fff0f2;
+      --shadow: 0 14px 34px rgba(37, 42, 88, 0.09);
+      --radius-large: 24px;
+      --radius-medium: 18px;
+      --radius-small: 12px;
+      --max-width: 1180px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 80% 10%, rgba(98, 87, 232, 0.08), transparent 24%),
+        radial-gradient(circle at 10% 45%, rgba(40, 166, 106, 0.06), transparent 20%),
+        var(--background);
+      color: var(--navy);
+      line-height: 1.65;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input,
+    textarea {
+      font: inherit;
+    }
+
+    svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    .container {
+      width: min(calc(100% - 40px), var(--max-width));
+      margin: 0 auto;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 14px;
+      color: var(--primary);
+      font-size: 0.83rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    /* Navigation: same dimensions and positioning as community.html */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.92);
+      border-bottom: 1px solid rgba(223, 227, 241, 0.8);
+      backdrop-filter: blur(14px);
+    }
+
+    .navbar {
+      min-height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.28rem;
+      font-weight: 850;
+      letter-spacing: -0.04em;
+    }
+
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      color: var(--primary);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      position: relative;
+      padding: 27px 0 24px;
+      color: #2f3650;
+      font-size: 0.95rem;
+      font-weight: 650;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--primary);
+    }
+
+    .nav-links a.active::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 17px;
+      height: 3px;
+      border-radius: 99px;
+      background: var(--primary);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .menu-toggle {
+      display: none;
+      width: 44px;
+      height: 44px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--white);
+      cursor: pointer;
+    }
+
+    /* Shared buttons */
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      min-height: 46px;
+      padding: 0 20px;
+      border: 1px solid transparent;
+      border-radius: 11px;
+      font-weight: 750;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+    }
+
+    .button-primary {
+      color: var(--white);
+      background: linear-gradient(135deg, var(--primary), #766cf4);
+      box-shadow: 0 10px 22px rgba(98, 87, 232, 0.22);
+    }
+
+    .button-primary:hover {
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+    }
+
+    .button-outline {
+      color: var(--navy);
+      border-color: #aeb5db;
+      background: var(--white);
+    }
+
+    .button-outline:hover {
+      color: var(--primary);
+      border-color: var(--primary);
+    }
+
+    .button-small {
+      min-height: 40px;
+      padding: 0 16px;
+      font-size: 0.9rem;
+    }
+
+    /* Page heading */
+    .group-hero {
+      padding: 46px 0 26px;
+    }
+
+    .group-hero h1 {
+      max-width: 780px;
+      margin-bottom: 10px;
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.12;
+      letter-spacing: -0.05em;
+    }
+
+    .group-hero p {
+      max-width: 720px;
+      color: var(--text);
+    }
+
+    .privacy-banner {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 22px;
+      padding: 14px 16px;
+      border: 1px solid #d9d4fb;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #f8f7ff, #ffffff);
+      color: var(--text);
+      font-size: 0.88rem;
+    }
+
+    .privacy-banner strong {
+      color: var(--navy);
+    }
+
+    /* Category controls */
+    .category-panel {
+      margin-bottom: 22px;
+      padding: 18px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-medium);
+      background: rgba(255, 255, 255, 0.94);
+      box-shadow: 0 8px 24px rgba(46, 51, 96, 0.05);
+    }
+
+    .category-panel-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 14px;
+    }
+
+    .category-panel h2 {
+      font-size: 1.05rem;
+    }
+
+    .category-panel p {
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+
+    .category-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+    }
+
+    .category-chip {
+      min-height: 38px;
+      padding: 0 14px;
+      border: 1px solid var(--border);
+      border-radius: 99px;
+      color: var(--text);
+      background: var(--white);
+      font-size: 0.83rem;
+      font-weight: 720;
+      cursor: pointer;
+      transition: 0.18s ease;
+    }
+
+    .category-chip:hover,
+    .category-chip.active {
+      color: var(--white);
+      border-color: transparent;
+      background: linear-gradient(135deg, var(--primary), #766cf4);
+    }
+
+    .create-category-button {
+      white-space: nowrap;
+    }
+
+    .category-form {
+      display: none;
+      grid-template-columns: minmax(160px, 0.7fr) minmax(220px, 1.3fr) auto;
+      gap: 10px;
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+    }
+
+    .category-form.open {
+      display: grid;
+    }
+
+    .category-input {
+      min-height: 44px;
+      padding: 0 14px;
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      color: var(--navy);
+      background: #fbfcff;
+      outline: none;
+    }
+
+    .category-input:focus {
+      border-color: var(--primary);
+      background: var(--white);
+      box-shadow: 0 0 0 4px rgba(98, 87, 232, 0.1);
+    }
+
+    .category-error {
+      display: none;
+      grid-column: 1 / -1;
+      color: var(--danger);
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .category-error.show {
+      display: block;
+    }
+
+    /* Main groups/chat layout */
+    .groups-layout {
+      display: grid;
+      grid-template-columns: minmax(310px, 0.82fr) minmax(0, 1.45fr);
+      gap: 20px;
+      padding-bottom: 56px;
+    }
+
+    .panel {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-large);
+      background: rgba(255, 255, 255, 0.96);
+      box-shadow: var(--shadow);
+    }
+
+    .groups-panel {
+      min-height: 690px;
+      padding: 18px;
+    }
+
+    .group-search-wrap {
+      position: relative;
+      margin-bottom: 14px;
+    }
+
+    .group-search-icon {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+      pointer-events: none;
+    }
+
+    .group-search {
+      width: 100%;
+      min-height: 48px;
+      padding: 0 16px 0 44px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: #fbfcff;
+      outline: none;
+    }
+
+    .group-search:focus {
+      border-color: var(--primary);
+      background: var(--white);
+      box-shadow: 0 0 0 4px rgba(98, 87, 232, 0.1);
+    }
+
+    .group-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .group-card {
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: var(--white);
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .group-card:hover,
+    .group-card.active {
+      transform: translateY(-2px);
+      border-color: #aaa2f3;
+      box-shadow: 0 10px 24px rgba(76, 66, 204, 0.11);
+    }
+
+    .group-card.active {
+      background: linear-gradient(145deg, #ffffff, #f7f5ff);
+    }
+
+    .group-card-top {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .group-icon {
+      width: 50px;
+      height: 50px;
+      flex: 0 0 auto;
+      display: grid;
+      place-items: center;
+      border-radius: 15px;
+      color: var(--white);
+      background: linear-gradient(145deg, var(--primary), #8177f6);
+      font-size: 1.35rem;
+      box-shadow: 0 10px 20px rgba(98, 87, 232, 0.18);
+    }
+
+    .group-card-copy {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .group-card h3 {
+      margin-bottom: 4px;
+      font-size: 0.98rem;
+    }
+
+    .group-card p {
+      display: -webkit-box;
+      overflow: hidden;
+      color: var(--text);
+      font-size: 0.8rem;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+
+    .group-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .group-tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 9px;
+      border-radius: 99px;
+      color: var(--primary);
+      background: var(--primary-light);
+      font-size: 0.72rem;
+      font-weight: 760;
+    }
+
+    .online-count {
+      color: var(--text);
+      font-size: 0.75rem;
+      font-weight: 680;
+    }
+
+    .online-count::before {
+      content: "";
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      margin-right: 5px;
+      border-radius: 50%;
+      background: #37b876;
+    }
+
+    .no-groups {
+      display: none;
+      padding: 44px 18px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    .no-groups.show {
+      display: block;
+    }
+
+    /* Chat panel */
+    .chat-panel {
+      min-height: 690px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .chat-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 20px 22px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .chat-group-heading {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+    }
+
+    .chat-group-heading h2 {
+      font-size: 1.22rem;
+      line-height: 1.25;
+    }
+
+    .chat-group-heading p {
+      color: var(--muted);
+      font-size: 0.78rem;
+    }
+
+    .joined-status {
+      display: inline-flex;
+      align-items: center;
+      min-height: 36px;
+      padding: 0 12px;
+      border: 1px solid #cce9d9;
+      border-radius: 10px;
+      color: #237c51;
+      background: var(--green-light);
+      font-size: 0.78rem;
+      font-weight: 760;
+    }
+
+    .chat-identity {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin: 14px 18px 0;
+      padding: 12px 14px;
+      border: 1px solid #dcd8fb;
+      border-radius: 13px;
+      color: var(--text);
+      background: linear-gradient(135deg, #f7f5ff, #ffffff);
+      font-size: 0.82rem;
+    }
+
+    .chat-identity strong {
+      color: var(--primary-dark);
+    }
+
+    .chat-messages {
+      flex: 1;
+      min-height: 380px;
+      max-height: 470px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      padding: 20px 22px;
+    }
+
+    .message {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      max-width: 88%;
+    }
+
+    .message.own {
+      align-self: flex-end;
+      flex-direction: row-reverse;
+    }
+
+    .message-avatar {
+      width: 38px;
+      height: 38px;
+      flex: 0 0 auto;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--primary-light);
+      font-size: 1rem;
+    }
+
+    .message-body {
+      min-width: 0;
+    }
+
+    .message-author {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 5px;
+      color: var(--navy);
+      font-size: 0.77rem;
+      font-weight: 780;
+    }
+
+    .message.own .message-author {
+      justify-content: flex-end;
+    }
+
+    .message-time {
+      color: var(--muted);
+      font-size: 0.69rem;
+      font-weight: 600;
+    }
+
+    .message-bubble {
+      padding: 10px 13px;
+      border: 1px solid var(--border);
+      border-radius: 5px 15px 15px 15px;
+      color: #27304d;
+      background: #f7f8fc;
+      font-size: 0.88rem;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+    }
+
+    .message.own .message-bubble {
+      border-color: #cfc9fb;
+      border-radius: 15px 5px 15px 15px;
+      color: #28215f;
+      background: linear-gradient(135deg, #eeecff, #f8f7ff);
+    }
+
+    .chat-composer {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 10px;
+      padding: 16px 18px 18px;
+      border-top: 1px solid var(--border);
+      background: #fcfcff;
+    }
+
+    .message-input {
+      min-height: 48px;
+      max-height: 120px;
+      resize: vertical;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      color: var(--navy);
+      background: var(--white);
+      outline: none;
+    }
+
+    .message-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(98, 87, 232, 0.1);
+    }
+
+    .send-button {
+      width: 50px;
+      min-height: 48px;
+      border: none;
+      border-radius: 12px;
+      color: var(--white);
+      background: linear-gradient(135deg, var(--primary), #766cf4);
+      box-shadow: 0 10px 20px rgba(98, 87, 232, 0.18);
+      cursor: pointer;
+      font-size: 1.2rem;
+    }
+
+    .send-button:hover {
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+    }
+
+    .group-rules {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px 22px;
+      padding: 12px 18px;
+      border-top: 1px solid var(--border);
+      color: var(--text);
+      background: #f8f9fd;
+      font-size: 0.75rem;
+      font-weight: 680;
+    }
+
+    /* Footer */
+    .site-footer {
+      border-top: 1px solid var(--border);
+      background: var(--white);
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.4fr repeat(3, 1fr);
+      gap: 36px;
+      padding: 46px 0 34px;
+    }
+
+    .footer-about p {
+      max-width: 360px;
+      margin-top: 14px;
+      color: var(--text);
+      font-size: 0.87rem;
+    }
+
+    .footer-column h3 {
+      margin-bottom: 12px;
+      font-size: 0.92rem;
+    }
+
+    .footer-column ul {
+      display: grid;
+      gap: 9px;
+      color: var(--text);
+      font-size: 0.85rem;
+      list-style: none;
+    }
+
+    .footer-column a:hover {
+      color: var(--primary);
+    }
+
+    .footer-bottom {
+      min-height: 66px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    @media (max-width: 980px) {
+      .nav-links {
+        position: fixed;
+        top: 77px;
+        left: 20px;
+        right: 20px;
+        display: none;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        padding: 12px 20px;
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        background: var(--white);
+        box-shadow: var(--shadow);
+      }
+
+      .nav-links.open {
+        display: flex;
+      }
+
+      .nav-links a {
+        display: block;
+        padding: 14px 0;
+      }
+
+      .nav-links a.active::after {
+        display: none;
+      }
+
+      .menu-toggle {
+        display: inline-grid;
+        place-items: center;
+      }
+
+      .nav-actions .button-outline {
+        display: none;
+      }
+
+      .groups-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .groups-panel,
+      .chat-panel {
+        min-height: auto;
+      }
+
+      .chat-messages {
+        max-height: 520px;
+      }
+
+      .footer-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 720px) {
+      .container {
+        width: min(calc(100% - 24px), var(--max-width));
+      }
+
+      .nav-actions .button-primary {
+        display: none;
+      }
+
+      .category-panel-top {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .category-form {
+        grid-template-columns: 1fr;
+      }
+
+      .chat-header {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .chat-messages {
+        padding: 18px 14px;
+      }
+
+      .message {
+        max-width: 96%;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-bottom {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 8px;
+        padding: 20px 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div
+    id="loginGate"
+    style="display:none; position:fixed; inset:0; z-index:9999; background:#f7f7fb; align-items:center; justify-content:center; padding:24px;"
+  >
+    <div
+      style="max-width:420px; width:100%; background:#fff; border-radius:16px; padding:40px 32px; text-align:center; box-shadow:0 10px 30px rgba(0,0,0,0.08);"
+    >
+      <div style="font-size:40px; margin-bottom:16px;">💙</div>
+      <h1 style="font-size:22px; margin:0 0 8px; color:#1a1a2e;">Members only</h1>
+      <p style="color:#666; margin:0 0 28px; line-height:1.5;">
+        You need to be a member to join an anonymous group.<br />
+        Please log in to continue.
+      </p>
+      <a
+        class="button button-primary"
+        style="display:block; margin-bottom:12px;"
+        href="login.html"
+      >
+        Log in
+      </a>
+      <a
+        style="color:#6a5cf7; font-size:14px; text-decoration:none;"
+        href="signup.html"
+      >
+        New to Hello Dear? Create an account
+      </a>
+    </div>
+  </div>
+
+  <header class="site-header">
+    <div class="container navbar">
+      <a class="brand" href="index.html" aria-label="Hello Dear home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 48 48" width="34" height="34">
+            <path
+              d="M24 39S7 29 7 17.5C7 11.7 11.3 8 16 8c3.6 0 6.3 2 8 4.3C25.7 10 28.4 8 32 8c4.7 0 9 3.7 9 9.5C41 29 24 39 24 39Z"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="3.3"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </span>
+        Hello Dear
+      </a>
+
+      <nav aria-label="Main navigation">
+        <ul class="nav-links" id="navLinks">
+          <li><a href="index.html">Home</a></li>
+          <li><a class="active" href="community.html">Community</a></li>
+          <li><a href="resources.html">Resources</a></li>
+          <li><a href="about.html">About Us</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions" id="navActions">
+        <a
+          class="button button-outline button-small"
+          id="loginNavLink"
+          href="login.html"
+        >
+          Log in
+        </a>
+        <a
+          class="button button-primary button-small"
+          id="signupNavLink"
+          href="signup.html"
+        >
+          Sign up
+        </a>
+        <button
+          class="menu-toggle"
+          id="menuToggle"
+          type="button"
+          aria-label="Open navigation menu"
+          aria-expanded="false"
+        >
+          ☰
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="group-hero">
+      <div class="container">
+        <span class="eyebrow">Community groups</span>
+        <h1>Join an anonymous support group that understands what you are going through.</h1>
+        <p>
+          Connect with students who share similar experiences. Your real identity
+          stays hidden, while your Hello Dear nickname is used inside the chat.
+        </p>
+
+        <div class="privacy-banner">
+          <span aria-hidden="true">🛡️</span>
+          <span>
+            You are entering groups anonymously as
+            <strong id="heroNickname">Anonymous Student</strong>. Do not share private
+            personal information in group messages.
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <section class="container">
+      <div class="category-panel">
+        <div class="category-panel-top">
+          <div>
+            <h2>Browse or create a category</h2>
+            <p>Create a new category when you cannot find a group for your concern.</p>
+          </div>
+
+          <button
+            class="button button-outline button-small create-category-button"
+            id="toggleCategoryForm"
+            type="button"
+          >
+            + Create category
+          </button>
+        </div>
+
+        <div class="category-chips" id="categoryChips"></div>
+
+        <form class="category-form" id="categoryForm">
+          <input
+            class="category-input"
+            id="categoryNameInput"
+            type="text"
+            maxlength="28"
+            placeholder="Category name, e.g. Homesickness"
+            required
+          />
+          <input
+            class="category-input"
+            id="categoryDescriptionInput"
+            type="text"
+            maxlength="100"
+            placeholder="Short description of what students can discuss"
+            required
+          />
+          <button class="button button-primary button-small" type="submit">
+            Add category
+          </button>
+          <p class="category-error" id="categoryError"></p>
+        </form>
+      </div>
+
+      <div class="groups-layout">
+        <aside class="panel groups-panel" aria-label="Available support groups">
+          <div class="group-search-wrap">
+            <span class="group-search-icon" aria-hidden="true">🔍</span>
+            <input
+              class="group-search"
+              id="groupSearch"
+              type="text"
+              placeholder="Search groups..."
+            />
+          </div>
+
+          <div class="group-list" id="groupList"></div>
+          <div class="no-groups" id="noGroups">
+            No groups match this category or search.
+          </div>
+        </aside>
+
+        <section class="panel chat-panel" aria-label="Anonymous group chat">
+          <div class="chat-header">
+            <div class="chat-group-heading">
+              <div class="group-icon" id="activeGroupIcon">📚</div>
+              <div>
+                <h2 id="activeGroupName">Exam Stress Circle</h2>
+                <p>
+                  <span id="activeGroupMembers">32</span> students online ·
+                  <span id="activeGroupCategory">Academic</span>
+                </p>
+              </div>
+            </div>
+
+            <span class="joined-status">✓ Joined anonymously</span>
+          </div>
+
+          <div class="chat-identity">
+            <span>
+              Your chat nickname:
+              <strong id="chatNickname">Anonymous Student</strong>
+            </span>
+            <span>🔒 Your email and real identity are not shown.</span>
+          </div>
+
+          <div class="chat-messages" id="chatMessages" aria-live="polite"></div>
+
+          <form class="chat-composer" id="messageForm">
+            <textarea
+              class="message-input"
+              id="messageInput"
+              rows="1"
+              maxlength="500"
+              placeholder="Send an anonymous message to this group..."
+              required
+            ></textarea>
+            <button class="send-button" type="submit" aria-label="Send message">
+              ➤
+            </button>
+          </form>
+
+          <div class="group-rules">
+            <span>🛡️ Protect privacy</span>
+            <span>💜 Be kind</span>
+            <span>🚫 No personal attacks</span>
+            <span>⚑ Report unsafe content</span>
+          </div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-about">
+        <a class="brand" href="index.html">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 48 48" width="32" height="32">
+              <path
+                d="M24 39S7 29 7 17.5C7 11.7 11.3 8 16 8c3.6 0 6.3 2 8 4.3C25.7 10 28.4 8 32 8c4.7 0 9 3.7 9 9.5C41 29 24 39 24 39Z"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="3.3"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </span>
+          Hello Dear
+        </a>
+        <p>
+          A safe and anonymous peer-support platform created for university students.
+        </p>
+      </div>
+
+      <div class="footer-column">
+        <h3>Platform</h3>
+        <ul>
+          <li><a href="community.html">Community</a></li>
+          <li><a href="create-post.html">Create Post</a></li>
+          <li><a href="group.html">Groups</a></li>
+          <li><a href="resources.html">Resources</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h3>About</h3>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Use</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h3>Account</h3>
+        <ul>
+          <li><a href="login.html">Log in</a></li>
+          <li><a href="signup.html">Sign up</a></li>
+          <li><a href="#">Contact Us</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      <span>© 2026 Hello Dear. All rights reserved.</span>
+      <span>Designed for university student peer support.</span>
+    </div>
+  </footer>
+
+  <script>
+    const DEFAULT_GROUPS = [
+      {
+        id: "exam-stress",
+        name: "Exam Stress Circle",
+        category: "academic",
+        description: "Talk about exam pressure, deadlines and study worries.",
+        icon: "📚",
+        members: 32,
+        messages: [
+          {
+            nickname: "Moonlight Fox",
+            avatar: "🌙",
+            content: "I have two assignments due this week and I feel overwhelmed.",
+            time: "10:41 AM"
+          },
+          {
+            nickname: "Blue Panda",
+            avatar: "🐼",
+            content: "You are not alone. I am dealing with the same thing.",
+            time: "10:43 AM"
+          },
+          {
+            nickname: "Soft Cloud",
+            avatar: "☁️",
+            content: "Breaking everything into smaller tasks has helped me.",
+            time: "10:45 AM"
+          }
+        ]
+      },
+      {
+        id: "lonely-overseas",
+        name: "Lonely Overseas Students",
+        category: "international-students",
+        description: "Share experiences and find comfort while studying away from home.",
+        icon: "🌏",
+        members: 28,
+        messages: [
+          {
+            nickname: "Gentle Koala",
+            avatar: "🐨",
+            content: "Weekends feel especially quiet when everyone I know is back home.",
+            time: "9:18 AM"
+          },
+          {
+            nickname: "Sunny Otter",
+            avatar: "🦦",
+            content: "I felt that too. Joining a campus activity helped me meet people slowly.",
+            time: "9:23 AM"
+          }
+        ]
+      },
+      {
+        id: "making-friends",
+        name: "Making Friends Safely",
+        category: "friendship",
+        description: "Discuss safe and meaningful ways to build new friendships.",
+        icon: "🤝",
+        members: 24,
+        messages: [
+          {
+            nickname: "Bright Rabbit",
+            avatar: "🐰",
+            content: "How do you start conversations without feeling awkward?",
+            time: "11:06 AM"
+          },
+          {
+            nickname: "Kind Penguin",
+            avatar: "🐧",
+            content: "I usually ask something simple about class or the assignment.",
+            time: "11:09 AM"
+          }
+        ]
+      },
+      {
+        id: "quiet-support",
+        name: "Quiet Support Space",
+        category: "mental-health",
+        description: "A calm group for listening, reflecting and encouraging one another.",
+        icon: "🌙",
+        members: 19,
+        messages: [
+          {
+            nickname: "Quiet Star",
+            avatar: "⭐",
+            content: "Taking short breaks helps me reset when everything feels too much.",
+            time: "8:51 PM"
+          },
+          {
+            nickname: "Calm Fox",
+            avatar: "🦊",
+            content: "Today I am trying to be patient with myself.",
+            time: "8:56 PM"
+          }
+        ]
+      }
+    ];
+
+    const BUILT_IN_CATEGORIES = [
+      { id: "all", label: "All" },
+      { id: "academic", label: "Academic" },
+      { id: "friendship", label: "Friendship" },
+      { id: "mental-health", label: "Mental Health" },
+      { id: "international-students", label: "International Students" }
+    ];
+
+    const GROUPS_STORAGE_KEY = "hd_supportGroups";
+    const CUSTOM_CATEGORIES_KEY = "hd_groupCategories";
+    const GROUP_MESSAGES_PREFIX = "hd_groupMessages_";
+
+    const nickname =
+      localStorage.getItem("hd_userNickname") || "Anonymous Student";
+    const email = localStorage.getItem("hd_userEmail");
+
+    if (!email) {
+      document.getElementById("loginGate").style.display = "flex";
+      document.body.style.overflow = "hidden";
+    }
+
+    document.getElementById("heroNickname").textContent = nickname;
+    document.getElementById("chatNickname").textContent = nickname;
+
+    function updateNavForLoginState() {
+      const loginLink = document.getElementById("loginNavLink");
+      const signupLink = document.getElementById("signupNavLink");
+
+      if (!loginLink || !signupLink) return;
+
+      if (email) {
+        loginLink.textContent = `Hi, ${nickname}`;
+        loginLink.removeAttribute("href");
+        loginLink.style.cursor = "default";
+        loginLink.setAttribute("aria-disabled", "true");
+
+        signupLink.textContent = "Log out";
+        signupLink.href = "#";
+        signupLink.onclick = (event) => {
+          event.preventDefault();
+          localStorage.removeItem("hd_userId");
+          localStorage.removeItem("hd_userEmail");
+          localStorage.removeItem("hd_userNickname");
+          window.location.href = "login.html";
+        };
+      }
+    }
+
+    updateNavForLoginState();
+
+    const menuToggle = document.getElementById("menuToggle");
+    const navLinks = document.getElementById("navLinks");
+
+    menuToggle.addEventListener("click", () => {
+      const isOpen = navLinks.classList.toggle("open");
+      menuToggle.setAttribute("aria-expanded", String(isOpen));
+      menuToggle.textContent = isOpen ? "✕" : "☰";
+    });
+
+    function slugify(value) {
+      return value
+        .trim()
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "") || `category-${Date.now()}`;
+    }
+
+    function escapeHtml(value) {
+      const div = document.createElement("div");
+      div.textContent = String(value);
+      return div.innerHTML;
+    }
+
+    function loadGroups() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(GROUPS_STORAGE_KEY));
+        return Array.isArray(saved) && saved.length ? saved : DEFAULT_GROUPS;
+      } catch {
+        return DEFAULT_GROUPS;
+      }
+    }
+
+    function saveGroups() {
+      localStorage.setItem(GROUPS_STORAGE_KEY, JSON.stringify(groups));
+    }
+
+    function loadCustomCategories() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(CUSTOM_CATEGORIES_KEY));
+        return Array.isArray(saved) ? saved : [];
+      } catch {
+        return [];
+      }
+    }
+
+    function saveCustomCategories() {
+      localStorage.setItem(
+        CUSTOM_CATEGORIES_KEY,
+        JSON.stringify(customCategories)
+      );
+    }
+
+    function loadMessages(group) {
+      try {
+        const saved = JSON.parse(
+          localStorage.getItem(`${GROUP_MESSAGES_PREFIX}${group.id}`)
+        );
+        return Array.isArray(saved) ? saved : group.messages || [];
+      } catch {
+        return group.messages || [];
+      }
+    }
+
+    function saveMessages(groupId, messages) {
+      localStorage.setItem(
+        `${GROUP_MESSAGES_PREFIX}${groupId}`,
+        JSON.stringify(messages)
+      );
+    }
+
+    let groups = loadGroups();
+    let customCategories = loadCustomCategories();
+    let activeCategory = "all";
+    let activeGroupId = groups[0]?.id || null;
+
+    const categoryChips = document.getElementById("categoryChips");
+    const groupList = document.getElementById("groupList");
+    const noGroups = document.getElementById("noGroups");
+    const groupSearch = document.getElementById("groupSearch");
+    const categoryForm = document.getElementById("categoryForm");
+    const toggleCategoryForm = document.getElementById("toggleCategoryForm");
+    const categoryNameInput = document.getElementById("categoryNameInput");
+    const categoryDescriptionInput = document.getElementById(
+      "categoryDescriptionInput"
+    );
+    const categoryError = document.getElementById("categoryError");
+    const chatMessages = document.getElementById("chatMessages");
+    const messageForm = document.getElementById("messageForm");
+    const messageInput = document.getElementById("messageInput");
+
+    function getCategoryLabel(categoryId) {
+      const categories = [...BUILT_IN_CATEGORIES, ...customCategories];
+      return categories.find((category) => category.id === categoryId)?.label ||
+        categoryId;
+    }
+
+    function renderCategoryChips() {
+      const categories = [...BUILT_IN_CATEGORIES, ...customCategories];
+
+      categoryChips.innerHTML = categories
+        .map(
+          (category) => `
+            <button
+              class="category-chip ${category.id === activeCategory ? "active" : ""}"
+              type="button"
+              data-category="${escapeHtml(category.id)}"
+            >
+              ${category.id === "all" ? "" : "#"}${escapeHtml(category.label)}
+            </button>
+          `
+        )
+        .join("");
+    }
+
+    function filteredGroups() {
+      const search = groupSearch.value.trim().toLowerCase();
+
+      return groups.filter((group) => {
+        const categoryMatches =
+          activeCategory === "all" || group.category === activeCategory;
+        const searchMatches =
+          !search ||
+          group.name.toLowerCase().includes(search) ||
+          group.description.toLowerCase().includes(search) ||
+          getCategoryLabel(group.category).toLowerCase().includes(search);
+
+        return categoryMatches && searchMatches;
+      });
+    }
+
+    function renderGroupList() {
+      const visibleGroups = filteredGroups();
+
+      noGroups.classList.toggle("show", visibleGroups.length === 0);
+
+      groupList.innerHTML = visibleGroups
+        .map(
+          (group) => `
+            <article
+              class="group-card ${group.id === activeGroupId ? "active" : ""}"
+              data-group-id="${escapeHtml(group.id)}"
+              tabindex="0"
+              role="button"
+              aria-label="Open ${escapeHtml(group.name)}"
+            >
+              <div class="group-card-top">
+                <div class="group-icon">${escapeHtml(group.icon || "💬")}</div>
+                <div class="group-card-copy">
+                  <h3>${escapeHtml(group.name)}</h3>
+                  <p>${escapeHtml(group.description)}</p>
+                </div>
+              </div>
+
+              <div class="group-meta">
+                <span class="group-tag">
+                  ${escapeHtml(getCategoryLabel(group.category))}
+                </span>
+                <span class="online-count">${Number(group.members) || 1} online</span>
+              </div>
+            </article>
+          `
+        )
+        .join("");
+    }
+
+    function activeGroup() {
+      return groups.find((group) => group.id === activeGroupId) || groups[0];
+    }
+
+    function renderChat() {
+      const group = activeGroup();
+      if (!group) return;
+
+      document.getElementById("activeGroupIcon").textContent = group.icon || "💬";
+      document.getElementById("activeGroupName").textContent = group.name;
+      document.getElementById("activeGroupMembers").textContent =
+        Number(group.members) || 1;
+      document.getElementById("activeGroupCategory").textContent =
+        getCategoryLabel(group.category);
+
+      const messages = loadMessages(group);
+
+      chatMessages.innerHTML = messages
+        .map((message) => {
+          const isOwn = message.nickname === nickname;
+          return `
+            <div class="message ${isOwn ? "own" : ""}">
+              <div class="message-avatar">${escapeHtml(message.avatar || "🙂")}</div>
+              <div class="message-body">
+                <div class="message-author">
+                  <span>${escapeHtml(message.nickname)}</span>
+                  <span class="message-time">${escapeHtml(message.time || "")}</span>
+                </div>
+                <div class="message-bubble">${escapeHtml(message.content)}</div>
+              </div>
+            </div>
+          `;
+        })
+        .join("");
+
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function selectGroup(groupId) {
+      activeGroupId = groupId;
+      renderGroupList();
+      renderChat();
+    }
+
+    categoryChips.addEventListener("click", (event) => {
+      const chip = event.target.closest(".category-chip");
+      if (!chip) return;
+
+      activeCategory = chip.dataset.category;
+      renderCategoryChips();
+      renderGroupList();
+
+      const visible = filteredGroups();
+      if (visible.length && !visible.some((group) => group.id === activeGroupId)) {
+        selectGroup(visible[0].id);
+      }
+    });
+
+    groupList.addEventListener("click", (event) => {
+      const card = event.target.closest(".group-card");
+      if (!card) return;
+      selectGroup(card.dataset.groupId);
+    });
+
+    groupList.addEventListener("keydown", (event) => {
+      if (event.key !== "Enter" && event.key !== " ") return;
+      const card = event.target.closest(".group-card");
+      if (!card) return;
+      event.preventDefault();
+      selectGroup(card.dataset.groupId);
+    });
+
+    groupSearch.addEventListener("input", renderGroupList);
+
+    toggleCategoryForm.addEventListener("click", () => {
+      const isOpen = categoryForm.classList.toggle("open");
+      toggleCategoryForm.textContent = isOpen
+        ? "Cancel"
+        : "+ Create category";
+
+      if (isOpen) {
+        categoryNameInput.focus();
+      } else {
+        categoryForm.reset();
+        categoryError.classList.remove("show");
+      }
+    });
+
+    categoryForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      const name = categoryNameInput.value.trim();
+      const description = categoryDescriptionInput.value.trim();
+      const id = slugify(name);
+
+      categoryError.classList.remove("show");
+
+      if (name.length < 3) {
+        categoryError.textContent =
+          "Please enter a category name with at least 3 characters.";
+        categoryError.classList.add("show");
+        return;
+      }
+
+      const categoryExists = [...BUILT_IN_CATEGORIES, ...customCategories].some(
+        (category) =>
+          category.id === id ||
+          category.label.toLowerCase() === name.toLowerCase()
+      );
+
+      if (categoryExists) {
+        categoryError.textContent = "This category already exists.";
+        categoryError.classList.add("show");
+        return;
+      }
+
+      const newCategory = { id, label: name };
+      customCategories.push(newCategory);
+      saveCustomCategories();
+
+      const newGroup = {
+        id: `${id}-support-circle-${Date.now()}`,
+        name: `${name} Support Circle`,
+        category: id,
+        description,
+        icon: "💬",
+        members: 1,
+        messages: [
+          {
+            nickname: "Hello Dear Guide",
+            avatar: "💜",
+            content:
+              "This category was created by a community member. Start the conversation kindly and protect everyone's privacy.",
+            time: new Date().toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit"
+            })
+          }
+        ]
+      };
+
+      groups.push(newGroup);
+      saveGroups();
+
+      activeCategory = id;
+      activeGroupId = newGroup.id;
+
+      renderCategoryChips();
+      renderGroupList();
+      renderChat();
+
+      categoryForm.reset();
+      categoryForm.classList.remove("open");
+      toggleCategoryForm.textContent = "+ Create category";
+    });
+
+    messageForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      const content = messageInput.value.trim();
+      const group = activeGroup();
+
+      if (!content || !group) return;
+
+      const messages = loadMessages(group);
+      messages.push({
+        nickname,
+        avatar: "🙂",
+        content,
+        time: new Date().toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit"
+        })
+      });
+
+      saveMessages(group.id, messages);
+      messageInput.value = "";
+      renderChat();
+    });
+
+    messageInput.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" && !event.shiftKey) {
+        event.preventDefault();
+        messageForm.requestSubmit();
+      }
+    });
+
+    renderCategoryChips();
+    renderGroupList();
+    renderChat();
+  </script>
+</body>
+</html>
