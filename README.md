@@ -5,9 +5,9 @@ Link：https://github.com/ZHANGJIALELLLLL/CP3407.2026
 
 | Role | Student Name |
 |---|---|
-| Technician, Designer, Programmer | park haewon |
-| Scrum Maste, Programmer | Lu Chuanjun |
-| Programmer, Technician | Zhang Jiale |
+| Product Owner, Programmer, Initial Design | Zhang Jiale |
+| Database development,Initial Design, Programmer | park haewon |
+| Scrum Master, Overall Design, Programmer | Lu Chuanjun |
 
 ## Project Overview
 This project is an anonymoous student support platform where students can share concerns, comment on posts, report harmful content, and use anonymous nicknames.

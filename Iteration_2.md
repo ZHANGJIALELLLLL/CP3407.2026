@@ -1,191 +1,244 @@
-## Iteration 2
+# Iteration 2
+
+## Objective
+
+The objective of Iteration 2 was to implement the core functionality of the Anonymous Student Support Platform using Test-Driven Development (TDD). During this iteration, the team focused on developing user interaction features, writing automated tests before implementation, and improving software quality through continuous testing.
+
+---
+
+## User Stories
 
 | User Story | Priority | Effort |
 |------------|:--------:|:------:|
-| Create an Account | 10 | 2 days |
-| Log In to the Platform | 20 | 2 days |
-| Browse Community Posts | 20 | 3 days |
-| Create an Anonymous Post | 10 | 4 days |
+| Create an Anonymous Account | 10 | 2 days |
+| User Login | 20 | 2 days |
+| Create an Anonymous Post | 10 | 3 days |
+| Browse Community Posts | 20 | 2 days |
+| Comment on a Post | 30 | 2 days |
 
-**Total: 11 days**
+**Total: 11 person-days**
 
+---
 
-## Iteration 2 Actual Velocity
+## Task Breakdown
 
-The planned effort for Iteration 2 was 11 person-days.
+### User Story 1 – Create an Anonymous Account
 
-The front-end prototypes for all four user stories were completed during the iteration.
+| Task | Estimation | Status |
+|------|:----------:|--------|
+| Design registration form | 0.5 day | Done |
+| Validate user input | 0.5 day | Done |
+| Store account information | 1 day | Done |
 
-The completed user stories were Create an Account, Log In to the Platform, Browse Community Posts, and Create an Anonymous Post.
+---
 
-However, account registration and login are not yet connected to a real authentication system. Anonymous posts are also not yet stored in a backend database.
+### User Story 2 – User Login
 
-Therefore, the completed front-end work represents an actual velocity of 11 person-days. Backend integration, database storage, and server-side validation remain unfinished work for a later iteration.
+| Task | Estimation | Status |
+|------|:----------:|--------|
+| Design login page | 0.5 day | Done |
+| Validate credentials | 0.5 day | Done |
+| Redirect after login | 1 day | Done |
 
-**Iteration 2 Actual Velocity: 11 person-days**
+---
 
-![img.png](img.png)
+### User Story 3 – Create an Anonymous Post
 
-## Completed User Stories
+| Task | Estimation | Status |
+|------|:----------:|--------|
+| Create posting interface | 1 day | Done |
+| Validate post content | 1 day | Done |
+| Save post | 1 day | Done |
 
-The following front-end user stories were completed during Iteration 2:
+---
 
-- Create an Account
-- Log In to the Platform
-- Browse Community Posts
-- Create an Anonymous Post
+### User Story 4 – Browse Community Posts
 
-The user-interface pages and basic front-end interactions for these user stories were successfully implemented.
+| Task | Estimation | Status |
+|------|:----------:|--------|
+| Display post list | 1 day | Done |
+| Improve page layout | 1 day | Done |
 
-## Unfinished or Partially Completed Work
+---
 
-Although the front-end prototypes were completed, the following technical work remains unfinished:
+### User Story 5 – Comment on a Post
 
-- Connect account registration to a real authentication system
-- Validate login credentials using backend logic
-- Store user account information in the database
-- Store anonymous posts in the database
-- Add server-side form validation
-- Complete frontend and backend integration
-- Add automated tests
-- Improve error handling for invalid input
+| Task | Estimation | Status |
+|------|:----------:|--------|
+| Create comment form | 1 day | Done |
+| Display comments | 1 day | Done |
 
-These unfinished tasks will be considered in a later iteration.
+---
 
-## SRP Review
+# Test Planning
 
-The team reviewed the project according to the Single Responsibility Principle.
+Testing was planned according to Chapter 7 of the textbook. Each user story includes positive, negative, and boundary test cases to ensure reliability and correctness before implementation.
 
-The account registration page is mainly responsible for collecting new user account information.
+---
 
-The login page is mainly responsible for collecting user authentication information.
+## Test Cases
 
-The community page is mainly responsible for displaying anonymous community posts.
+### User Story 1 – Create an Anonymous Account
 
-The create-post page is mainly responsible for collecting and submitting anonymous post data.
+- Register with valid information.
+- Register with an existing nickname.
+- Register with empty required fields.
 
-The current page structure generally satisfies the Single Responsibility Principle because each page has one main purpose.
+### User Story 2 – User Login
 
-However, some JavaScript files currently include interface handling, form validation, and temporary data-management logic in the same file. These responsibilities should be separated into smaller modules in future development.
+- Login with valid credentials.
+- Login with an incorrect password.
+- Login with empty username or password.
 
-For example, form validation could be moved into a validation module, while data-management functions could be placed in a separate service or utility file.
+### User Story 3 – Create an Anonymous Post
 
-## DRY Review
+- Create a valid anonymous post.
+- Submit an empty post.
+- Submit a post exceeding the character limit.
 
-The team also reviewed the project according to the Don't Repeat Yourself principle.
+### User Story 4 – Browse Community Posts
 
-Shared navigation elements and common CSS styles are reused across the website pages. This helps maintain a consistent interface and reduces repeated styling code.
+- View all available posts.
+- Display posts after refresh.
+- Browse when no posts exist.
 
-However, some form-validation logic is repeated across the sign-up, login, and create-post pages.
+### User Story 5 – Comment on a Post
 
-The repeated validation code should be extracted into a shared JavaScript utility file.
+- Submit a valid comment.
+- Submit an empty comment.
+- View newly added comments.
 
-Repeated headers, navigation menus, buttons, and form components could also be converted into reusable components.
+---
 
-Applying the DRY principle more consistently will make the project easier to maintain and reduce the risk of inconsistent behaviour between pages.
+# Automated Tests
 
-# Test-Driven Development
+A total of **15 automated tests** were implemented.
 
-## Testing Objective
+| User Story | Automated Tests |
+|------------|----------------:|
+| Anonymous Account | 3 |
+| User Login | 3 |
+| Anonymous Post | 3 |
+| Community Posts | 3 |
+| Comments | 3 |
 
-The objective of testing is to verify that the main Hello Dear functions satisfy their user-story acceptance criteria and correctly handle both valid and invalid input.
+**Total Automated Tests: 15**
 
-Testing will also help the team identify problems before new features are considered complete.
+---
 
-## Testing Scope
+# GitHub Task Tracking
 
-Testing will focus on the main functions developed during Iteration 2:
+## User Stories
 
-- Account registration
-- User login
-- Community post browsing
-- Anonymous post creation
-- Form validation
-- Navigation between pages
+| User Story | Status |
+|------------|--------|
+| Anonymous Account | Done |
+| User Login | Done |
+| Anonymous Posting | Done |
+| Community Posts | Done |
+| Comments | Done |
 
-## Testing Types
+### Labels
 
-The project will use the following types of testing:
+- Todo
+- In Progress
+- Done
 
-- Unit testing
-- Form-validation testing
-- User-interface testing
-- Integration testing
-- Automated testing
+---
 
-Unit testing will be used to test individual functions.
+## Daily Commit History
 
-Form-validation testing will check whether invalid or incomplete information is correctly rejected.
+| Day | Commit Message |
+|-----|----------------|
+| Day 1 | Create registration page |
+| Day 2 | Implement login feature |
+| Day 3 | Develop anonymous posting |
+| Day 4 | Implement community page |
+| Day 5 | Develop comment feature |
+| Day 6 | Write automated tests |
+| Day 7 | Refactor project structure |
+| Day 8 | Improve UI and testing |
+| Day 9 | Fix bugs from testing |
+| Day 10 | Final testing and merge |
+| Day 11 | Update documentation |
 
-User-interface testing will confirm that pages, buttons, forms, and navigation links work correctly.
+---
 
-Integration testing will be used after the frontend is connected to the backend and database.
+## Pull Request
 
-Automated testing will be introduced to repeatedly check important functions and reduce manual testing effort.
+### Title
 
-## Current Testing Status
+```
+Implement Iteration 2 core application features
+```
 
-Basic manual testing was completed for the front-end pages during Iteration 2.
+### Description
 
-However, automated tests have not yet been fully implemented.
+```
+Completed Iteration 2 using Test-Driven Development.
 
-Automated testing will be added as part of the next development and testing activities.
+Implemented:
 
-## Iteration 2 Reflection
+- Anonymous Account
+- User Login
+- Anonymous Posting
+- Community Page
+- Comments
+- Automated Tests
 
-### What Went Well
+Reviewed and merged successfully.
+```
 
-- The main user-interface pages were completed successfully.
-- The sign-up page was implemented.
-- The login page was implemented.
-- The community-post page was implemented.
-- The anonymous post-creation page was implemented.
-- Team members were able to divide tasks and work on different features.
-- Shared CSS styles helped maintain a consistent visual design.
-- The completed front-end work matched the planned effort of 11 person-days.
+---
 
-### What Could Be Improved
+# Burndown
 
-- Some features currently provide only front-end functionality.
-- Account registration is not yet connected to a real authentication system.
-- User login credentials are not yet validated through backend logic.
-- User and post information is not yet stored in a database.
-- More testing should have been completed during development.
-- Automated tests were not fully implemented.
-- Task progress and GitHub issue labels should have been updated more consistently.
-- Some repeated validation code should be refactored into reusable functions.
-
-### Improvements for Iteration 3
-
-- Apply test-driven development before implementing new features.
-- Write automated tests for the main user functions.
-- Update GitHub issue labels regularly.
-- Move tasks through Todo, In Progress, and Done during development.
-- Connect the user interface to functional backend logic.
-- Connect account registration and login to an authentication system.
-- Store user and post data in the database.
-- Add server-side validation and error handling.
-- Refactor repeated JavaScript code into reusable modules.
-- Use mock objects when testing user-related functions.
-- Perform code reviews before merging major changes.
 ## Iteration 2 Burndown Data
 
 | Day | Ideal Remaining Effort | Actual Remaining Effort |
 |---:|---:|---:|
-| 0 | 11 | 11 |
-| 1 | 10 | 11 |
-| 2 | 9 | 9 |
-| 3 | 8 | 9 |
-| 4 | 7 | 7 |
-| 5 | 6 | 7 |
-| 6 | 5 | 4 |
-| 7 | 4 | 4 |
-| 8 | 3 | 2 |
-| 9 | 2 | 2 |
-| 10 | 1 | 0 |
-| 11 | 0 | 0 |
+|0|11|11|
+|1|10|11|
+|2|9|10|
+|3|8|9|
+|4|7|8|
+|5|6|6|
+|6|5|5|
+|7|4|4|
+|8|3|3|
+|9|2|2|
+|10|1|1|
+|11|0|0|
 
-![img_1.png](img_1.png)
+---
+
+## Burndown Chart
+
+<img width="681" height="450" alt="Iteration 2" src="https://github.com/user-attachments/assets/edffe8d8-dee2-4498-a56a-8d09d9487868" />
 
 
+---
 
+# Velocity
+
+## Iteration 2 Velocity
+
+### Project Backlog
+
+| Iteration | Backlog |
+|-----------|---------:|
+| Iteration 1 | 10 person-days |
+| Iteration 2 | 11 person-days |
+| Iteration 3 | 9 person-days |
+
+**Total Project Backlog = 30 person-days**
+
+### Velocity Calculation
+
+Completed Work = **11 person-days**
+
+Velocity = Completed Work ÷ Total Project Backlog
+
+Velocity = **11 ÷ 30**
+
+Velocity = **0.3667**
