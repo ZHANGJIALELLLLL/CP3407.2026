@@ -147,6 +147,7 @@ Reviewed and merged successfully.
 
 ## Burndown Chart
 
+<img width="681" height="450" alt="Iteration_3" src="https://github.com/user-attachments/assets/4196e259-58f9-410d-867b-4452a79c6662" />
 
 
 ---
