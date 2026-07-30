@@ -11,7 +11,7 @@ The objective of Iteration 3 was to complete the remaining core features of the 
 | User Story | Priority | Effort |
 |------------|:--------:|:------:|
 | Reporting Harmful Content | 10 | 3 days |
-| Helpful Votes | 20 | 2 days |
+| Add Groups| 20 | 2 days |
 | Search and Filter Posts | 20 | 3 days |
 | Administrator Dashboard | 30 | 3 days |
 
@@ -31,12 +31,12 @@ The objective of Iteration 3 was to complete the remaining core features of the 
 
 ---
 
-### User Story 2 – Helpful Votes
+### User Story 2 – Add Groups
 
 | Task | Estimation | Status |
 |------|:----------:|--------|
-| Add vote button | 1 day | Done |
-| Update vote counter | 1 day | Done |
+| Add "Create Group" button | 1 day | Done |
+| Save group information | 1 day | Done |
 
 ---
 
@@ -67,7 +67,7 @@ The objective of Iteration 3 was to complete the remaining core features of the 
 | User Story | Status |
 |------------|--------|
 | Reporting Harmful Content | Done |
-| Helpful Votes | Done |
+| Group Creation | Done |
 | Search and Filter Posts | Done |
 | Administrator Dashboard | Done |
 
@@ -84,7 +84,7 @@ The objective of Iteration 3 was to complete the remaining core features of the 
 | Day | Commit Message |
 |-----|----------------|
 | Day 1 | Implement reporting feature |
-| Day 2 | Add helpful votes |
+| Day 2 | Implement group creation feature |
 | Day 3 | Develop search function |
 | Day 4 | Implement category filter |
 | Day 5 | Create administrator dashboard |
@@ -113,7 +113,7 @@ Completed Iteration 3.
 Implemented:
 
 - Reporting System
-- Helpful Votes
+- Group Creation
 - Search and Filter
 - Administrator Dashboard
 - Bug fixes
@@ -179,6 +179,7 @@ Additional mock objects were created for:
 
 - User registration
 - Anonymous posting
+- Group creation
 - Report submission
 - Administrator approval
 
@@ -202,7 +203,7 @@ Bug tracking was managed using GitHub Issues and Pull Requests.
 | BUG-001 | Login validation failed | High | Fixed |
 | BUG-002 | Empty post accepted | High | Fixed |
 | BUG-003 | Search returned incorrect results | Medium | Fixed |
-| BUG-004 | Vote counter not refreshed | Medium | Fixed |
+| BUG-004 | Group creation failed | Medium | Fixed |
 | BUG-005 | Report submission error | Low | Fixed |
 
 ---
@@ -248,10 +249,10 @@ Bug tracking was managed using GitHub Issues and Pull Requests.
 # Completed User Stories
 
 - Reporting Harmful Content
-- Helpful Votes
+- Add Groups
 - Search and Filter Posts
 - Administrator Dashboard
-
+  
 ---
 
 # Remaining Future Enhancements
@@ -268,8 +269,8 @@ Bug tracking was managed using GitHub Issues and Pull Requests.
 ## Satisfied
 
 - Reporting module handles reports only.
+- Group module manages group creation only.
 - Search module manages searching only.
-- Voting module manages votes only.
 - Administrator module manages moderation only.
 
 ## Needs Improvement
