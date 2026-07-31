@@ -35,7 +35,7 @@ The objective of Iteration 3 was to complete the remaining core features of the 
 
 | Task | Estimation | Status |
 |------|:----------:|--------|
-| Add "Create Group" button | 1 day | Done |
+| Add "Group" button | 1 day | Done |
 | Save group information | 1 day | Done |
 
 ---
