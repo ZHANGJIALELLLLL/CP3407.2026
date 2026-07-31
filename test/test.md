@@ -42,6 +42,33 @@ This document defines how the team plans, executes, and tracks system-level test
 2. `npm start` running with no errors in the console.
 3. `.env` contains valid `INITIAL_ADMIN_ID` / `INITIAL_ADMIN_PASSWORD` and DB credentials.
 
+**Repository structure**
+
+Testing code is kept out of the production codebase, in its own directory, so the app can be deployed without shipping test artifacts and so it is obvious at a glance what is "the product" vs. "how we verified the product":
+
+```
+hello-dear/
+├── server.js            # production backend
+├── db.js
+├── seed-admin.js
+├── seed-resources.js
+├── schema.sql
+├── package.json
+├── index.html            # production frontend
+├── login.html
+├── signup.html
+├── community.html
+├── create-post.html
+├── resources.html
+├── about.html
+├── admin.html
+└── test/                 # <- all testing code lives here, nowhere else
+    ├── test.js            # automated system/API tests
+    └── test.md            # this document
+```
+
+Nothing under `test/` is required at runtime for the live app — it is only ever invoked manually (or by CI) against a running instance of the app, and can be excluded from any production build/deploy step.
+
 ---
 
 ## 3. Test Strategy
@@ -152,7 +179,37 @@ Every bug is still recorded on its relevant user-story GitHub page (issue refere
 
 ---
 
-## 8. How to Run
+## 8. How the Automated Testing Code Works
+
+`test/test.js` is a standalone Node.js script (no test framework required — only the built-in `fetch`, available from Node 18 onward) that drives the live REST API exposed by `server.js` and checks the responses against what each user story promises. It is **black-box system testing**: the script never imports or calls any production code directly — it only talks to the app the same way the real frontend does, over HTTP, against a running server and a real MySQL database.
+
+**Structure of the script**
+
+1. **Configuration** — `BASE_URL`, `ADMIN_ID` and `ADMIN_PASSWORD` are read from environment variables (with `http://localhost:3000` as the default base URL). This lets the same script run against a local machine, a teammate's machine, or a CI runner without any code changes.
+
+2. **`api(path, options)` helper** — wraps `fetch` so every test case can make a request in one line and get back a consistent `{ status, ok, body }` object, with the JSON response already parsed (and safely ignored if a given endpoint returns no body).
+
+3. **`test(id, name, fn)` runner** — a minimal, hand-rolled substitute for a framework like Jest/Mocha. It runs the async function `fn`, catches any thrown error, and records a `PASS` or `FAIL` entry (with the `id` matching the TC-xx codes in §4, so a failure can be traced straight back to the traceability table and turned into a GitHub Issue). A companion `skip(id, name, reason)` records tests that could not run (e.g. admin tests when no admin credentials were supplied) without counting them as failures.
+
+4. **`assert(condition, message)`** — a tiny assertion helper; throwing inside a `test()` callback is how a test case fails, and the thrown message becomes the printed failure reason.
+
+5. **Shared `state` object** — because system tests are not independent (you cannot comment on a post that does not exist yet), the script keeps a single mutable `state` object that later test cases read from earlier ones — e.g. `state.userId` is set by the login test (TC-03) and reused by every test case that needs to act "as" that user (create a post, comment, report, etc.), and `state.publicPostId` created in TC-08 is reused by the comment and report test cases. A timestamp-based `stamp` is used to generate a unique email/nickname per run, so the script can be re-run repeatedly against the same database without hitting duplicate-signup errors.
+
+6. **Sequential execution** — test cases run in a fixed order with `await`, deliberately mirroring a real user's journey through the app: sign up → log in → get suspended/restored → post → comment → report → admin reviews the report → admin manages users/resources/feedback/settings → cleanup. This ordering is what allows state to be threaded through, and also doubles as an integration check that these features work correctly *together*, not just in isolation.
+
+7. **Cleanup step (`TC-99`)** — deletes the posts the script created, so repeated runs do not permanently pollute the community feed used for manual/demo testing.
+
+8. **Summary and exit code** — after all test cases run, the script prints a `Total / Passed / Failed / Skipped` count and, if anything failed, lists each failing TC-xx ID with its error message. It sets `process.exitCode = 1` on any failure, which is what allows it to be plugged into a CI pipeline later (a CI job simply fails the build if `node test.js` exits non-zero) even though no CI is wired up for this submission.
+
+**Why this design was chosen over a full test framework**
+
+- Zero extra dependencies to install — anyone can clone the repo and run `node test.js` immediately.
+- Matches the "black-box, real HTTP request" nature of system testing better than a framework's usual mocked/unit style.
+- The IDs and pass/fail output map 1:1 onto the traceability table in §4, so results can be read directly against the user stories during the Week 10 demo without any extra translation step.
+
+---
+
+## 9. How to Run
 
 ```bash
 # 1. Reset DB (optional, for a clean run)
@@ -164,6 +221,7 @@ npm run seed-resources
 npm start
 
 # 3. In a second terminal, run automated system tests
+cd test
 node test.js
 ```
 
