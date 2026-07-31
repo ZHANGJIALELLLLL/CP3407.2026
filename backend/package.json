@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node server.js",
     "seed-admin": "node seed-admin.js",
-    "seed-resources": "node seed-resources.js"
+    "seed-resources": "node seed-resources.js",
+    "seed-groups": "node seed-groups.js"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",

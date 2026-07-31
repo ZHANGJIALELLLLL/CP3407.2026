@@ -85,3 +85,35 @@ CREATE TABLE IF NOT EXISTS settings (
   setting_key VARCHAR(50) PRIMARY KEY,
   setting_value BOOLEAN NOT NULL DEFAULT TRUE
 );
+
+-- Anonymous support group categories (browse/create on group.html)
+CREATE TABLE IF NOT EXISTS group_categories (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  slug VARCHAR(60) NOT NULL UNIQUE,
+  label VARCHAR(60) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Anonymous support groups (chat rooms) shown on group.html
+CREATE TABLE IF NOT EXISTS groups_table (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  category_id INT NOT NULL,
+  name VARCHAR(120) NOT NULL,
+  description VARCHAR(200),
+  icon VARCHAR(10) DEFAULT '💬',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (category_id) REFERENCES group_categories(id) ON DELETE CASCADE
+);
+
+-- Messages posted inside a group chat. author_id is nullable so seeded
+-- "starter" messages (not tied to a real account) can still be stored.
+CREATE TABLE IF NOT EXISTS group_messages (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  group_id INT NOT NULL,
+  author_id INT,
+  nickname VARCHAR(50) NOT NULL,
+  content TEXT NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (group_id) REFERENCES groups_table(id) ON DELETE CASCADE,
+  FOREIGN KEY (author_id) REFERENCES users(id) ON DELETE SET NULL
+);

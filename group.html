@@ -1135,118 +1135,13 @@
   </footer>
 
   <script>
-    const DEFAULT_GROUPS = [
-      {
-        id: "exam-stress",
-        name: "Exam Stress Circle",
-        category: "academic",
-        description: "Talk about exam pressure, deadlines and study worries.",
-        icon: "📚",
-        members: 32,
-        messages: [
-          {
-            nickname: "Moonlight Fox",
-            avatar: "🌙",
-            content: "I have two assignments due this week and I feel overwhelmed.",
-            time: "10:41 AM"
-          },
-          {
-            nickname: "Blue Panda",
-            avatar: "🐼",
-            content: "You are not alone. I am dealing with the same thing.",
-            time: "10:43 AM"
-          },
-          {
-            nickname: "Soft Cloud",
-            avatar: "☁️",
-            content: "Breaking everything into smaller tasks has helped me.",
-            time: "10:45 AM"
-          }
-        ]
-      },
-      {
-        id: "lonely-overseas",
-        name: "Lonely Overseas Students",
-        category: "international-students",
-        description: "Share experiences and find comfort while studying away from home.",
-        icon: "🌏",
-        members: 28,
-        messages: [
-          {
-            nickname: "Gentle Koala",
-            avatar: "🐨",
-            content: "Weekends feel especially quiet when everyone I know is back home.",
-            time: "9:18 AM"
-          },
-          {
-            nickname: "Sunny Otter",
-            avatar: "🦦",
-            content: "I felt that too. Joining a campus activity helped me meet people slowly.",
-            time: "9:23 AM"
-          }
-        ]
-      },
-      {
-        id: "making-friends",
-        name: "Making Friends Safely",
-        category: "friendship",
-        description: "Discuss safe and meaningful ways to build new friendships.",
-        icon: "🤝",
-        members: 24,
-        messages: [
-          {
-            nickname: "Bright Rabbit",
-            avatar: "🐰",
-            content: "How do you start conversations without feeling awkward?",
-            time: "11:06 AM"
-          },
-          {
-            nickname: "Kind Penguin",
-            avatar: "🐧",
-            content: "I usually ask something simple about class or the assignment.",
-            time: "11:09 AM"
-          }
-        ]
-      },
-      {
-        id: "quiet-support",
-        name: "Quiet Support Space",
-        category: "mental-health",
-        description: "A calm group for listening, reflecting and encouraging one another.",
-        icon: "🌙",
-        members: 19,
-        messages: [
-          {
-            nickname: "Quiet Star",
-            avatar: "⭐",
-            content: "Taking short breaks helps me reset when everything feels too much.",
-            time: "8:51 PM"
-          },
-          {
-            nickname: "Calm Fox",
-            avatar: "🦊",
-            content: "Today I am trying to be patient with myself.",
-            time: "8:56 PM"
-          }
-        ]
-      }
-    ];
-
-    const BUILT_IN_CATEGORIES = [
-      { id: "all", label: "All" },
-      { id: "academic", label: "Academic" },
-      { id: "friendship", label: "Friendship" },
-      { id: "mental-health", label: "Mental Health" },
-      { id: "international-students", label: "International Students" }
-    ];
-
-    const GROUPS_STORAGE_KEY = "hd_supportGroups";
-    const CUSTOM_CATEGORIES_KEY = "hd_groupCategories";
-    const GROUP_MESSAGES_PREFIX = "hd_groupMessages_";
+    // Backend server address
+    const GROUPS_API_BASE_URL = "http://localhost:3000";
 
     const nickname =
       localStorage.getItem("hd_userNickname") || "Anonymous Student";
     const email = localStorage.getItem("hd_userEmail");
+    const userId = localStorage.getItem("hd_userId") || null;
 
     if (!email) {
       document.getElementById("loginGate").style.display = "flex";
@@ -1291,71 +1186,18 @@
       menuToggle.textContent = isOpen ? "✕" : "☰";
     });
 
-    function slugify(value) {
-      return value
-        .trim()
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, "-")
-        .replace(/^-+|-+$/g, "") || `category-${Date.now()}`;
-    }
-
     function escapeHtml(value) {
       const div = document.createElement("div");
       div.textContent = String(value);
       return div.innerHTML;
     }
 
-    function loadGroups() {
-      try {
-        const saved = JSON.parse(localStorage.getItem(GROUPS_STORAGE_KEY));
-        return Array.isArray(saved) && saved.length ? saved : DEFAULT_GROUPS;
-      } catch {
-        return DEFAULT_GROUPS;
-      }
-    }
-
-    function saveGroups() {
-      localStorage.setItem(GROUPS_STORAGE_KEY, JSON.stringify(groups));
-    }
-
-    function loadCustomCategories() {
-      try {
-        const saved = JSON.parse(localStorage.getItem(CUSTOM_CATEGORIES_KEY));
-        return Array.isArray(saved) ? saved : [];
-      } catch {
-        return [];
-      }
-    }
-
-    function saveCustomCategories() {
-      localStorage.setItem(
-        CUSTOM_CATEGORIES_KEY,
-        JSON.stringify(customCategories)
-      );
-    }
-
-    function loadMessages(group) {
-      try {
-        const saved = JSON.parse(
-          localStorage.getItem(`${GROUP_MESSAGES_PREFIX}${group.id}`)
-        );
-        return Array.isArray(saved) ? saved : group.messages || [];
-      } catch {
-        return group.messages || [];
-      }
-    }
-
-    function saveMessages(groupId, messages) {
-      localStorage.setItem(
-        `${GROUP_MESSAGES_PREFIX}${groupId}`,
-        JSON.stringify(messages)
-      );
-    }
-
-    let groups = loadGroups();
-    let customCategories = loadCustomCategories();
+    let categories = [];
+    let groups = [];
     let activeCategory = "all";
-    let activeGroupId = groups[0]?.id || null;
+    let activeGroupId = null;
+    let currentMessages = [];
+    let chatPollTimer = null;
 
     const categoryChips = document.getElementById("categoryChips");
     const groupList = document.getElementById("groupList");
@@ -1372,16 +1214,52 @@
     const messageForm = document.getElementById("messageForm");
     const messageInput = document.getElementById("messageInput");
 
-    function getCategoryLabel(categoryId) {
-      const categories = [...BUILT_IN_CATEGORIES, ...customCategories];
-      return categories.find((category) => category.id === categoryId)?.label ||
-        categoryId;
+    function getCategoryLabel(categorySlug) {
+      return (
+        categories.find((category) => category.slug === categorySlug)?.label ||
+        categorySlug
+      );
+    }
+
+    async function loadCategories() {
+      try {
+        const res = await fetch(`${GROUPS_API_BASE_URL}/api/group-categories`);
+        if (!res.ok) throw new Error("Failed to load categories");
+        categories = await res.json();
+      } catch (error) {
+        console.error(error);
+        categories = [];
+      }
+    }
+
+    async function loadGroups() {
+      try {
+        const res = await fetch(`${GROUPS_API_BASE_URL}/api/groups`);
+        if (!res.ok) throw new Error("Failed to load groups");
+        groups = await res.json();
+      } catch (error) {
+        console.error(error);
+        groups = [];
+      }
+    }
+
+    async function loadMessages(groupId) {
+      try {
+        const res = await fetch(`${GROUPS_API_BASE_URL}/api/groups/${groupId}/messages`);
+        if (!res.ok) throw new Error("Failed to load messages");
+        return await res.json();
+      } catch (error) {
+        console.error(error);
+        return [];
+      }
     }
 
     function renderCategoryChips() {
-      const categories = [...BUILT_IN_CATEGORIES, ...customCategories];
+      const chipList = [{ id: "all", label: "All" }].concat(
+        categories.map((c) => ({ id: c.slug, label: c.label }))
+      );
 
-      categoryChips.innerHTML = categories
+      categoryChips.innerHTML = chipList
         .map(
           (category) => `
             <button
@@ -1401,12 +1279,12 @@
 
       return groups.filter((group) => {
         const categoryMatches =
-          activeCategory === "all" || group.category === activeCategory;
+          activeCategory === "all" || group.categorySlug === activeCategory;
         const searchMatches =
           !search ||
           group.name.toLowerCase().includes(search) ||
-          group.description.toLowerCase().includes(search) ||
-          getCategoryLabel(group.category).toLowerCase().includes(search);
+          (group.description || "").toLowerCase().includes(search) ||
+          getCategoryLabel(group.categorySlug).toLowerCase().includes(search);
 
         return categoryMatches && searchMatches;
       });
@@ -1422,7 +1300,7 @@
           (group) => `
             <article
               class="group-card ${group.id === activeGroupId ? "active" : ""}"
-              data-group-id="${escapeHtml(group.id)}"
+              data-group-id="${group.id}"
               tabindex="0"
               role="button"
               aria-label="Open ${escapeHtml(group.name)}"
@@ -1431,15 +1309,15 @@
                 <div class="group-icon">${escapeHtml(group.icon || "💬")}</div>
                 <div class="group-card-copy">
                   <h3>${escapeHtml(group.name)}</h3>
-                  <p>${escapeHtml(group.description)}</p>
+                  <p>${escapeHtml(group.description || "")}</p>
                 </div>
               </div>
 
               <div class="group-meta">
                 <span class="group-tag">
-                  ${escapeHtml(getCategoryLabel(group.category))}
+                  ${escapeHtml(getCategoryLabel(group.categorySlug))}
                 </span>
-                <span class="online-count">${Number(group.members) || 1} online</span>
+                <span class="online-count">${Number(group.participantCount) || 1} joined</span>
               </div>
             </article>
           `
@@ -1453,27 +1331,36 @@
 
     function renderChat() {
       const group = activeGroup();
-      if (!group) return;
+      if (!group) {
+        document.getElementById("activeGroupName").textContent = "No groups yet";
+        document.getElementById("activeGroupMembers").textContent = "0";
+        chatMessages.innerHTML = "";
+        return;
+      }
 
       document.getElementById("activeGroupIcon").textContent = group.icon || "💬";
       document.getElementById("activeGroupName").textContent = group.name;
       document.getElementById("activeGroupMembers").textContent =
-        Number(group.members) || 1;
+        Number(group.participantCount) || 1;
       document.getElementById("activeGroupCategory").textContent =
-        getCategoryLabel(group.category);
+        getCategoryLabel(group.categorySlug);
 
-      const messages = loadMessages(group);
-
-      chatMessages.innerHTML = messages
+      chatMessages.innerHTML = currentMessages
         .map((message) => {
-          const isOwn = message.nickname === nickname;
+          const isOwn = userId && String(message.authorId) === String(userId);
+          const time = message.createdAt
+            ? new Date(message.createdAt).toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit"
+              })
+            : "";
           return `
             <div class="message ${isOwn ? "own" : ""}">
-              <div class="message-avatar">${escapeHtml(message.avatar || "🙂")}</div>
+              <div class="message-avatar">${isOwn ? "🙂" : "💬"}</div>
               <div class="message-body">
                 <div class="message-author">
                   <span>${escapeHtml(message.nickname)}</span>
-                  <span class="message-time">${escapeHtml(message.time || "")}</span>
+                  <span class="message-time">${escapeHtml(time)}</span>
                 </div>
                 <div class="message-bubble">${escapeHtml(message.content)}</div>
               </div>
@@ -1485,13 +1372,24 @@
       chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 
-    function selectGroup(groupId) {
-      activeGroupId = groupId;
+    async function selectGroup(groupId) {
+      activeGroupId = Number(groupId);
       renderGroupList();
+      currentMessages = await loadMessages(activeGroupId);
       renderChat();
+      restartChatPolling();
     }
 
-    categoryChips.addEventListener("click", (event) => {
+    function restartChatPolling() {
+      if (chatPollTimer) clearInterval(chatPollTimer);
+      chatPollTimer = setInterval(async () => {
+        if (!activeGroupId) return;
+        currentMessages = await loadMessages(activeGroupId);
+        renderChat();
+      }, 5000);
+    }
+
+    categoryChips.addEventListener("click", async (event) => {
       const chip = event.target.closest(".category-chip");
       if (!chip) return;
 
@@ -1501,22 +1399,22 @@
 
       const visible = filteredGroups();
       if (visible.length && !visible.some((group) => group.id === activeGroupId)) {
-        selectGroup(visible[0].id);
+        await selectGroup(visible[0].id);
       }
     });
 
-    groupList.addEventListener("click", (event) => {
+    groupList.addEventListener("click", async (event) => {
       const card = event.target.closest(".group-card");
       if (!card) return;
-      selectGroup(card.dataset.groupId);
+      await selectGroup(card.dataset.groupId);
     });
 
-    groupList.addEventListener("keydown", (event) => {
+    groupList.addEventListener("keydown", async (event) => {
       if (event.key !== "Enter" && event.key !== " ") return;
       const card = event.target.closest(".group-card");
       if (!card) return;
       event.preventDefault();
-      selectGroup(card.dataset.groupId);
+      await selectGroup(card.dataset.groupId);
     });
 
     groupSearch.addEventListener("input", renderGroupList);
@@ -1535,12 +1433,11 @@
       }
     });
 
-    categoryForm.addEventListener("submit", (event) => {
+    categoryForm.addEventListener("submit", async (event) => {
       event.preventDefault();
 
       const name = categoryNameInput.value.trim();
       const description = categoryDescriptionInput.value.trim();
-      const id = slugify(name);
 
       categoryError.classList.remove("show");
 
@@ -1551,59 +1448,52 @@
         return;
       }
 
-      const categoryExists = [...BUILT_IN_CATEGORIES, ...customCategories].some(
-        (category) =>
-          category.id === id ||
-          category.label.toLowerCase() === name.toLowerCase()
-      );
+      try {
+        const categoryRes = await fetch(`${GROUPS_API_BASE_URL}/api/group-categories`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ label: name })
+        });
+        const categoryData = await categoryRes.json();
 
-      if (categoryExists) {
-        categoryError.textContent = "This category already exists.";
+        if (!categoryRes.ok) {
+          throw new Error(categoryData.message || "Unable to create category.");
+        }
+
+        const groupRes = await fetch(`${GROUPS_API_BASE_URL}/api/groups`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            categorySlug: categoryData.slug,
+            name: `${name} Support Circle`,
+            description,
+            icon: "💬"
+          })
+        });
+        const groupData = await groupRes.json();
+
+        if (!groupRes.ok) {
+          throw new Error(groupData.message || "Unable to create group.");
+        }
+
+        await loadCategories();
+        await loadGroups();
+
+        activeCategory = categoryData.slug;
+        renderCategoryChips();
+        renderGroupList();
+        await selectGroup(groupData.id);
+
+        categoryForm.reset();
+        categoryForm.classList.remove("open");
+        toggleCategoryForm.textContent = "+ Create category";
+      } catch (error) {
+        categoryError.textContent = error.message || "Unable to create category. Please check that the server is running.";
         categoryError.classList.add("show");
-        return;
       }
-
-      const newCategory = { id, label: name };
-      customCategories.push(newCategory);
-      saveCustomCategories();
-
-      const newGroup = {
-        id: `${id}-support-circle-${Date.now()}`,
-        name: `${name} Support Circle`,
-        category: id,
-        description,
-        icon: "💬",
-        members: 1,
-        messages: [
-          {
-            nickname: "Hello Dear Guide",
-            avatar: "💜",
-            content:
-              "This category was created by a community member. Start the conversation kindly and protect everyone's privacy.",
-            time: new Date().toLocaleTimeString([], {
-              hour: "2-digit",
-              minute: "2-digit"
-            })
-          }
-        ]
-      };
-
-      groups.push(newGroup);
-      saveGroups();
-
-      activeCategory = id;
-      activeGroupId = newGroup.id;
-
-      renderCategoryChips();
-      renderGroupList();
-      renderChat();
-
-      categoryForm.reset();
-      categoryForm.classList.remove("open");
-      toggleCategoryForm.textContent = "+ Create category";
     });
 
-    messageForm.addEventListener("submit", (event) => {
+    messageForm.addEventListener("submit", async (event) => {
       event.preventDefault();
 
       const content = messageInput.value.trim();
@@ -1611,20 +1501,29 @@
 
       if (!content || !group) return;
 
-      const messages = loadMessages(group);
-      messages.push({
-        nickname,
-        avatar: "🙂",
-        content,
-        time: new Date().toLocaleTimeString([], {
-          hour: "2-digit",
-          minute: "2-digit"
-        })
-      });
+      const sendButton = messageForm.querySelector(".send-button");
+      sendButton.disabled = true;
 
-      saveMessages(group.id, messages);
-      messageInput.value = "";
-      renderChat();
+      try {
+        const res = await fetch(`${GROUPS_API_BASE_URL}/api/groups/${group.id}/messages`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ authorId: userId, nickname, content })
+        });
+
+        if (!res.ok) {
+          const data = await res.json().catch(() => ({}));
+          throw new Error(data.message || "Unable to send message.");
+        }
+
+        messageInput.value = "";
+        currentMessages = await loadMessages(group.id);
+        renderChat();
+      } catch (error) {
+        console.error(error);
+      } finally {
+        sendButton.disabled = false;
+      }
     });
 
     messageInput.addEventListener("keydown", (event) => {
@@ -1634,9 +1533,19 @@
       }
     });
 
-    renderCategoryChips();
-    renderGroupList();
-    renderChat();
+    async function init() {
+      await loadCategories();
+      await loadGroups();
+      renderCategoryChips();
+      renderGroupList();
+
+      const firstGroup = groups[0];
+      if (firstGroup) {
+        await selectGroup(firstGroup.id);
+      }
+    }
+
+    init();
   </script>
 </body>
 </html>
