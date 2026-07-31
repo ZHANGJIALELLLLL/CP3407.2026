@@ -1201,5 +1201,112 @@
     });
 
   </script>
+
+  <!-- Final authentication navigation repair: does not alter layout or page features -->
+  <script>
+    (() => {
+      const LOGIN_PAGE = "login.html";
+      const SIGNUP_PAGE = "signup.html";
+
+      function goTo(page) {
+        window.location.assign(page);
+      }
+
+      function clearLoginState() {
+        localStorage.removeItem("hd_userId");
+        localStorage.removeItem("hd_userEmail");
+        localStorage.removeItem("hd_userNickname");
+      }
+
+      function applyNavigationState() {
+        const loginLink = document.getElementById("loginNavLink");
+        const signupLink = document.getElementById("signupNavLink");
+
+        if (!loginLink || !signupLink) return;
+
+        const email = localStorage.getItem("hd_userEmail");
+        const nickname = localStorage.getItem("hd_userNickname");
+        const isLoggedIn = Boolean(email && email.trim());
+
+        /*
+         * Remove property-based handlers added by earlier scripts.
+         * Capture-phase navigation below also protects against old
+         * addEventListener handlers that cannot be removed here.
+         */
+        loginLink.onclick = null;
+        signupLink.onclick = null;
+
+        if (isLoggedIn) {
+          loginLink.textContent = nickname ? `Hi, ${nickname}` : "Account";
+          loginLink.removeAttribute("href");
+          loginLink.setAttribute("aria-disabled", "true");
+          loginLink.style.cursor = "default";
+
+          signupLink.textContent = "Log out";
+          signupLink.setAttribute("href", LOGIN_PAGE);
+          signupLink.removeAttribute("aria-disabled");
+          signupLink.style.cursor = "";
+        } else {
+          loginLink.textContent = "Log in";
+          loginLink.setAttribute("href", LOGIN_PAGE);
+          loginLink.removeAttribute("aria-disabled");
+          loginLink.style.cursor = "";
+
+          signupLink.textContent = "Sign up";
+          signupLink.setAttribute("href", SIGNUP_PAGE);
+          signupLink.removeAttribute("aria-disabled");
+          signupLink.style.cursor = "";
+        }
+      }
+
+      /*
+       * Use capture phase so these essential links work even when an older
+       * script attached a preventDefault handler during a previous login state.
+       */
+      document.addEventListener(
+        "click",
+        (event) => {
+          const link = event.target.closest("a");
+          if (!link) return;
+
+          const text = link.textContent.trim().toLowerCase();
+          const href = (link.getAttribute("href") || "").trim();
+
+          if (link.id === "signupNavLink" && text === "log out") {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            clearLoginState();
+            goTo(LOGIN_PAGE);
+            return;
+          }
+
+          if (
+            (link.id === "loginNavLink" && text === "log in") ||
+            href === LOGIN_PAGE
+          ) {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            goTo(LOGIN_PAGE);
+            return;
+          }
+
+          if (
+            (link.id === "signupNavLink" && text === "sign up") ||
+            href === SIGNUP_PAGE
+          ) {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            goTo(SIGNUP_PAGE);
+          }
+        },
+        true
+      );
+
+      applyNavigationState();
+      window.addEventListener("pageshow", applyNavigationState);
+      window.addEventListener("storage", applyNavigationState);
+    })();
+  </script>
+
 </body>
 </html>
