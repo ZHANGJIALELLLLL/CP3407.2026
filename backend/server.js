@@ -483,6 +483,143 @@ app.delete("/api/feedback/:id", async (req, res) => {
   }
 });
 
+// ─── Groups: list categories ───
+app.get("/api/group-categories", async (req, res) => {
+  try {
+    const [categories] = await pool.query(
+      `SELECT id, slug, label FROM group_categories ORDER BY id ASC`
+    );
+    res.json(categories);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "A server error occurred." });
+  }
+});
+
+function slugify(value) {
+  return (
+    value
+      .trim()
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "") || `category-${Date.now()}`
+  );
+}
+
+// ─── Groups: create a category ───
+app.post("/api/group-categories", async (req, res) => {
+  try {
+    const { label } = req.body;
+    if (!label || label.trim().length < 3) {
+      return res.status(400).json({ message: "Please enter a category name with at least 3 characters." });
+    }
+
+    const slug = slugify(label);
+
+    const [existing] = await pool.query(
+      `SELECT id FROM group_categories WHERE slug = ? OR label = ?`,
+      [slug, label.trim()]
+    );
+    if (existing.length > 0) {
+      return res.status(409).json({ message: "This category already exists." });
+    }
+
+    const [result] = await pool.query(
+      `INSERT INTO group_categories (slug, label) VALUES (?, ?)`,
+      [slug, label.trim()]
+    );
+
+    res.status(201).json({ id: result.insertId, slug, label: label.trim() });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "A server error occurred." });
+  }
+});
+
+// ─── Groups: list all groups (with category info + activity counts) ───
+app.get("/api/groups", async (req, res) => {
+  try {
+    const [groups] = await pool.query(
+      `SELECT g.id, g.name, g.description, g.icon, g.created_at AS createdAt,
+              c.slug AS categorySlug, c.label AS categoryLabel,
+              (SELECT COUNT(*) FROM group_messages m WHERE m.group_id = g.id) AS messageCount,
+              (SELECT COUNT(DISTINCT m.author_id) FROM group_messages m WHERE m.group_id = g.id AND m.author_id IS NOT NULL) AS participantCount
+       FROM groups_table g
+       JOIN group_categories c ON c.id = g.category_id
+       ORDER BY g.id ASC`
+    );
+    res.json(groups);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "A server error occurred." });
+  }
+});
+
+// ─── Groups: create a group inside a category ───
+app.post("/api/groups", async (req, res) => {
+  try {
+    const { categorySlug, name, description, icon } = req.body;
+    if (!categorySlug || !name) {
+      return res.status(400).json({ message: "Category and group name are required." });
+    }
+
+    const [[category]] = await pool.query(
+      `SELECT id FROM group_categories WHERE slug = ?`,
+      [categorySlug]
+    );
+    if (!category) {
+      return res.status(404).json({ message: "Category not found." });
+    }
+
+    const [result] = await pool.query(
+      `INSERT INTO groups_table (category_id, name, description, icon) VALUES (?, ?, ?, ?)`,
+      [category.id, name, description || null, icon || "💬"]
+    );
+
+    res.status(201).json({ id: result.insertId, name, description: description || null, icon: icon || "💬", categorySlug });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "A server error occurred." });
+  }
+});
+
+// ─── Groups: get messages for a group ───
+app.get("/api/groups/:id/messages", async (req, res) => {
+  try {
+    const [messages] = await pool.query(
+      `SELECT id, author_id AS authorId, nickname, content, created_at AS createdAt
+       FROM group_messages
+       WHERE group_id = ?
+       ORDER BY id ASC`,
+      [req.params.id]
+    );
+    res.json(messages);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "A server error occurred." });
+  }
+});
+
+// ─── Groups: post a message to a group ───
+app.post("/api/groups/:id/messages", async (req, res) => {
+  try {
+    const { authorId, nickname, content } = req.body;
+    if (!content || !content.trim()) {
+      return res.status(400).json({ message: "Please write a message before sending." });
+    }
+
+    const [result] = await pool.query(
+      `INSERT INTO group_messages (group_id, author_id, nickname, content) VALUES (?, ?, ?, ?)`,
+      [req.params.id, authorId || null, nickname || "Anonymous Student", content.trim()]
+    );
+
+    res.status(201).json({ id: result.insertId });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "A server error occurred." });
+  }
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running: http://localhost:${PORT}`);

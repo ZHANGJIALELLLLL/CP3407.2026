@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Log in to Hello Dear, an anonymous peer-support platform for university students." />
   <title>Log In | Hello Dear</title>
-
   <style>
     :root {
       --primary: #6257e8;
@@ -26,18 +25,15 @@
       --radius-medium: 16px;
       --max-width: 1180px;
     }
-
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
-
     .site-footer {
       border-top: 1px solid var(--border);
       background: var(--white);
     }
-
     .footer-bar {
       min-height: 76px;
       display: flex;
@@ -48,7 +44,6 @@
       color: var(--text);
       font-size: 0.85rem;
     }
-
     .footer-bar .brand {
       display: inline-flex;
       align-items: center;
@@ -57,23 +52,19 @@
       font-weight: 800;
       letter-spacing: -0.03em;
     }
-
     .footer-bar .brand-mark {
       color: var(--primary);
       display: grid;
       place-items: center;
     }
-
     .footer-bar-links {
       display: flex;
       flex-wrap: wrap;
       gap: 18px;
     }
-
     .footer-bar-links a:hover {
       color: var(--primary);
     }
-
     @media (max-width: 640px) {
       .footer-bar {
         flex-direction: column;
@@ -81,11 +72,9 @@
         padding: 20px 0;
       }
     }
-
     html {
       scroll-behavior: smooth;
     }
-
     body {
       min-height: 100vh;
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
@@ -97,22 +86,18 @@
         var(--background);
       line-height: 1.55;
     }
-
     a {
       color: inherit;
       text-decoration: none;
     }
-
     button,
     input {
       font: inherit;
     }
-
     .container {
       width: min(calc(100% - 40px), var(--max-width));
       margin: 0 auto;
     }
-
     /* Header */
     .site-header {
       position: sticky;
@@ -122,7 +107,6 @@
       backdrop-filter: blur(14px);
       border-bottom: 1px solid rgba(221, 226, 240, 0.9);
     }
-
     .navbar {
       min-height: 76px;
       display: flex;
@@ -130,7 +114,6 @@
       justify-content: space-between;
       gap: 24px;
     }
-
     .brand {
       display: inline-flex;
       align-items: center;
@@ -139,7 +122,6 @@
       font-weight: 850;
       letter-spacing: -0.04em;
     }
-
     .brand-mark {
       width: 34px;
       height: 34px;
@@ -147,14 +129,12 @@
       place-items: center;
       color: var(--primary);
     }
-
     .nav-links {
       display: flex;
       align-items: center;
       gap: 28px;
       list-style: none;
     }
-
     .nav-links a {
       position: relative;
       padding: 27px 0 24px;
@@ -162,17 +142,14 @@
       font-size: 0.95rem;
       font-weight: 650;
     }
-
     .nav-links a:hover {
       color: var(--primary);
     }
-
     .nav-actions {
       display: flex;
       align-items: center;
       gap: 10px;
     }
-
     .button {
       min-height: 44px;
       display: inline-flex;
@@ -186,32 +163,26 @@
       cursor: pointer;
       transition: 0.2s ease;
     }
-
     .button:hover {
       transform: translateY(-2px);
     }
-
     .button-primary {
       color: var(--white);
       background: linear-gradient(135deg, var(--primary), #776df4);
       box-shadow: 0 10px 22px rgba(98, 87, 232, 0.22);
     }
-
     .button-primary:hover {
       background: linear-gradient(135deg, var(--primary-dark), var(--primary));
     }
-
     .button-outline {
       color: var(--navy);
       background: var(--white);
       border-color: #aeb5d7;
     }
-
     .button-outline:hover {
       color: var(--primary);
       border-color: var(--primary);
     }
-
     .menu-toggle {
       display: none;
       width: 44px;
@@ -221,7 +192,6 @@
       background: var(--white);
       cursor: pointer;
     }
-
     /* Main layout */
     .login-section {
       min-height: calc(100vh - 76px);
@@ -229,7 +199,6 @@
       place-items: center;
       padding: 54px 0;
     }
-
     .login-shell {
       width: 100%;
       display: grid;
@@ -240,7 +209,6 @@
       background: var(--white);
       box-shadow: var(--shadow);
     }
-
     /* Visual panel */
     .visual-panel {
       position: relative;
@@ -253,7 +221,6 @@
         radial-gradient(circle at 20% 78%, rgba(255, 255, 255, 0.12), transparent 18%),
         linear-gradient(145deg, #342b8d 0%, #6257e8 54%, #8178f7 100%);
     }
-
     .visual-panel::before,
     .visual-panel::after {
       content: "";
@@ -261,21 +228,18 @@
       border-radius: 50%;
       background: rgba(255, 255, 255, 0.08);
     }
-
     .visual-panel::before {
       width: 240px;
       height: 240px;
       top: -100px;
       right: -70px;
     }
-
     .visual-panel::after {
       width: 190px;
       height: 190px;
       left: -75px;
       bottom: -70px;
     }
-
     .visual-content {
       position: relative;
       z-index: 2;
@@ -283,7 +247,6 @@
       display: flex;
       flex-direction: column;
     }
-
     .eyebrow {
       display: inline-flex;
       align-items: center;
@@ -295,7 +258,6 @@
       text-transform: uppercase;
       color: #ddd9ff;
     }
-
     .visual-panel h1 {
       max-width: 520px;
       margin-bottom: 18px;
@@ -303,20 +265,17 @@
       line-height: 1.02;
       letter-spacing: -0.06em;
     }
-
     .visual-panel p {
       max-width: 540px;
       color: #eeeaff;
       font-size: 1.05rem;
     }
-
     .benefit-list {
       display: grid;
       gap: 14px;
       margin-top: 32px;
       max-width: 490px;
     }
-
     .benefit {
       display: flex;
       align-items: flex-start;
@@ -327,7 +286,6 @@
       background: rgba(255, 255, 255, 0.09);
       backdrop-filter: blur(7px);
     }
-
     .benefit-icon {
       flex: 0 0 auto;
       width: 34px;
@@ -337,24 +295,20 @@
       border-radius: 10px;
       background: rgba(255,255,255,0.16);
     }
-
     .benefit strong {
       display: block;
       margin-bottom: 2px;
       font-size: 0.94rem;
     }
-
     .benefit span {
       color: #e9e6ff;
       font-size: 0.84rem;
     }
-
     .student-illustration {
       margin-top: auto;
       position: relative;
       min-height: 225px;
     }
-
     .speech {
       position: absolute;
       right: 44px;
@@ -369,7 +323,6 @@
       font-size: 2.5rem;
       box-shadow: 0 14px 30px rgba(25, 20, 74, 0.23);
     }
-
     .people {
       position: absolute;
       left: 50%;
@@ -378,19 +331,16 @@
       height: 180px;
       transform: translateX(-50%);
     }
-
     .person {
       position: absolute;
       bottom: 0;
       width: 92px;
       height: 170px;
     }
-
     .person:nth-child(1) { left: 15px; transform: rotate(-2deg); }
     .person:nth-child(2) { left: 100px; transform: translateY(-10px); }
     .person:nth-child(3) { left: 192px; transform: translateY(-5px); }
     .person:nth-child(4) { right: 15px; transform: rotate(2deg); }
-
     .head {
       position: absolute;
       top: 11px;
@@ -401,7 +351,6 @@
       background: #f2b68e;
       z-index: 3;
     }
-
     .hair {
       position: absolute;
       top: 5px;
@@ -412,7 +361,6 @@
       background: #172344;
       z-index: 4;
     }
-
     .body {
       position: absolute;
       top: 51px;
@@ -421,7 +369,6 @@
       height: 91px;
       border-radius: 25px 25px 16px 16px;
     }
-
     .leg {
       position: absolute;
       bottom: 4px;
@@ -430,15 +377,12 @@
       border-radius: 18px;
       background: #243255;
     }
-
     .leg.left { left: 19px; transform: rotate(13deg); }
     .leg.right { right: 14px; transform: rotate(-13deg); }
-
     .person:nth-child(1) .body { background: #f18ab2; }
     .person:nth-child(2) .body { background: #ffffff; }
     .person:nth-child(3) .body { background: #38ad91; }
     .person:nth-child(4) .body { background: #4b69e8; }
-
     .ground {
       position: absolute;
       left: 5%;
@@ -448,7 +392,6 @@
       border-radius: 50%;
       background: rgba(26, 23, 88, 0.26);
     }
-
     /* Form panel */
     .form-panel {
       padding: 62px 64px;
@@ -459,36 +402,29 @@
         radial-gradient(circle at 90% 12%, rgba(98, 87, 232, 0.06), transparent 24%),
         var(--white);
     }
-
     .form-header {
       margin-bottom: 28px;
     }
-
     .form-header h2 {
       margin-bottom: 8px;
       font-size: clamp(2rem, 4vw, 3rem);
       letter-spacing: -0.05em;
     }
-
     .form-header p {
       color: var(--text);
     }
-
     .form-header a {
       color: var(--primary);
       font-weight: 750;
     }
-
     .login-form {
       display: grid;
       gap: 19px;
     }
-
     .form-group {
       display: grid;
       gap: 8px;
     }
-
     .form-label {
       display: flex;
       align-items: center;
@@ -497,16 +433,13 @@
       font-size: 0.91rem;
       font-weight: 760;
     }
-
     .form-label a {
       color: var(--primary);
       font-size: 0.86rem;
     }
-
     .field-wrap {
       position: relative;
     }
-
     .field-icon {
       position: absolute;
       left: 15px;
@@ -515,7 +448,6 @@
       color: #8a91aa;
       pointer-events: none;
     }
-
     .form-input {
       width: 100%;
       min-height: 52px;
@@ -527,22 +459,18 @@
       outline: none;
       transition: 0.2s ease;
     }
-
     .form-input::placeholder {
       color: #a5abc0;
     }
-
     .form-input:focus {
       border-color: var(--primary);
       background: var(--white);
       box-shadow: 0 0 0 4px rgba(98, 87, 232, 0.10);
     }
-
     .form-input.invalid {
       border-color: var(--danger);
       background: var(--danger-light);
     }
-
     .password-toggle {
       position: absolute;
       right: 11px;
@@ -556,19 +484,16 @@
       color: #7f879e;
       cursor: pointer;
     }
-
     .password-toggle:hover {
       color: var(--primary);
       background: var(--primary-light);
     }
-
     .field-error {
       min-height: 18px;
       color: var(--danger);
       font-size: 0.79rem;
       font-weight: 650;
     }
-
     .form-options {
       display: flex;
       align-items: center;
@@ -576,7 +501,6 @@
       gap: 14px;
       margin-top: -2px;
     }
-
     .checkbox-label {
       display: inline-flex;
       align-items: center;
@@ -585,13 +509,11 @@
       font-size: 0.88rem;
       cursor: pointer;
     }
-
     .checkbox-label input {
       width: 17px;
       height: 17px;
       accent-color: var(--primary);
     }
-
     .login-button {
       width: 100%;
       min-height: 52px;
@@ -605,18 +527,15 @@
       cursor: pointer;
       transition: 0.2s ease;
     }
-
     .login-button:hover {
       transform: translateY(-2px);
       background: linear-gradient(135deg, var(--primary-dark), var(--primary));
     }
-
     .login-button:disabled {
       opacity: 0.65;
       cursor: not-allowed;
       transform: none;
     }
-
     .status-message {
       display: none;
       padding: 12px 14px;
@@ -624,23 +543,19 @@
       font-size: 0.87rem;
       font-weight: 680;
     }
-
     .status-message.show {
       display: block;
     }
-
     .status-message.success {
       color: var(--success);
       background: var(--success-light);
       border: 1px solid #cbe9d9;
     }
-
     .status-message.error {
       color: var(--danger);
       background: var(--danger-light);
       border: 1px solid #f3c9cf;
     }
-
     .divider {
       display: flex;
       align-items: center;
@@ -649,7 +564,6 @@
       color: var(--muted);
       font-size: 0.82rem;
     }
-
     .divider::before,
     .divider::after {
       content: "";
@@ -657,7 +571,6 @@
       height: 1px;
       background: var(--border);
     }
-
     .guest-button {
       width: 100%;
       min-height: 49px;
@@ -669,13 +582,11 @@
       cursor: pointer;
       transition: 0.2s ease;
     }
-
     .guest-button:hover {
       color: var(--primary);
       border-color: var(--primary);
       background: var(--primary-light);
     }
-
     .privacy-note {
       margin-top: 23px;
       padding: 14px 16px;
@@ -684,23 +595,36 @@
       background: #f7f7fc;
       font-size: 0.82rem;
     }
-
     .privacy-note strong {
       color: var(--navy);
     }
-
     .footer-note {
       margin-top: 24px;
       text-align: center;
       color: var(--muted);
       font-size: 0.82rem;
     }
-
     .footer-note a {
       color: var(--primary);
       font-weight: 680;
     }
-
+    .admin-link-row {
+      margin-top: 14px;
+      text-align: center;
+    }
+    .admin-link-row button {
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      font-size: 0.8rem;
+      font-weight: 650;
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .admin-link-row button:hover {
+      color: var(--primary);
+    }
     @media (max-width: 980px) {
       .nav-links {
         position: fixed;
@@ -717,177 +641,61 @@
         background: var(--white);
         box-shadow: var(--shadow);
       }
-
       .nav-links.open {
         display: flex;
       }
-
       .nav-links a {
         display: block;
         padding: 14px 0;
       }
-
       .menu-toggle {
         display: inline-grid;
         place-items: center;
       }
-
       .nav-actions .button-outline {
         display: none;
       }
-
       .login-shell {
         grid-template-columns: 1fr;
       }
-
       .visual-panel {
         min-height: 560px;
       }
     }
-
     @media (max-width: 640px) {
       .container {
         width: min(calc(100% - 24px), var(--max-width));
       }
-
       .nav-actions .button-primary {
         display: none;
       }
-
       .login-section {
         padding: 24px 0;
       }
-
       .visual-panel {
         min-height: 480px;
         padding: 34px 24px;
       }
-
       .benefit-list {
         display: none;
       }
-
       .student-illustration {
         min-height: 210px;
       }
-
       .people {
         transform: translateX(-50%) scale(0.78);
         transform-origin: center bottom;
       }
-
       .form-panel {
         padding: 38px 24px;
       }
-
       .form-options {
         align-items: flex-start;
         flex-direction: column;
       }
     }
-
-    /* Terms of Use and Privacy Policy modals */
-    .legal-modal {
-      position: fixed;
-      inset: 0;
-      z-index: 1000;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-      background: rgba(18, 25, 54, 0.58);
-      backdrop-filter: blur(5px);
-    }
-
-    .legal-modal.open {
-      display: flex;
-    }
-
-    .legal-modal-dialog {
-      position: relative;
-      width: min(100%, 680px);
-      max-height: min(82vh, 760px);
-      overflow-y: auto;
-      padding: 32px;
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      background: var(--white);
-      box-shadow: 0 28px 80px rgba(18, 25, 54, 0.28);
-      outline: none;
-    }
-
-    .legal-modal-header {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 20px;
-      margin-bottom: 20px;
-    }
-
-    .legal-modal-title {
-      font-size: 1.7rem;
-      letter-spacing: -0.04em;
-    }
-
-    .legal-modal-close {
-      flex: 0 0 auto;
-      width: 40px;
-      height: 40px;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      background: var(--white);
-      color: var(--navy);
-      font-size: 1.35rem;
-      cursor: pointer;
-    }
-
-    .legal-modal-close:hover {
-      color: var(--primary);
-      border-color: var(--primary);
-      background: var(--primary-light);
-    }
-
-    .legal-modal-content {
-      display: grid;
-      gap: 16px;
-      color: var(--text);
-      font-size: 0.94rem;
-      line-height: 1.7;
-    }
-
-    .legal-modal-content h3 {
-      color: var(--navy);
-      font-size: 1.02rem;
-    }
-
-    .legal-modal-content ul {
-      padding-left: 22px;
-    }
-
-    .legal-link {
-      color: var(--primary);
-      font-weight: 680;
-      text-decoration: underline;
-      text-underline-offset: 3px;
-    }
-
-    body.modal-open {
-      overflow: hidden;
-    }
-
-    @media (max-width: 640px) {
-      .legal-modal {
-        padding: 12px;
-      }
-
-      .legal-modal-dialog {
-        padding: 24px 20px;
-      }
-    }
-
   </style>
 </head>
-
 <body>
   <header class="site-header">
     <div class="container navbar">
@@ -901,7 +709,6 @@
         </span>
         Hello Dear
       </a>
-
       <nav aria-label="Main navigation">
         <ul class="nav-links" id="navLinks">
           <li><a href="index.html">Home</a></li>
@@ -910,7 +717,6 @@
           <li><a href="about.html">About Us</a></li>
         </ul>
       </nav>
-
       <div class="nav-actions">
         <a class="button button-outline" href="login.html">Log in</a>
         <a class="button button-primary" href="signup.html">Sign up</a>
@@ -920,7 +726,6 @@
       </div>
     </div>
   </header>
-
   <main class="login-section">
     <div class="container">
       <section class="login-shell" aria-labelledby="loginTitle">
@@ -932,7 +737,6 @@
               Log in to continue sharing anonymously, supporting other students,
               and finding useful university resources.
             </p>
-
             <div class="benefit-list">
               <div class="benefit">
                 <div class="benefit-icon">🔒</div>
@@ -941,7 +745,6 @@
                   <span>Your real name is not shown in posts or comments.</span>
                 </div>
               </div>
-
               <div class="benefit">
                 <div class="benefit-icon">💬</div>
                 <div>
@@ -949,7 +752,6 @@
                   <span>Share experiences and encourage other students respectfully.</span>
                 </div>
               </div>
-
               <div class="benefit">
                 <div class="benefit-icon">⚑</div>
                 <div>
@@ -958,7 +760,6 @@
                 </div>
               </div>
             </div>
-
             <div class="student-illustration" aria-label="Illustration of students supporting one another">
               <div class="speech" aria-hidden="true">♥</div>
               <div class="ground"></div>
@@ -983,7 +784,6 @@
             </div>
           </div>
         </aside>
-
         <div class="form-panel">
           <div class="form-header">
             <span class="eyebrow" style="color: var(--primary);">Hello Dear account</span>
@@ -993,7 +793,6 @@
               <a href="signup.html">Create an account</a>
             </p>
           </div>
-
           <form class="login-form" id="loginForm" novalidate>
             <div class="form-group">
               <label class="form-label" for="email">University email</label>
@@ -1012,13 +811,10 @@
               </div>
               <p class="field-error" id="emailError"></p>
             </div>
-
             <div class="form-group">
               <div class="form-label">
                 <label for="password">Password</label>
-                <a href="forgot-password.html">Forgot password?</a>
               </div>
-
               <div class="field-wrap">
                 <span class="field-icon" aria-hidden="true">🔑</span>
                 <input
@@ -1044,182 +840,38 @@
               </div>
               <p class="field-error" id="passwordError"></p>
             </div>
-
             <div class="form-options">
               <label class="checkbox-label" for="remember">
                 <input id="remember" name="remember" type="checkbox" />
                 Remember me on this device
               </label>
             </div>
-
             <div class="status-message" id="statusMessage" role="status" aria-live="polite"></div>
-
-            <button class="login-button" id="userLoginButton" type="button">
-              User Login
+            <button class="login-button" id="loginButton" type="submit">
+              Log in securely
             </button>
-
             <div class="divider">or</div>
-
-            <button class="guest-button" id="adminLoginButton" type="button">
-              Admin Login
+            <button class="guest-button" id="guestButton" type="button">
+              Continue as a guest
             </button>
           </form>
-
+          <div class="admin-link-row">
+            <button type="button" id="adminModeToggle">Are you an administrator? Log in here</button>
+          </div>
           <div class="privacy-note">
             <strong>Privacy note:</strong> Your email is used for account access
             and is not displayed publicly. Anonymous nicknames are used in the
             community.
           </div>
-
           <p class="footer-note">
             By continuing, you agree to our
-            <a href="#termsModal" class="legal-link" data-modal-target="termsModal">Terms of Use</a> and
-            <a href="#privacyModal" class="legal-link" data-modal-target="privacyModal">Privacy Policy</a>.
+            <a href="#">Terms of Use</a> and
+            <a href="#">Privacy Policy</a>.
           </p>
         </div>
       </section>
     </div>
   </main>
-
-
-  <!-- Terms of Use modal -->
-  <div
-    class="legal-modal"
-    id="termsModal"
-    role="dialog"
-    aria-modal="true"
-    aria-labelledby="termsModalTitle"
-    aria-hidden="true"
-  >
-    <div class="legal-modal-dialog" tabindex="-1">
-      <div class="legal-modal-header">
-        <h2 class="legal-modal-title" id="termsModalTitle">Terms of Use</h2>
-        <button
-          class="legal-modal-close"
-          type="button"
-          aria-label="Close Terms of Use"
-        >
-          ×
-        </button>
-      </div>
-
-      <div class="legal-modal-content">
-        <p>
-          By using Hello Dear, you agree to use the platform respectfully,
-          responsibly and only for lawful student peer-support purposes.
-        </p>
-
-        <h3>1. Respectful participation</h3>
-        <p>
-          Users must not harass, threaten, discriminate against, impersonate
-          or deliberately harm other members of the community.
-        </p>
-
-        <h3>2. Anonymous participation</h3>
-        <p>
-          Your display nickname may be visible publicly. Do not include your
-          real name, student number, home address, telephone number or other
-          identifying information in public posts or comments.
-        </p>
-
-        <h3>3. Prohibited content</h3>
-        <p>
-          Users must not submit illegal content, spam, malicious links,
-          another person's private information or material that violates
-          university rules.
-        </p>
-
-        <h3>4. Moderation</h3>
-        <p>
-          Hello Dear administrators may review reports, remove inappropriate
-          content or restrict accounts when necessary to protect the community.
-        </p>
-
-        <h3>5. Support limitations</h3>
-        <p>
-          Hello Dear provides peer-support information and is not a substitute
-          for professional medical, counselling, legal or emergency services.
-        </p>
-
-        <h3>6. Account security</h3>
-        <p>
-          Users are responsible for keeping their passwords secure and for
-          activity performed through their accounts.
-        </p>
-      </div>
-    </div>
-  </div>
-
-  <!-- Privacy Policy modal -->
-  <div
-    class="legal-modal"
-    id="privacyModal"
-    role="dialog"
-    aria-modal="true"
-    aria-labelledby="privacyModalTitle"
-    aria-hidden="true"
-  >
-    <div class="legal-modal-dialog" tabindex="-1">
-      <div class="legal-modal-header">
-        <h2 class="legal-modal-title" id="privacyModalTitle">Privacy Policy</h2>
-        <button
-          class="legal-modal-close"
-          type="button"
-          aria-label="Close Privacy Policy"
-        >
-          ×
-        </button>
-      </div>
-
-      <div class="legal-modal-content">
-        <p>
-          Hello Dear is designed to let students participate using an
-          anonymous display nickname.
-        </p>
-
-        <h3>1. Information collected</h3>
-        <p>
-          The platform may collect a display nickname, university email,
-          protected password information, posts, feedback and basic account
-          activity required to operate the service.
-        </p>
-
-        <h3>2. How information is used</h3>
-        <p>
-          Information is used to provide account access, operate platform
-          features, prevent misuse and support moderation.
-        </p>
-
-        <h3>3. Public information</h3>
-        <p>
-          Your nickname and content you choose to publish may be visible to
-          other users. Your university email and password are not displayed
-          publicly.
-        </p>
-
-        <h3>4. Password protection</h3>
-        <p>
-          Passwords should be stored securely as password hashes rather than
-          as plain text.
-        </p>
-
-        <h3>5. Administrator access</h3>
-        <p>
-          Authorised administrators may access limited account or feedback
-          information when required for platform operation, safety or
-          troubleshooting.
-        </p>
-
-        <h3>6. Data minimisation</h3>
-        <p>
-          Users should avoid sharing unnecessary personal information in
-          posts, comments, feedback or display nicknames.
-        </p>
-      </div>
-    </div>
-  </div>
-
-
   <footer class="site-footer">
     <div class="container footer-bar">
       <a class="brand" href="index.html">
@@ -1240,16 +892,17 @@
       </div>
     </div>
   </footer>
-
   <script>
     const menuToggle = document.getElementById("menuToggle");
     const navLinks = document.getElementById("navLinks");
-
     menuToggle.addEventListener("click", () => {
       const isOpen = navLinks.classList.toggle("open");
       menuToggle.setAttribute("aria-expanded", String(isOpen));
       menuToggle.textContent = isOpen ? "✕" : "☰";
     });
+
+    // Backend server address
+    const API_BASE_URL = "http://localhost:3000";
 
     const loginForm = document.getElementById("loginForm");
     const emailInput = document.getElementById("email");
@@ -1259,45 +912,68 @@
     const passwordError = document.getElementById("passwordError");
     const passwordToggle = document.getElementById("passwordToggle");
     const statusMessage = document.getElementById("statusMessage");
-    const userLoginButton = document.getElementById("userLoginButton");
-    const adminLoginButton = document.getElementById("adminLoginButton");
+    const loginButton = document.getElementById("loginButton");
+    const guestButton = document.getElementById("guestButton");
+    const adminModeToggle = document.getElementById("adminModeToggle");
+    const emailLabel = document.querySelector('label[for="email"]');
 
-    // Backend server address (running locally via npm start)
-    const API_BASE_URL = "http://localhost:3000";
+    let adminMode = false;
 
     function showStatus(message, type) {
       statusMessage.textContent = message;
       statusMessage.className = `status-message show ${type}`;
     }
-
     function clearStatus() {
       statusMessage.textContent = "";
       statusMessage.className = "status-message";
     }
-
     function setFieldState(input, errorElement, message) {
       errorElement.textContent = message;
       input.classList.toggle("invalid", Boolean(message));
       input.setAttribute("aria-invalid", String(Boolean(message)));
     }
-
     function isValidEmail(value) {
       return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value);
     }
+
+    // ─── Toggle between "student" login (email) and admin login (admin ID) ───
+    adminModeToggle.addEventListener("click", () => {
+      adminMode = !adminMode;
+      clearStatus();
+      setFieldState(emailInput, emailError, "");
+      setFieldState(passwordInput, passwordError, "");
+
+      if (adminMode) {
+        emailInput.type = "text";
+        emailInput.placeholder = "Admin ID";
+        emailLabel.textContent = "Admin ID";
+        loginButton.textContent = "Admin log in";
+        adminModeToggle.textContent = "Not an admin? Log in as a student";
+      } else {
+        emailInput.type = "email";
+        emailInput.placeholder = "student@example.edu";
+        emailLabel.textContent = "University email";
+        loginButton.textContent = "Log in securely";
+        adminModeToggle.textContent = "Are you an administrator? Log in here";
+      }
+    });
 
     function validateForm() {
       const email = emailInput.value.trim();
       const password = passwordInput.value;
       let valid = true;
-
       setFieldState(emailInput, emailError, "");
       setFieldState(passwordInput, passwordError, "");
       clearStatus();
 
       if (!email) {
-        setFieldState(emailInput, emailError, "Please enter your university email.");
+        setFieldState(
+          emailInput,
+          emailError,
+          adminMode ? "Please enter your admin ID." : "Please enter your university email."
+        );
         valid = false;
-      } else if (!isValidEmail(email)) {
+      } else if (!adminMode && !isValidEmail(email)) {
         setFieldState(emailInput, emailError, "Please enter a valid email address.");
         valid = false;
       }
@@ -1320,14 +996,12 @@
       passwordToggle.setAttribute("aria-label", isHidden ? "Hide password" : "Show password");
       passwordToggle.textContent = isHidden ? "◉̸" : "◉";
     });
-
     emailInput.addEventListener("input", () => {
       if (emailInput.classList.contains("invalid")) {
         setFieldState(emailInput, emailError, "");
       }
       clearStatus();
     });
-
     passwordInput.addEventListener("input", () => {
       if (passwordInput.classList.contains("invalid")) {
         setFieldState(passwordInput, passwordError, "");
@@ -1335,161 +1009,76 @@
       clearStatus();
     });
 
-    loginForm.addEventListener("submit", (event) => {
-      // Buttons are type="button", so this only guards against an accidental
-      // Enter-key submit; the real logic lives in the click handlers below.
+    loginForm.addEventListener("submit", async (event) => {
       event.preventDefault();
-    });
 
-    userLoginButton.addEventListener("click", async () => {
       if (!validateForm()) {
         showStatus("Please correct the highlighted fields before continuing.", "error");
         return;
       }
 
-      userLoginButton.disabled = true;
-      userLoginButton.textContent = "Checking account...";
-
-      const payload = {
-        email: emailInput.value.trim(),
-        password: passwordInput.value
-      };
+      loginButton.disabled = true;
+      loginButton.textContent = "Checking account...";
 
       try {
-        const response = await fetch(`${API_BASE_URL}/api/login`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload)
-        });
+        if (adminMode) {
+          const response = await fetch(`${API_BASE_URL}/api/admin/login`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              adminId: emailInput.value.trim(),
+              password: passwordInput.value
+            })
+          });
+          const data = await response.json();
+          if (!response.ok) {
+            throw new Error(data.message || "Admin login failed.");
+          }
 
-        const data = await response.json();
+          showStatus("Admin login successful. Redirecting...", "success");
+          setTimeout(() => {
+            window.location.href = "admin.html";
+          }, 500);
+        } else {
+          const response = await fetch(`${API_BASE_URL}/api/login`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              email: emailInput.value.trim(),
+              password: passwordInput.value
+            })
+          });
+          const data = await response.json();
+          if (!response.ok) {
+            throw new Error(data.message || "Unable to log in.");
+          }
 
-        if (!response.ok) {
-          throw new Error(data.message || "Unable to log in.");
+          // community.html / create-post.html / group.html all check these
+          // localStorage keys to decide whether someone is logged in.
+          localStorage.setItem("hd_userId", String(data.id));
+          localStorage.setItem("hd_userEmail", data.email);
+          localStorage.setItem("hd_userNickname", data.nickname || "");
+
+          showStatus("Login successful! Redirecting...", "success");
+          setTimeout(() => {
+            window.location.href = "community.html";
+          }, 500);
         }
-
-        // Remember who's logged in (community.html reads this same key)
-        localStorage.setItem("hd_userId", String(data.id));
-        localStorage.setItem("hd_userEmail", data.email);
-        localStorage.setItem("hd_userNickname", data.nickname || "");
-
-        showStatus("Login successful! Redirecting...", "success");
-        setTimeout(() => {
-          window.location.href = "community.html";
-        }, 500);
       } catch (error) {
-        showStatus(error.message || "Something went wrong. Please check that the server is running.", "error");
+        showStatus(error.message || "Unable to log in. Please check that the server is running.", "error");
       } finally {
-        userLoginButton.disabled = false;
-        userLoginButton.textContent = "User Login";
+        loginButton.disabled = false;
+        loginButton.textContent = adminMode ? "Admin log in" : "Log in securely";
       }
     });
 
-    adminLoginButton.addEventListener("click", async () => {
-      // Admin login uses the same email/password fields.
-      const enteredId = emailInput.value.trim();
-      const enteredPassword = passwordInput.value;
-
-      clearStatus();
-      setFieldState(emailInput, emailError, "");
-      setFieldState(passwordInput, passwordError, "");
-
-      if (!enteredId || !enteredPassword) {
-        showStatus("Please enter the admin ID and password.", "error");
-        return;
-      }
-
-      adminLoginButton.disabled = true;
-      adminLoginButton.textContent = "Checking...";
-
-      try {
-        const response = await fetch(`${API_BASE_URL}/api/admin/login`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ adminId: enteredId, password: enteredPassword })
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-          throw new Error(data.message || "Admin login failed.");
-        }
-
-        showStatus("Admin login successful. Redirecting...", "success");
-        setTimeout(() => {
-          window.location.href = "admin.html";
-        }, 500);
-      } catch (error) {
-        showStatus(error.message || "Something went wrong. Please check that the server is running.", "error");
-      } finally {
-        adminLoginButton.disabled = false;
-        adminLoginButton.textContent = "Admin Login";
-      }
+    // Guest mode does not create an account, so it cannot set the
+    // localStorage login keys above — pages that require login (community,
+    // create-post, group) will still ask a guest to log in when they try
+    // to post, comment, or join a group chat.
+    guestButton.addEventListener("click", () => {
+      window.location.href = "community.html";
     });
-
-    // Terms of Use and Privacy Policy modal controls
-    const legalLinks = document.querySelectorAll("[data-modal-target]");
-    const legalModals = document.querySelectorAll(".legal-modal");
-    let lastFocusedElement = null;
-
-    function openLegalModal(modal) {
-      if (!modal) return;
-
-      lastFocusedElement = document.activeElement;
-      modal.classList.add("open");
-      modal.setAttribute("aria-hidden", "false");
-      document.body.classList.add("modal-open");
-
-      const dialog = modal.querySelector(".legal-modal-dialog");
-      if (dialog) {
-        dialog.focus();
-      }
-    }
-
-    function closeLegalModal(modal) {
-      if (!modal) return;
-
-      modal.classList.remove("open");
-      modal.setAttribute("aria-hidden", "true");
-      document.body.classList.remove("modal-open");
-
-      if (lastFocusedElement) {
-        lastFocusedElement.focus();
-      }
-    }
-
-    legalLinks.forEach((link) => {
-      link.addEventListener("click", (event) => {
-        event.preventDefault();
-
-        const modalId = link.dataset.modalTarget;
-        openLegalModal(document.getElementById(modalId));
-      });
-    });
-
-    legalModals.forEach((modal) => {
-      const closeButton = modal.querySelector(".legal-modal-close");
-
-      closeButton.addEventListener("click", () => {
-        closeLegalModal(modal);
-      });
-
-      modal.addEventListener("click", (event) => {
-        if (event.target === modal) {
-          closeLegalModal(modal);
-        }
-      });
-    });
-
-    document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape") {
-        const openModal = document.querySelector(".legal-modal.open");
-        if (openModal) {
-          closeLegalModal(openModal);
-        }
-      }
-    });
-
   </script>
 </body>
 </html>
