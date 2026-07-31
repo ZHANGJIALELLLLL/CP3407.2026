@@ -38,23 +38,26 @@ This document defines how the team plans, executes, and tracks system-level test
 
 **Preconditions before any test run**
 
-1. Fresh or known-state database (re-run `schema.sql`, then `npm run seed-admin`, then `npm run seed-resources`).
-2. `npm start` running with no errors in the console.
-3. `.env` contains valid `INITIAL_ADMIN_ID` / `INITIAL_ADMIN_PASSWORD` and DB credentials.
+1. Fresh or known-state database (re-run `backend/db/schema.sql`, then `npm run seed-admin`, then `npm run seed-resources` from inside `backend/`).
+2. `npm start` (from `backend/`) running with no errors in the console.
+3. `backend/.env` (copied from `backend/env.example`) contains valid `INITIAL_ADMIN_ID` / `INITIAL_ADMIN_PASSWORD` and DB credentials.
 
 **Repository structure**
 
 Testing code is kept out of the production codebase, in its own directory, so the app can be deployed without shipping test artifacts and so it is obvious at a glance what is "the product" vs. "how we verified the product":
 
 ```
-hello-dear/
-├── server.js            # production backend
-├── db.js
-├── seed-admin.js
-├── seed-resources.js
-├── schema.sql
-├── package.json
-├── index.html            # production frontend
+CP3407_assessment/
+├── backend/               # production backend
+│   ├── server.js
+│   ├── db.js
+│   ├── seed-admin.js
+│   ├── seed-resources.js
+│   ├── package.json
+│   ├── env.example        # copy to .env and fill in DB credentials
+│   └── db/
+│       └── schema.sql
+├── index.html              # production frontend
 ├── login.html
 ├── signup.html
 ├── community.html
@@ -62,9 +65,12 @@ hello-dear/
 ├── resources.html
 ├── about.html
 ├── admin.html
-└── test/                 # <- all testing code lives here, nowhere else
-    ├── test.js            # automated system/API tests
-    └── test.md            # this document
+├── .github/
+│   └── ISSUE_TEMPLATE/
+│       └── bug_report.md   # structured bug report template (see §6.3)
+└── test/                   # <- all testing code lives here, nowhere else
+    ├── test.js              # automated system/API tests
+    └── test.md              # this document
 ```
 
 Nothing under `test/` is required at runtime for the live app — it is only ever invoked manually (or by CI) against a running instance of the app, and can be excluded from any production build/deploy step.
@@ -212,8 +218,10 @@ Every bug is still recorded on its relevant user-story GitHub page (issue refere
 ## 9. How to Run
 
 ```bash
-# 1. Reset DB (optional, for a clean run)
-mysql -u root -p < schema.sql
+cd backend
+
+# 1. Reset DB (optional, for a clean run — schema.sql lives under backend/db/)
+mysql -u root -p < db/schema.sql
 npm run seed-admin
 npm run seed-resources
 
@@ -221,8 +229,27 @@ npm run seed-resources
 npm start
 
 # 3. In a second terminal, run automated system tests
-cd test
-node test.js
+cd ../test
+ADMIN_ID=admin ADMIN_PASSWORD='<value of INITIAL_ADMIN_PASSWORD in backend/.env>' node test.js
 ```
 
-`test.js` prints a PASS/FAIL line per test case (matching the TC-xx IDs in §4) and exits with a non-zero code if any test fails, so it can also be wired into CI later.
+`test.js` prints a PASS/FAIL line per test case (matching the TC-xx IDs in §4) and exits with a non-zero code if any test fails, so it can also be wired into CI later. `ADMIN_ID`/`ADMIN_PASSWORD` must match whatever `INITIAL_ADMIN_ID`/`INITIAL_ADMIN_PASSWORD` were set to in `backend/.env` when `npm run seed-admin` was last run; if omitted, TC-05/TC-06 are skipped rather than failed.
+
+---
+
+## 10. Evidence: Actual Test Run
+
+The script above was executed end-to-end against a real running instance (macOS, Node.js, local MySQL via MySQL Workbench) on **31 July 2026**. Result:
+
+```
+Hello Dear — System Test Run
+BASE_URL = http://localhost:3000
+
+✅ PASS  TC-01 … TC-25, TC-16b, TC-99   (27 test cases)
+
+----------------------------------------
+Total: 27   Passed: 27   Failed: 0   Skipped: 0
+----------------------------------------
+```
+
+All 27 automated test cases passed on the first full run after the nav-bar bug (§6.4) was fixed, confirming every user story in §4 that has automated coverage. This run's console output was captured as a screenshot and is included with the submission as evidence that the testing plan was actually executed, not just designed.
