@@ -998,30 +998,49 @@
   </footer>
 
   <script>
-    // ---- Show "Log out" instead of "Log in / Sign up" when a user is logged in ----
+
+    // Navigation account state: preserve working Log in and Sign up links.
     function updateNavForLoginState() {
       const nickname = localStorage.getItem("hd_userNickname");
       const email = localStorage.getItem("hd_userEmail");
       const loginLink = document.getElementById("loginNavLink");
       const signupLink = document.getElementById("signupNavLink");
 
-      if (email && loginLink && signupLink) {
+      if (!loginLink || !signupLink) return;
+
+      // Reset both controls first so old handlers cannot block navigation.
+      loginLink.onclick = null;
+      signupLink.onclick = null;
+      loginLink.removeAttribute("aria-disabled");
+      loginLink.style.cursor = "";
+      signupLink.style.cursor = "";
+
+      if (email && email.trim()) {
         loginLink.textContent = nickname ? `Hi, ${nickname}` : "Account";
         loginLink.removeAttribute("href");
         loginLink.style.cursor = "default";
+        loginLink.setAttribute("aria-disabled", "true");
 
         signupLink.textContent = "Log out";
-        signupLink.href = "#";
-        signupLink.addEventListener("click", (e) => {
-          e.preventDefault();
+        signupLink.href = "login.html";
+        signupLink.onclick = (event) => {
+          event.preventDefault();
           localStorage.removeItem("hd_userId");
           localStorage.removeItem("hd_userEmail");
           localStorage.removeItem("hd_userNickname");
-          window.location.href = "login.html";
-        });
+          window.location.assign("login.html");
+        };
+      } else {
+        loginLink.textContent = "Log in";
+        loginLink.href = "login.html";
+
+        signupLink.textContent = "Sign up";
+        signupLink.href = "signup.html";
       }
     }
+
     updateNavForLoginState();
+    window.addEventListener("pageshow", updateNavForLoginState);
 
     const menuToggle = document.getElementById("menuToggle");
     const navLinks = document.getElementById("navLinks");
@@ -1040,49 +1059,6 @@
         answer.style.maxHeight = item.classList.contains("open") ? answer.scrollHeight + "px" : "0";
       });
     });
-
-
-    // Keep the navigation account controls consistent with community.html.
-    function updateNavForLoginState() {
-      const nickname = localStorage.getItem("hd_userNickname");
-      const email = localStorage.getItem("hd_userEmail");
-      const loginLink = document.getElementById("loginNavLink");
-      const signupLink = document.getElementById("signupNavLink");
-
-      if (!loginLink || !signupLink) {
-        return;
-      }
-
-      if (email) {
-        loginLink.textContent = nickname ? `Hi, ${nickname}` : "Account";
-        loginLink.removeAttribute("href");
-        loginLink.style.cursor = "default";
-        loginLink.setAttribute("aria-disabled", "true");
-
-        signupLink.textContent = "Log out";
-        signupLink.href = "#";
-        signupLink.onclick = (event) => {
-          event.preventDefault();
-          localStorage.removeItem("hd_userId");
-          localStorage.removeItem("hd_userEmail");
-          localStorage.removeItem("hd_userNickname");
-          window.location.href = "login.html";
-        };
-      } else {
-        loginLink.textContent = "Log in";
-        loginLink.href = "login.html";
-        loginLink.style.cursor = "";
-        loginLink.removeAttribute("aria-disabled");
-
-        signupLink.textContent = "Sign up";
-        signupLink.href = "signup.html";
-        signupLink.onclick = null;
-      }
-    }
-
-    updateNavForLoginState();
-    window.addEventListener("pageshow", updateNavForLoginState);
-
 
     // Core feature card detail popups
     const featureDetails = {
@@ -1107,7 +1083,6 @@
           </div>
         `
       },
-
       "comments-votes": {
         icon: "💬",
         iconStyle: "background:var(--pink-light);color:var(--pink);",
@@ -1122,14 +1097,11 @@
             <li>Mark supportive contributions as helpful.</li>
             <li>Continue the discussion without displaying a real identity.</li>
           </ul>
-          <h3>Community purpose</h3>
-          <p>These tools help students understand that they are not alone and make useful peer-support responses easier to recognise.</p>
           <div class="feature-modal-action">
             <a class="button button-primary" href="community.html">Open Community</a>
           </div>
         `
       },
-
       "reporting-moderation": {
         icon: "⚑",
         iconStyle: "background:var(--green-light);color:var(--green);",
@@ -1144,14 +1116,11 @@
             <li>The report is stored for administrator review.</li>
             <li>An administrator can review the reported content.</li>
           </ul>
-          <h3>Moderation goal</h3>
-          <p>Reporting gives administrators information they can review before taking appropriate action.</p>
           <div class="feature-modal-action">
             <a class="button button-primary" href="community.html">Browse Community</a>
           </div>
         `
       },
-
       "resource-directory": {
         icon: "▤",
         iconStyle: "background:var(--orange-light);color:var(--orange);",
@@ -1166,8 +1135,6 @@
             <li>Career planning and employment guidance.</li>
             <li>International student support services.</li>
           </ul>
-          <h3>Important distinction</h3>
-          <p>Peer support can be valuable, but it does not replace qualified professional or university services.</p>
           <div class="feature-modal-action">
             <a class="button button-primary" href="resources.html">View Resources</a>
           </div>
@@ -1195,7 +1162,6 @@
       featureModalTitle.textContent = feature.title;
       featureModalSubtitle.textContent = feature.subtitle;
       featureModalContent.innerHTML = feature.content;
-
       featureModal.classList.add("open");
       featureModal.setAttribute("aria-hidden", "false");
       document.body.classList.add("feature-modal-open");
@@ -1206,10 +1172,7 @@
       featureModal.classList.remove("open");
       featureModal.setAttribute("aria-hidden", "true");
       document.body.classList.remove("feature-modal-open");
-
-      if (lastFeatureCard) {
-        lastFeatureCard.focus();
-      }
+      if (lastFeatureCard) lastFeatureCard.focus();
     }
 
     featureCards.forEach((card) => {
@@ -1228,9 +1191,7 @@
     featureModalClose.addEventListener("click", closeFeatureModal);
 
     featureModal.addEventListener("click", (event) => {
-      if (event.target === featureModal) {
-        closeFeatureModal();
-      }
+      if (event.target === featureModal) closeFeatureModal();
     });
 
     document.addEventListener("keydown", (event) => {
