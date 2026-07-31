@@ -729,6 +729,207 @@
         padding: 20px 0;
       }
     }
+
+    /* Resource loading notice */
+    .resource-load-notice {
+      display: none;
+      align-items: flex-start;
+      gap: 11px;
+      margin-bottom: 18px;
+      padding: 13px 15px;
+      border: 1px solid #ddd8fb;
+      border-radius: 13px;
+      color: var(--text);
+      background: linear-gradient(135deg, #f8f7ff, #ffffff);
+      font-size: 0.84rem;
+    }
+
+    .resource-load-notice.show {
+      display: flex;
+    }
+
+    .resource-load-notice strong {
+      color: var(--navy);
+    }
+
+    /* Resource details and urgent-support modals */
+    .resource-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: rgba(17, 25, 54, 0.58);
+      backdrop-filter: blur(5px);
+    }
+
+    .resource-modal.open {
+      display: flex;
+    }
+
+    .resource-modal-dialog {
+      width: min(100%, 680px);
+      max-height: min(84vh, 760px);
+      overflow-y: auto;
+      padding: 30px;
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      background: var(--white);
+      box-shadow: 0 28px 80px rgba(17, 25, 54, 0.28);
+      outline: none;
+    }
+
+    .resource-modal-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .resource-modal-heading {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .resource-modal-icon {
+      width: 52px;
+      height: 52px;
+      flex: 0 0 auto;
+      display: grid;
+      place-items: center;
+      border-radius: 16px;
+      color: var(--primary);
+      background: var(--primary-light);
+      font-size: 1.55rem;
+    }
+
+    .resource-modal-title {
+      font-size: 1.55rem;
+      line-height: 1.2;
+      letter-spacing: -0.04em;
+    }
+
+    .resource-modal-category {
+      margin-top: 5px;
+      color: var(--primary);
+      font-size: 0.8rem;
+      font-weight: 780;
+      text-transform: capitalize;
+    }
+
+    .resource-modal-close {
+      flex: 0 0 auto;
+      width: 40px;
+      height: 40px;
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      color: var(--navy);
+      background: var(--white);
+      font-size: 1.35rem;
+      cursor: pointer;
+    }
+
+    .resource-modal-close:hover {
+      color: var(--primary);
+      border-color: var(--primary);
+      background: var(--primary-light);
+    }
+
+    .resource-modal-content {
+      display: grid;
+      gap: 17px;
+      color: var(--text);
+      font-size: 0.93rem;
+      line-height: 1.7;
+    }
+
+    .resource-modal-content h3 {
+      color: var(--navy);
+      font-size: 1rem;
+    }
+
+    .resource-information-list {
+      display: grid;
+      gap: 10px;
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: #fafbff;
+    }
+
+    .resource-information-item {
+      display: grid;
+      grid-template-columns: 26px minmax(0, 1fr);
+      gap: 8px;
+      align-items: start;
+    }
+
+    .resource-information-item strong {
+      display: block;
+      margin-bottom: 2px;
+      color: var(--navy);
+      font-size: 0.8rem;
+    }
+
+    .resource-modal-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding-top: 3px;
+    }
+
+    .urgent-option-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .urgent-option {
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      background: #fbfcff;
+    }
+
+    .urgent-option h3 {
+      margin-bottom: 5px;
+    }
+
+    .urgent-option p {
+      margin-bottom: 12px;
+    }
+
+    .urgent-warning {
+      padding: 13px 14px;
+      border: 1px solid #f3c5cb;
+      border-radius: 13px;
+      color: #9f3f4d;
+      background: var(--danger-light);
+      font-size: 0.83rem;
+      font-weight: 680;
+    }
+
+    body.resource-modal-open {
+      overflow: hidden;
+    }
+
+    @media (max-width: 640px) {
+      .resource-modal {
+        padding: 12px;
+      }
+
+      .resource-modal-dialog {
+        padding: 24px 20px;
+      }
+
+      .resource-modal-actions .button {
+        width: 100%;
+      }
+    }
+
   </style>
 </head>
 
@@ -830,7 +1031,18 @@
           </p>
         </div>
 
+
+        <div class="resource-load-notice" id="resourceLoadNotice" role="status">
+          <span aria-hidden="true">ℹ️</span>
+          <span>
+            <strong>Demonstration resources are being displayed.</strong>
+            The backend resource service could not be reached, so the page loaded
+            built-in sample services instead.
+          </span>
+        </div>
+
         <div class="resource-grid" id="resourceGrid"></div>
+
 
         <div class="empty-state" id="emptyState">
           <h3>No matching resources found</h3>
@@ -849,7 +1061,7 @@
             and after-hours contact details. Confirm all information before publishing.
           </p>
         </div>
-        <a class="button button-outline" href="#">View Urgent Support</a>
+        <button class="button button-outline" id="urgentSupportButton" type="button">View Urgent Support</button>
       </div>
     </section>
 
@@ -946,33 +1158,219 @@
     </div>
   </footer>
 
+
+  <!-- Resource details modal -->
+  <div
+    class="resource-modal"
+    id="resourceDetailsModal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="resourceDetailsTitle"
+    aria-hidden="true"
+  >
+    <div class="resource-modal-dialog" tabindex="-1">
+      <div class="resource-modal-header">
+        <div class="resource-modal-heading">
+          <div class="resource-modal-icon" id="resourceDetailsIcon">📌</div>
+          <div>
+            <h2 class="resource-modal-title" id="resourceDetailsTitle">
+              Resource details
+            </h2>
+            <p class="resource-modal-category" id="resourceDetailsCategory"></p>
+          </div>
+        </div>
+
+        <button
+          class="resource-modal-close"
+          type="button"
+          data-close-modal="resourceDetailsModal"
+          aria-label="Close resource details"
+        >
+          ×
+        </button>
+      </div>
+
+      <div class="resource-modal-content">
+        <p id="resourceDetailsDescription"></p>
+
+        <div class="resource-information-list">
+          <div class="resource-information-item">
+            <span aria-hidden="true">📍</span>
+            <div>
+              <strong>Location</strong>
+              <span id="resourceDetailsLocation"></span>
+            </div>
+          </div>
+
+          <div class="resource-information-item">
+            <span aria-hidden="true">🕒</span>
+            <div>
+              <strong>Availability</strong>
+              <span id="resourceDetailsAvailability"></span>
+            </div>
+          </div>
+
+          <div class="resource-information-item">
+            <span aria-hidden="true">✉</span>
+            <div>
+              <strong>Contact</strong>
+              <span id="resourceDetailsContact"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="resource-modal-actions">
+          <a
+            class="button button-primary"
+            id="resourceEmailButton"
+            href="#"
+          >
+            Email This Service
+          </a>
+          <button
+            class="button button-outline"
+            type="button"
+            data-close-modal="resourceDetailsModal"
+          >
+            Return to Resources
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Urgent support modal -->
+  <div
+    class="resource-modal"
+    id="urgentSupportModal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="urgentSupportTitle"
+    aria-hidden="true"
+  >
+    <div class="resource-modal-dialog" tabindex="-1">
+      <div class="resource-modal-header">
+        <div class="resource-modal-heading">
+          <div
+            class="resource-modal-icon"
+            style="color:var(--danger);background:var(--danger-light);"
+          >
+            ☎
+          </div>
+          <div>
+            <h2 class="resource-modal-title" id="urgentSupportTitle">
+              Urgent Support Options
+            </h2>
+            <p class="resource-modal-category">Choose the most suitable next step</p>
+          </div>
+        </div>
+
+        <button
+          class="resource-modal-close"
+          type="button"
+          data-close-modal="urgentSupportModal"
+          aria-label="Close urgent support options"
+        >
+          ×
+        </button>
+      </div>
+
+      <div class="resource-modal-content">
+        <div class="urgent-warning">
+          Replace all demonstration contact information with your university's
+          verified official details before deployment.
+        </div>
+
+        <div class="urgent-option-grid">
+          <article class="urgent-option">
+            <h3>Urgent wellbeing support</h3>
+            <p>
+              View counselling and wellbeing services, including availability and
+              contact information.
+            </p>
+            <button
+              class="button button-primary"
+              id="showCounsellingResources"
+              type="button"
+            >
+              Show Counselling Services
+            </button>
+          </article>
+
+          <article class="urgent-option">
+            <h3>Campus safety or security concern</h3>
+            <p>
+              Contact the verified campus security or after-hours support service
+              supplied by your university.
+            </p>
+            <button
+              class="button button-outline"
+              id="showCampusSupport"
+              type="button"
+            >
+              Show Campus Support
+            </button>
+          </article>
+
+          <article class="urgent-option">
+            <h3>Return to peer support</h3>
+            <p>
+              Go back to the Hello Dear community to read posts or join an
+              anonymous support group.
+            </p>
+            <a class="button button-outline" href="community.html">
+              Open Community
+            </a>
+          </article>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script>
-    // ---- Show "Log out" instead of "Log in / Sign up" when a user is logged in ----
+    // ---- Navigation state ----
     function updateNavForLoginState() {
       const nickname = localStorage.getItem("hd_userNickname");
       const email = localStorage.getItem("hd_userEmail");
       const loginLink = document.getElementById("loginNavLink");
       const signupLink = document.getElementById("signupNavLink");
 
-      if (email && loginLink && signupLink) {
+      if (!loginLink || !signupLink) return;
+
+      loginLink.onclick = null;
+      signupLink.onclick = null;
+
+      if (email && email.trim()) {
         loginLink.textContent = nickname ? `Hi, ${nickname}` : "Account";
         loginLink.removeAttribute("href");
         loginLink.style.cursor = "default";
+        loginLink.setAttribute("aria-disabled", "true");
 
         signupLink.textContent = "Log out";
-        signupLink.href = "#";
-        signupLink.addEventListener("click", (e) => {
-          e.preventDefault();
+        signupLink.href = "login.html";
+        signupLink.onclick = (event) => {
+          event.preventDefault();
           localStorage.removeItem("hd_userId");
           localStorage.removeItem("hd_userEmail");
           localStorage.removeItem("hd_userNickname");
-          window.location.href = "login.html";
-        });
+          window.location.assign("login.html");
+        };
+      } else {
+        loginLink.textContent = "Log in";
+        loginLink.href = "login.html";
+        loginLink.style.cursor = "";
+        loginLink.removeAttribute("aria-disabled");
+
+        signupLink.textContent = "Sign up";
+        signupLink.href = "signup.html";
       }
     }
+
     updateNavForLoginState();
+    window.addEventListener("pageshow", updateNavForLoginState);
 
     const menuToggle = document.getElementById("menuToggle");
     const navLinks = document.getElementById("navLinks");
@@ -981,9 +1379,74 @@
     const resourceGrid = document.getElementById("resourceGrid");
     const emptyState = document.getElementById("emptyState");
     const toast = document.getElementById("toast");
+    const resourceLoadNotice = document.getElementById("resourceLoadNotice");
     const RESOURCES_API_BASE_URL = "http://localhost:3000";
 
+    const FALLBACK_RESOURCES = [
+      {
+        id: "sample-counselling",
+        category: "Counselling",
+        title: "Student Counselling and Wellbeing Centre",
+        description:
+          "Confidential support for personal wellbeing, study pressure, adjustment concerns and emotional difficulties.",
+        location: "Student Services Building, Level 2",
+        contact_email: "counselling@example.edu",
+        availability: "Monday to Friday, 9:00 AM–5:00 PM"
+      },
+      {
+        id: "sample-academic",
+        category: "Academic",
+        title: "Academic Learning Support",
+        description:
+          "Study planning, assignment guidance, time-management workshops and learning-skills appointments.",
+        location: "University Library, Learning Hub",
+        contact_email: "academic.support@example.edu",
+        availability: "Monday to Friday, 8:30 AM–5:30 PM"
+      },
+      {
+        id: "sample-career",
+        category: "Career",
+        title: "Career Development Centre",
+        description:
+          "Career planning, résumé reviews, interview preparation, internship information and employment guidance.",
+        location: "Student Centre, Level 1",
+        contact_email: "careers@example.edu",
+        availability: "Monday to Friday, 9:00 AM–5:00 PM"
+      },
+      {
+        id: "sample-international",
+        category: "International",
+        title: "International Student Support",
+        description:
+          "Support with university adjustment, student services, cultural transition and general international-student enquiries.",
+        location: "International Student Office",
+        contact_email: "international.support@example.edu",
+        availability: "Monday to Friday, 9:00 AM–4:30 PM"
+      },
+      {
+        id: "sample-accessibility",
+        category: "Accessibility",
+        title: "Accessibility and Inclusion Service",
+        description:
+          "Reasonable adjustments, accessible learning plans and confidential support for students with disability or health needs.",
+        location: "Student Services Building, Level 1",
+        contact_email: "accessibility@example.edu",
+        availability: "Appointments available Monday to Friday"
+      },
+      {
+        id: "sample-campus",
+        category: "General",
+        title: "Campus Support and Student Services",
+        description:
+          "General assistance with campus services, student enquiries, referrals and after-hours support information.",
+        location: "Main Student Service Desk",
+        contact_email: "student.services@example.edu",
+        availability: "Monday to Friday, 8:30 AM–5:00 PM"
+      }
+    ];
+
     let activeFilter = "all";
+    let currentResources = [];
 
     menuToggle.addEventListener("click", () => {
       const isOpen = navLinks.classList.toggle("open");
@@ -991,58 +1454,163 @@
       menuToggle.textContent = isOpen ? "✕" : "☰";
     });
 
-    function escapeHtml(str) {
+    function escapeHtml(value) {
       const div = document.createElement("div");
-      div.textContent = str || "";
+      div.textContent = value == null ? "" : String(value);
       return div.innerHTML;
     }
 
-    // Category → icon/color, with a neutral fallback for any category an admin adds later
     const CATEGORY_STYLE = {
-      counselling: { icon: "💙", bg: "var(--blue-light)", color: "var(--blue)" },
-      academic: { icon: "📘", bg: "var(--primary-light)", color: "var(--primary)" },
-      career: { icon: "💼", bg: "var(--orange-light)", color: "var(--orange)" },
-      international: { icon: "🌏", bg: "var(--green-light)", color: "var(--green)" },
-      accessibility: { icon: "♿", bg: "var(--pink-light)", color: "var(--pink)" }
+      counselling: {
+        icon: "💙",
+        bg: "var(--blue-light)",
+        color: "var(--blue)"
+      },
+      academic: {
+        icon: "📘",
+        bg: "var(--primary-light)",
+        color: "var(--primary)"
+      },
+      career: {
+        icon: "💼",
+        bg: "var(--orange-light)",
+        color: "var(--orange)"
+      },
+      international: {
+        icon: "🌏",
+        bg: "var(--green-light)",
+        color: "var(--green)"
+      },
+      accessibility: {
+        icon: "♿",
+        bg: "var(--pink-light)",
+        color: "var(--pink)"
+      },
+      general: {
+        icon: "🏫",
+        bg: "var(--primary-light)",
+        color: "var(--primary)"
+      }
     };
-    const DEFAULT_STYLE = { icon: "📌", bg: "var(--primary-light)", color: "var(--primary)" };
+
+    const DEFAULT_STYLE = {
+      icon: "📌",
+      bg: "var(--primary-light)",
+      color: "var(--primary)"
+    };
 
     async function loadResources() {
       try {
         const response = await fetch(`${RESOURCES_API_BASE_URL}/api/resources`);
         if (!response.ok) throw new Error("Failed to load resources");
+
         const resources = await response.json();
+        if (!Array.isArray(resources) || resources.length === 0) {
+          throw new Error("No resources returned");
+        }
+
+        resourceLoadNotice.classList.remove("show");
         renderResources(resources);
       } catch (error) {
-        console.error(error);
-        resourceGrid.innerHTML = `<p style="color:var(--muted)">Unable to load resources right now. Please check that the server is running.</p>`;
+        console.warn(
+          "Resource API unavailable. Loading demonstration resources instead.",
+          error
+        );
+        resourceLoadNotice.classList.add("show");
+        renderResources(FALLBACK_RESOURCES);
       }
     }
 
     function renderResources(resources) {
-      resourceGrid.innerHTML = resources.map((r) => {
-        const categoryKey = (r.category || "").toLowerCase();
-        const style = CATEGORY_STYLE[categoryKey] || DEFAULT_STYLE;
-        const searchText = `${r.category} ${r.title} ${r.description || ""}`.toLowerCase();
+      currentResources = resources.map((resource, index) => ({
+        ...resource,
+        _resourceIndex: index
+      }));
 
-        return `
-          <article class="resource-card" data-category="${escapeHtml(categoryKey)}" data-search="${escapeHtml(searchText)}">
-            <div class="resource-top">
-              <div class="resource-icon" style="background:${style.bg};color:${style.color};">${style.icon}</div>
-              <button class="save-button" type="button" aria-label="Save ${escapeHtml(r.title)}">♡</button>
-            </div>
-            <span class="resource-category">${escapeHtml(r.category)}</span>
-            <h3>${escapeHtml(r.title)}</h3>
-            <p>${escapeHtml(r.description || "")}</p>
-            <div class="resource-details">
-              ${r.location ? `<div><span>📍</span><span>${escapeHtml(r.location)}</span></div>` : ""}
-              ${r.contact_email ? `<div><span>✉</span><span>${escapeHtml(r.contact_email)}</span></div>` : ""}
-            </div>
-            <div class="resource-actions">
-              ${r.contact_email ? `<a class="button button-outline" href="mailto:${escapeHtml(r.contact_email)}">Email</a>` : ""}
-            </div>
-          </article>`;
-      }).join("");
+      resourceGrid.innerHTML = currentResources
+        .map((resource) => {
+          const categoryKey = String(resource.category || "general").toLowerCase();
+          const style = CATEGORY_STYLE[categoryKey] || DEFAULT_STYLE;
+          const searchText = [
+            resource.category,
+            resource.title,
+            resource.description,
+            resource.location,
+            resource.availability
+          ]
+            .filter(Boolean)
+            .join(" ")
+            .toLowerCase();
+
+          return `
+            <article
+              class="resource-card"
+              data-category="${escapeHtml(categoryKey)}"
+              data-search="${escapeHtml(searchText)}"
+            >
+              <div class="resource-top">
+                <div
+                  class="resource-icon"
+                  style="background:${style.bg};color:${style.color};"
+                >
+                  ${style.icon}
+                </div>
+                <button
+                  class="save-button"
+                  type="button"
+                  aria-label="Save ${escapeHtml(resource.title)}"
+                >
+                  ♡
+                </button>
+              </div>
+
+              <span class="resource-category">
+                ${escapeHtml(resource.category || "General")}
+              </span>
+              <h3>${escapeHtml(resource.title)}</h3>
+              <p>${escapeHtml(resource.description || "")}</p>
+
+              <div class="resource-details">
+                ${
+                  resource.location
+                    ? `<div><span>📍</span><span>${escapeHtml(resource.location)}</span></div>`
+                    : ""
+                }
+                ${
+                  resource.availability
+                    ? `<div><span>🕒</span><span>${escapeHtml(resource.availability)}</span></div>`
+                    : ""
+                }
+                ${
+                  resource.contact_email
+                    ? `<div><span>✉</span><span>${escapeHtml(resource.contact_email)}</span></div>`
+                    : ""
+                }
+              </div>
+
+              <div class="resource-actions">
+                <button
+                  class="button button-primary view-resource-button"
+                  type="button"
+                  data-resource-index="${resource._resourceIndex}"
+                >
+                  View Details
+                </button>
+                ${
+                  resource.contact_email
+                    ? `<a
+                         class="button button-outline"
+                         href="mailto:${escapeHtml(resource.contact_email)}"
+                       >
+                         Email
+                       </a>`
+                    : ""
+                }
+              </div>
+            </article>
+          `;
+        })
+        .join("");
 
       filterResources();
     }
@@ -1054,8 +1622,8 @@
       document.querySelectorAll(".resource-card").forEach((card) => {
         const category = card.dataset.category;
         const searchableText = `${card.dataset.search} ${card.textContent}`.toLowerCase();
-
-        const matchesCategory = activeFilter === "all" || category === activeFilter;
+        const matchesCategory =
+          activeFilter === "all" || category === activeFilter;
         const matchesSearch = searchableText.includes(term);
         const visible = matchesCategory && matchesSearch;
 
@@ -1066,12 +1634,21 @@
       emptyState.classList.toggle("show", visibleCount === 0);
     }
 
+    function setResourceFilter(filterName) {
+      activeFilter = filterName;
+      filterButtons.forEach((button) => {
+        button.classList.toggle("active", button.dataset.filter === filterName);
+      });
+      searchInput.value = "";
+      filterResources();
+      document
+        .querySelector(".controls-wrap")
+        .scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
     filterButtons.forEach((button) => {
       button.addEventListener("click", () => {
-        filterButtons.forEach((item) => item.classList.remove("active"));
-        button.classList.add("active");
-        activeFilter = button.dataset.filter;
-        filterResources();
+        setResourceFilter(button.dataset.filter);
       });
     });
 
@@ -1080,70 +1657,254 @@
     function showToast(message) {
       toast.textContent = message;
       toast.classList.add("show");
-
       window.clearTimeout(showToast.timer);
       showToast.timer = window.setTimeout(() => {
         toast.classList.remove("show");
       }, 2200);
     }
 
-    // Event delegation so the save button works on dynamically rendered cards
-    resourceGrid.addEventListener("click", (e) => {
-      const button = e.target.closest(".save-button");
-      if (!button) return;
+    const resourceDetailsModal = document.getElementById(
+      "resourceDetailsModal"
+    );
+    const urgentSupportModal = document.getElementById("urgentSupportModal");
+    let lastFocusedElement = null;
 
-      const saved = button.classList.toggle("saved");
-      button.textContent = saved ? "♥" : "♡";
-      button.setAttribute("aria-pressed", String(saved));
+    function openModal(modal) {
+      if (!modal) return;
+      lastFocusedElement = document.activeElement;
+      modal.classList.add("open");
+      modal.setAttribute("aria-hidden", "false");
+      document.body.classList.add("resource-modal-open");
+      modal.querySelector(".resource-modal-dialog")?.focus();
+    }
 
-      const resourceName = button.closest(".resource-card").querySelector("h3").textContent;
-      showToast(saved ? `${resourceName} saved for this demonstration.` : `${resourceName} removed from saved resources.`);
-    });
+    function closeModal(modal) {
+      if (!modal) return;
+      modal.classList.remove("open");
+      modal.setAttribute("aria-hidden", "true");
 
-    loadResources();
+      if (!document.querySelector(".resource-modal.open")) {
+        document.body.classList.remove("resource-modal-open");
+      }
 
+      lastFocusedElement?.focus();
+    }
 
-    // Keep the navigation account controls consistent with community.html.
-    function updateNavForLoginState() {
-      const nickname = localStorage.getItem("hd_userNickname");
-      const email = localStorage.getItem("hd_userEmail");
-      const loginLink = document.getElementById("loginNavLink");
-      const signupLink = document.getElementById("signupNavLink");
+    function openResourceDetails(resourceIndex) {
+      const resource = currentResources[Number(resourceIndex)];
+      if (!resource) return;
 
-      if (!loginLink || !signupLink) {
+      const categoryKey = String(resource.category || "general").toLowerCase();
+      const style = CATEGORY_STYLE[categoryKey] || DEFAULT_STYLE;
+
+      const icon = document.getElementById("resourceDetailsIcon");
+      icon.textContent = style.icon;
+      icon.style.background = style.bg;
+      icon.style.color = style.color;
+
+      document.getElementById("resourceDetailsTitle").textContent =
+        resource.title || "Resource details";
+      document.getElementById("resourceDetailsCategory").textContent =
+        resource.category || "General";
+      document.getElementById("resourceDetailsDescription").textContent =
+        resource.description || "No description is currently available.";
+      document.getElementById("resourceDetailsLocation").textContent =
+        resource.location || "Confirm with the university service.";
+      document.getElementById("resourceDetailsAvailability").textContent =
+        resource.availability || "Contact the service to confirm availability.";
+      document.getElementById("resourceDetailsContact").textContent =
+        resource.contact_email || "Contact information is not currently available.";
+
+      const emailButton = document.getElementById("resourceEmailButton");
+      if (resource.contact_email) {
+        emailButton.hidden = false;
+        emailButton.href = `mailto:${resource.contact_email}`;
+      } else {
+        emailButton.hidden = true;
+        emailButton.removeAttribute("href");
+      }
+
+      openModal(resourceDetailsModal);
+    }
+
+    resourceGrid.addEventListener("click", (event) => {
+      const saveButton = event.target.closest(".save-button");
+      if (saveButton) {
+        const saved = saveButton.classList.toggle("saved");
+        saveButton.textContent = saved ? "♥" : "♡";
+        saveButton.setAttribute("aria-pressed", String(saved));
+
+        const resourceName =
+          saveButton.closest(".resource-card").querySelector("h3").textContent;
+
+        showToast(
+          saved
+            ? `${resourceName} saved for this demonstration.`
+            : `${resourceName} removed from saved resources.`
+        );
         return;
       }
 
-      if (email) {
-        loginLink.textContent = nickname ? `Hi, ${nickname}` : "Account";
-        loginLink.removeAttribute("href");
-        loginLink.style.cursor = "default";
-        loginLink.setAttribute("aria-disabled", "true");
-
-        signupLink.textContent = "Log out";
-        signupLink.href = "#";
-        signupLink.onclick = (event) => {
-          event.preventDefault();
-          localStorage.removeItem("hd_userId");
-          localStorage.removeItem("hd_userEmail");
-          localStorage.removeItem("hd_userNickname");
-          window.location.href = "login.html";
-        };
-      } else {
-        loginLink.textContent = "Log in";
-        loginLink.href = "login.html";
-        loginLink.style.cursor = "";
-        loginLink.removeAttribute("aria-disabled");
-
-        signupLink.textContent = "Sign up";
-        signupLink.href = "signup.html";
-        signupLink.onclick = null;
+      const detailsButton = event.target.closest(".view-resource-button");
+      if (detailsButton) {
+        openResourceDetails(detailsButton.dataset.resourceIndex);
       }
-    }
+    });
 
-    updateNavForLoginState();
-    window.addEventListener("pageshow", updateNavForLoginState);
+    document
+      .getElementById("urgentSupportButton")
+      .addEventListener("click", () => {
+        openModal(urgentSupportModal);
+      });
 
+    document
+      .getElementById("showCounsellingResources")
+      .addEventListener("click", () => {
+        closeModal(urgentSupportModal);
+        setResourceFilter("counselling");
+      });
+
+    document
+      .getElementById("showCampusSupport")
+      .addEventListener("click", () => {
+        closeModal(urgentSupportModal);
+        activeFilter = "all";
+        filterButtons.forEach((button) => {
+          button.classList.toggle("active", button.dataset.filter === "all");
+        });
+        searchInput.value = "campus";
+        filterResources();
+        document
+          .querySelector(".controls-wrap")
+          .scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+
+    document.querySelectorAll("[data-close-modal]").forEach((button) => {
+      button.addEventListener("click", () => {
+        closeModal(document.getElementById(button.dataset.closeModal));
+      });
+    });
+
+    document.querySelectorAll(".resource-modal").forEach((modal) => {
+      modal.addEventListener("click", (event) => {
+        if (event.target === modal) closeModal(modal);
+      });
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key !== "Escape") return;
+      const openModalElement = document.querySelector(".resource-modal.open");
+      if (openModalElement) closeModal(openModalElement);
+    });
+
+    loadResources();
   </script>
+
+  <!-- Final authentication navigation repair: does not alter layout or page features -->
+  <script>
+    (() => {
+      const LOGIN_PAGE = "login.html";
+      const SIGNUP_PAGE = "signup.html";
+
+      function goTo(page) {
+        window.location.assign(page);
+      }
+
+      function clearLoginState() {
+        localStorage.removeItem("hd_userId");
+        localStorage.removeItem("hd_userEmail");
+        localStorage.removeItem("hd_userNickname");
+      }
+
+      function applyNavigationState() {
+        const loginLink = document.getElementById("loginNavLink");
+        const signupLink = document.getElementById("signupNavLink");
+
+        if (!loginLink || !signupLink) return;
+
+        const email = localStorage.getItem("hd_userEmail");
+        const nickname = localStorage.getItem("hd_userNickname");
+        const isLoggedIn = Boolean(email && email.trim());
+
+        /*
+         * Remove property-based handlers added by earlier scripts.
+         * Capture-phase navigation below also protects against old
+         * addEventListener handlers that cannot be removed here.
+         */
+        loginLink.onclick = null;
+        signupLink.onclick = null;
+
+        if (isLoggedIn) {
+          loginLink.textContent = nickname ? `Hi, ${nickname}` : "Account";
+          loginLink.removeAttribute("href");
+          loginLink.setAttribute("aria-disabled", "true");
+          loginLink.style.cursor = "default";
+
+          signupLink.textContent = "Log out";
+          signupLink.setAttribute("href", LOGIN_PAGE);
+          signupLink.removeAttribute("aria-disabled");
+          signupLink.style.cursor = "";
+        } else {
+          loginLink.textContent = "Log in";
+          loginLink.setAttribute("href", LOGIN_PAGE);
+          loginLink.removeAttribute("aria-disabled");
+          loginLink.style.cursor = "";
+
+          signupLink.textContent = "Sign up";
+          signupLink.setAttribute("href", SIGNUP_PAGE);
+          signupLink.removeAttribute("aria-disabled");
+          signupLink.style.cursor = "";
+        }
+      }
+
+      /*
+       * Use capture phase so these essential links work even when an older
+       * script attached a preventDefault handler during a previous login state.
+       */
+      document.addEventListener(
+        "click",
+        (event) => {
+          const link = event.target.closest("a");
+          if (!link) return;
+
+          const text = link.textContent.trim().toLowerCase();
+          const href = (link.getAttribute("href") || "").trim();
+
+          if (link.id === "signupNavLink" && text === "log out") {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            clearLoginState();
+            goTo(LOGIN_PAGE);
+            return;
+          }
+
+          if (
+            (link.id === "loginNavLink" && text === "log in") ||
+            href === LOGIN_PAGE
+          ) {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            goTo(LOGIN_PAGE);
+            return;
+          }
+
+          if (
+            (link.id === "signupNavLink" && text === "sign up") ||
+            href === SIGNUP_PAGE
+          ) {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            goTo(SIGNUP_PAGE);
+          }
+        },
+        true
+      );
+
+      applyNavigationState();
+      window.addEventListener("pageshow", applyNavigationState);
+      window.addEventListener("storage", applyNavigationState);
+    })();
+  </script>
+
 </body>
 </html>
