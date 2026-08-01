@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
+    "migrate": "node migrate.js",
     "seed-admin": "node seed-admin.js",
     "seed-resources": "node seed-resources.js",
     "seed-groups": "node seed-groups.js"

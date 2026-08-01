@@ -10,7 +10,8 @@ const CATEGORIES = [
   { slug: "academic", label: "Academic" },
   { slug: "friendship", label: "Friendship" },
   { slug: "mental-health", label: "Mental Health" },
-  { slug: "international-students", label: "International Students" }
+  { slug: "international-students", label: "International Students" },
+  { slug: "another", label: "Another" }
 ];
 
 const GROUPS = [
@@ -53,6 +54,16 @@ const GROUPS = [
     messages: [
       { nickname: "Quiet Star", content: "Taking short breaks helps me reset when everything feels too much." },
       { nickname: "Calm Fox", content: "Today I am trying to be patient with myself." }
+    ]
+  },
+  {
+    categorySlug: "another",
+    name: "General Chat Corner",
+    description: "For anything else on your mind that does not fit the other groups.",
+    icon: "💬",
+    messages: [
+      { nickname: "Wandering Otter", content: "Feel free to drop in here for anything that does not fit elsewhere." },
+      { nickname: "Paper Crane", content: "Glad this space exists for the in-between topics." }
     ]
   }
 ];
