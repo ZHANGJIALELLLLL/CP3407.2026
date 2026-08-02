@@ -8,11 +8,11 @@ The objective of Iteration 1 was to establish the foundation of the Anonymous St
 
 ## User Stories
 
-| User Story | Priority | Effort |
-|------------|:--------:|:------:|
-| Browse Website (Home & Navigation) | 10 | 4 days |
-| Learn About the Platform | 20 | 2 days |
-| View Mental Health Resources | 10 | 4 days |
+| User Story | Priority | Priority Justification | Effort |
+|------------|:--------:|-------------------------|:------:|
+| Browse Website (Home & Navigation) | 10 | Core entry point for all users; without navigation no other page is reachable | 4 days |
+| View Mental Health Resources | 10 | Directly supports the platform's core wellbeing mission; must be available from day one | 4 days |
+| Learn About the Platform | 20 | Builds user trust and explains anonymity guarantees, but does not block core use | 2 days |
 
 **Total: 10 person-days**
 
@@ -144,9 +144,9 @@ All changes were reviewed and merged successfully.
 |-----------|---------:|
 | Iteration 1 | 10 person-days |
 | Iteration 2 | 11 person-days |
-| Iteration 3 | 9 person-days |
+| Iteration 3 | 11 person-days |
 
-**Total Project Backlog = 30 person-days**
+**Total Project Backlog = 32 person-days**
 
 ### Velocity Calculation
 
@@ -154,9 +154,9 @@ Completed Work = **10 person-days**
 
 Velocity = Completed Work ÷ Total Project Backlog
 
-Velocity = **10 ÷ 30**
+Velocity = **10 ÷ 32**
 
-Velocity = **0.3333**
+Velocity = **0.3125**
 
 ---
 
