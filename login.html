@@ -536,6 +536,19 @@
       cursor: not-allowed;
       transform: none;
     }
+    .login-button + .login-button {
+      margin-top: 12px;
+    }
+    .login-button-outline {
+      color: var(--primary);
+      background: var(--white);
+      border: 1px solid var(--primary);
+      box-shadow: none;
+    }
+    .login-button-outline:hover {
+      color: var(--white);
+      background: linear-gradient(135deg, var(--primary), #786ff5);
+    }
     .status-message {
       display: none;
       padding: 12px 14px;
@@ -607,23 +620,6 @@
     .footer-note a {
       color: var(--primary);
       font-weight: 680;
-    }
-    .admin-link-row {
-      margin-top: 14px;
-      text-align: center;
-    }
-    .admin-link-row button {
-      border: 0;
-      background: transparent;
-      color: var(--muted);
-      font-size: 0.8rem;
-      font-weight: 650;
-      cursor: pointer;
-      text-decoration: underline;
-      text-underline-offset: 3px;
-    }
-    .admin-link-row button:hover {
-      color: var(--primary);
     }
     @media (max-width: 980px) {
       .nav-links {
@@ -795,16 +791,16 @@
           </div>
           <form class="login-form" id="loginForm" novalidate>
             <div class="form-group">
-              <label class="form-label" for="email">University email</label>
+              <label class="form-label" for="email">University email or Admin ID</label>
               <div class="field-wrap">
                 <span class="field-icon" aria-hidden="true">✉</span>
                 <input
                   class="form-input"
                   id="email"
                   name="email"
-                  type="email"
-                  autocomplete="email"
-                  placeholder="student@example.edu"
+                  type="text"
+                  autocomplete="username"
+                  placeholder="student@example.edu or Admin ID"
                   maxlength="120"
                   required
                 />
@@ -847,17 +843,13 @@
               </label>
             </div>
             <div class="status-message" id="statusMessage" role="status" aria-live="polite"></div>
-            <button class="login-button" id="loginButton" type="submit">
-              Log in securely
+            <button class="login-button" id="userLoginButton" type="button">
+              User Login
             </button>
-            <div class="divider">or</div>
-            <button class="guest-button" id="guestButton" type="button">
-              Continue as a guest
+            <button class="login-button login-button-outline" id="adminLoginButton" type="button">
+              Admin Login
             </button>
           </form>
-          <div class="admin-link-row">
-            <button type="button" id="adminModeToggle">Are you an administrator? Log in here</button>
-          </div>
           <div class="privacy-note">
             <strong>Privacy note:</strong> Your email is used for account access
             and is not displayed publicly. Anonymous nicknames are used in the
@@ -912,12 +904,8 @@
     const passwordError = document.getElementById("passwordError");
     const passwordToggle = document.getElementById("passwordToggle");
     const statusMessage = document.getElementById("statusMessage");
-    const loginButton = document.getElementById("loginButton");
-    const guestButton = document.getElementById("guestButton");
-    const adminModeToggle = document.getElementById("adminModeToggle");
-    const emailLabel = document.querySelector('label[for="email"]');
-
-    let adminMode = false;
+    const userLoginButton = document.getElementById("userLoginButton");
+    const adminLoginButton = document.getElementById("adminLoginButton");
 
     function showStatus(message, type) {
       statusMessage.textContent = message;
@@ -936,29 +924,7 @@
       return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value);
     }
 
-    // ─── Toggle between "student" login (email) and admin login (admin ID) ───
-    adminModeToggle.addEventListener("click", () => {
-      adminMode = !adminMode;
-      clearStatus();
-      setFieldState(emailInput, emailError, "");
-      setFieldState(passwordInput, passwordError, "");
-
-      if (adminMode) {
-        emailInput.type = "text";
-        emailInput.placeholder = "Admin ID";
-        emailLabel.textContent = "Admin ID";
-        loginButton.textContent = "Admin log in";
-        adminModeToggle.textContent = "Not an admin? Log in as a student";
-      } else {
-        emailInput.type = "email";
-        emailInput.placeholder = "student@example.edu";
-        emailLabel.textContent = "University email";
-        loginButton.textContent = "Log in securely";
-        adminModeToggle.textContent = "Are you an administrator? Log in here";
-      }
-    });
-
-    function validateForm() {
+    function validateForm(adminMode) {
       const email = emailInput.value.trim();
       const password = passwordInput.value;
       let valid = true;
@@ -1009,16 +975,27 @@
       clearStatus();
     });
 
-    loginForm.addEventListener("submit", async (event) => {
+    // Pressing Enter in either field defaults to a regular user login.
+    loginForm.addEventListener("submit", (event) => {
       event.preventDefault();
+      submitLogin(false);
+    });
 
-      if (!validateForm()) {
+    userLoginButton.addEventListener("click", () => submitLogin(false));
+    adminLoginButton.addEventListener("click", () => submitLogin(true));
+
+    async function submitLogin(adminMode) {
+      if (!validateForm(adminMode)) {
         showStatus("Please correct the highlighted fields before continuing.", "error");
         return;
       }
 
-      loginButton.disabled = true;
-      loginButton.textContent = "Checking account...";
+      const activeButton = adminMode ? adminLoginButton : userLoginButton;
+      const otherButton = adminMode ? userLoginButton : adminLoginButton;
+      activeButton.disabled = true;
+      otherButton.disabled = true;
+      const originalText = activeButton.textContent;
+      activeButton.textContent = "Checking account...";
 
       try {
         if (adminMode) {
@@ -1034,6 +1011,13 @@
           if (!response.ok) {
             throw new Error(data.message || "Admin login failed.");
           }
+
+          // admin.html requires this token on every admin API call —
+          // without it the dashboard now refuses to load any data.
+          if (!data.token) {
+            throw new Error("Admin login succeeded but no session token was returned.");
+          }
+          localStorage.setItem("hd_adminToken", data.token);
 
           showStatus("Admin login successful. Redirecting...", "success");
           setTimeout(() => {
@@ -1067,18 +1051,11 @@
       } catch (error) {
         showStatus(error.message || "Unable to log in. Please check that the server is running.", "error");
       } finally {
-        loginButton.disabled = false;
-        loginButton.textContent = adminMode ? "Admin log in" : "Log in securely";
+        activeButton.disabled = false;
+        otherButton.disabled = false;
+        activeButton.textContent = originalText;
       }
-    });
-
-    // Guest mode does not create an account, so it cannot set the
-    // localStorage login keys above — pages that require login (community,
-    // create-post, group) will still ask a guest to log in when they try
-    // to post, comment, or join a group chat.
-    guestButton.addEventListener("click", () => {
-      window.location.href = "community.html";
-    });
+    }
   </script>
 </body>
 </html>

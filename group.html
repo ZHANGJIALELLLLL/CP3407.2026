@@ -949,6 +949,15 @@
       }
     }
 
+    .nickname-gate { position:fixed; inset:0; z-index:9998; display:none; align-items:center; justify-content:center; padding:24px; background:rgba(17,25,54,.58); backdrop-filter:blur(8px); }
+    .nickname-gate.show { display:flex; }
+    .nickname-card { width:min(100%,430px); padding:32px; border-radius:20px; background:var(--white); box-shadow:var(--shadow); }
+    .nickname-card h2 { margin-bottom:8px; }
+    .nickname-card p { margin-bottom:20px; color:var(--text); }
+    .nickname-card input { width:100%; min-height:48px; margin-bottom:10px; padding:0 14px; border:1px solid var(--border); border-radius:11px; outline:none; }
+    .nickname-card input:focus { border-color:var(--primary); box-shadow:0 0 0 3px rgba(98,87,232,.12); }
+    .nickname-card .button { width:100%; margin-top:8px; }
+    .nickname-error { min-height:22px; color:var(--danger); font-size:.85rem; }
   </style>
 </head>
 
@@ -980,6 +989,17 @@
         New to Hello Dear? Create an account
       </a>
     </div>
+  </div>
+
+  <div class="nickname-gate" id="nicknameGate">
+    <form class="nickname-card" id="nicknameForm">
+      <div style="font-size:38px; margin-bottom:12px;">💬</div>
+      <h2>Choose a chat nickname</h2>
+      <p>This nickname will appear in anonymous group chats. Do not use your real name, email address or student ID.</p>
+      <input id="nicknameInput" type="text" minlength="2" maxlength="24" autocomplete="off" placeholder="e.g. Quiet Koala" required />
+      <div class="nickname-error" id="nicknameError"></div>
+      <button class="button button-primary" type="submit">Enter groups</button>
+    </form>
   </div>
 
   <header class="site-header">
@@ -1047,7 +1067,7 @@
             <h1>Join an anonymous support group that understands what you are going through.</h1>
             <p>
               Connect with students who share similar experiences. Your real identity
-              stays hidden, while your Hello Dear nickname is used inside the chat.
+              stays hidden, while the nickname you choose is used inside the chat.
             </p>
           </div>
 
@@ -1154,18 +1174,33 @@
             <div class="chat-group-heading">
               <div class="group-icon" id="activeGroupIcon">📚</div>
               <div>
-                <h2 id="activeGroupName">Exam Stress Circle</h2>
+                <h2 id="activeGroupName">Select a group to preview it</h2>
                 <p>
-                  <span id="activeGroupMembers">32</span> students online ·
-                  <span id="activeGroupCategory">Academic</span>
+                  <span id="activeGroupMembers">0</span> students online ·
+                  <span id="activeGroupCategory"></span>
                 </p>
               </div>
             </div>
 
-            <span class="joined-status">✓ Joined anonymously</span>
+            <span class="joined-status" id="joinedStatus" style="display:none;">✓ Joined anonymously</span>
           </div>
 
-          <div class="chat-identity">
+          <div class="join-prompt" id="joinPrompt" style="display:none; padding:40px 22px; text-align:center;">
+            <p style="color:var(--text); margin-bottom:16px;">
+              You haven't joined <strong id="joinPromptGroupName">this group</strong> yet.
+              Join to read and send messages anonymously as
+              <strong id="joinPromptNickname">Anonymous Student</strong>.
+            </p>
+            <button class="button button-primary" id="joinGroupButton" type="button">
+              Join this group
+            </button>
+          </div>
+
+          <p class="no-groups show" id="noGroupSelected" style="padding:60px 18px;">
+            Pick a group from the list on the left to preview it, then join to start chatting.
+          </p>
+
+          <div class="chat-identity" id="chatIdentity" style="display:none;">
             <span>
               Your chat nickname:
               <strong id="chatNickname">Anonymous Student</strong>
@@ -1173,9 +1208,9 @@
             <span>🔒 Your email and real identity are not shown.</span>
           </div>
 
-          <div class="chat-messages" id="chatMessages" aria-live="polite"></div>
+          <div class="chat-messages" id="chatMessages" aria-live="polite" style="display:none;"></div>
 
-          <form class="chat-composer" id="messageForm">
+          <form class="chat-composer" id="messageForm" style="display:none;">
             <textarea
               class="message-input"
               id="messageInput"
@@ -1189,7 +1224,7 @@
             </button>
           </form>
 
-          <div class="group-rules">
+          <div class="group-rules" id="groupRules" style="display:none;">
             <span>🛡️ Protect privacy</span>
             <span>💜 Be kind</span>
             <span>🚫 No personal attacks</span>
@@ -1222,7 +1257,6 @@
           A safe and anonymous peer-support platform created for university students.
         </p>
       </div>
-
 
       <div class="footer-column">
         <h3>Platform</h3>
@@ -1263,18 +1297,57 @@
     // Backend server address
     const GROUPS_API_BASE_URL = "http://localhost:3000";
 
-    const nickname =
-      localStorage.getItem("hd_userNickname") || "Anonymous Student";
+    let nickname = sessionStorage.getItem("hd_groupNickname") || "";
     const email = localStorage.getItem("hd_userEmail");
     const userId = localStorage.getItem("hd_userId") || null;
+    const clientToken =
+      sessionStorage.getItem("hd_groupClientToken") ||
+      (window.crypto?.randomUUID
+        ? window.crypto.randomUUID()
+        : `${Date.now()}-${Math.random().toString(36).slice(2)}`);
+    sessionStorage.setItem("hd_groupClientToken", clientToken);
 
     if (!email) {
       document.getElementById("loginGate").style.display = "flex";
       document.body.style.overflow = "hidden";
     }
 
-    document.getElementById("heroNickname").textContent = nickname;
-    document.getElementById("chatNickname").textContent = nickname;
+    const nicknameGate = document.getElementById("nicknameGate");
+    const nicknameForm = document.getElementById("nicknameForm");
+    const nicknameInput = document.getElementById("nicknameInput");
+    const nicknameError = document.getElementById("nicknameError");
+
+    function showNickname() {
+      const displayName = nickname || "Anonymous Student";
+      document.getElementById("heroNickname").textContent = displayName;
+      document.getElementById("chatNickname").textContent = displayName;
+    }
+
+    showNickname();
+
+    if (email && !nickname) {
+      nicknameGate.classList.add("show");
+      document.body.style.overflow = "hidden";
+      setTimeout(() => nicknameInput.focus(), 0);
+    }
+
+    nicknameForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const chosenNickname = nicknameInput.value.trim().replace(/\s+/g, " ");
+      if (chosenNickname.length < 2 || chosenNickname.length > 24) {
+        nicknameError.textContent = "Please enter a nickname between 2 and 24 characters.";
+        return;
+      }
+      if (/@|https?:\/\/|www\.|student\s*id/i.test(chosenNickname)) {
+        nicknameError.textContent = "Please use a nickname without personal information.";
+        return;
+      }
+      nickname = chosenNickname;
+      sessionStorage.setItem("hd_groupNickname", nickname);
+      showNickname();
+      nicknameGate.classList.remove("show");
+      document.body.style.overflow = "";
+    });
 
     function updateNavForLoginState() {
       const loginLink = document.getElementById("loginNavLink");
@@ -1283,7 +1356,7 @@
       if (!loginLink || !signupLink) return;
 
       if (email) {
-        loginLink.textContent = `Hi, ${nickname}`;
+        loginLink.textContent = "My account";
         loginLink.removeAttribute("href");
         loginLink.style.cursor = "default";
         loginLink.setAttribute("aria-disabled", "true");
@@ -1295,6 +1368,8 @@
           localStorage.removeItem("hd_userId");
           localStorage.removeItem("hd_userEmail");
           localStorage.removeItem("hd_userNickname");
+          sessionStorage.removeItem("hd_groupNickname");
+          sessionStorage.removeItem("hd_groupClientToken");
           window.location.href = "login.html";
         };
       }
@@ -1330,6 +1405,27 @@
     let currentMessages = [];
     let chatPollTimer = null;
 
+    // ─── Joined groups ───
+    // Selecting a group in the list only *previews* it (name, description,
+    // member count). You must explicitly click "Join this group" before you
+    // can see messages or send one — this is remembered per browser tab via
+    // sessionStorage so it survives switching between groups but resets in
+    // a fresh tab, matching how the chat nickname is stored.
+    let joinedGroupIds = new Set();
+    try {
+      const stored = JSON.parse(sessionStorage.getItem("hd_joinedGroups") || "[]");
+      joinedGroupIds = new Set(stored.map(Number));
+    } catch (error) {
+      joinedGroupIds = new Set();
+    }
+    function isJoined(groupId) {
+      return joinedGroupIds.has(Number(groupId));
+    }
+    function markJoined(groupId) {
+      joinedGroupIds.add(Number(groupId));
+      sessionStorage.setItem("hd_joinedGroups", JSON.stringify([...joinedGroupIds]));
+    }
+
     const categoryChips = document.getElementById("categoryChips");
     const groupList = document.getElementById("groupList");
     const noGroups = document.getElementById("noGroups");
@@ -1342,9 +1438,17 @@
       "groupDescriptionInput"
     );
     const groupFormError = document.getElementById("groupFormError");
+    const noGroupSelected = document.getElementById("noGroupSelected");
+    const joinPrompt = document.getElementById("joinPrompt");
+    const joinPromptGroupName = document.getElementById("joinPromptGroupName");
+    const joinPromptNickname = document.getElementById("joinPromptNickname");
+    const joinGroupButton = document.getElementById("joinGroupButton");
+    const joinedStatus = document.getElementById("joinedStatus");
+    const chatIdentity = document.getElementById("chatIdentity");
     const chatMessages = document.getElementById("chatMessages");
     const messageForm = document.getElementById("messageForm");
     const messageInput = document.getElementById("messageInput");
+    const groupRules = document.getElementById("groupRules");
 
     function getCategoryLabel(categorySlug) {
       return (
@@ -1447,28 +1551,38 @@
     }
 
     function activeGroup() {
-      return groups.find((group) => group.id === activeGroupId) || groups[0];
+      return groups.find((group) => group.id === activeGroupId);
     }
 
-    function renderChat() {
+    // Header (icon/name/member count/category) is shown for any selected
+    // group, whether or not you've joined it yet — that's the "preview".
+    function renderChatHeader() {
       const group = activeGroup();
       if (!group) {
-        document.getElementById("activeGroupName").textContent = "No groups yet";
+        document.getElementById("activeGroupName").textContent = "Select a group to preview it";
         document.getElementById("activeGroupMembers").textContent = "0";
-        chatMessages.innerHTML = "";
+        document.getElementById("activeGroupCategory").textContent = "";
+        document.getElementById("activeGroupIcon").textContent = "💬";
         return;
       }
-
       document.getElementById("activeGroupIcon").textContent = group.icon || "💬";
       document.getElementById("activeGroupName").textContent = group.name;
       document.getElementById("activeGroupMembers").textContent =
-        Number(group.participantCount) || 1;
+        Number(group.participantCount) || 0;
       document.getElementById("activeGroupCategory").textContent =
         getCategoryLabel(group.categorySlug);
+    }
 
+    function renderChatMessages() {
       chatMessages.innerHTML = currentMessages
         .map((message) => {
-          const isOwn = userId && String(message.authorId) === String(userId);
+          // Own-message detection previously relied on `clientToken`, but the
+          // server never accepted or stored that field, so this was always
+          // false. authorId *is* persisted (see the message POST below), so
+          // use that instead — it's also what makes each group's "joined"
+          // count in /api/groups accurate.
+          const isOwn =
+            message.authorId != null && userId != null && String(message.authorId) === String(userId);
           const time = message.createdAt
             ? new Date(message.createdAt).toLocaleTimeString([], {
                 hour: "2-digit",
@@ -1493,20 +1607,58 @@
       chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 
+    // Toggle which of the three chat-panel states is visible: nothing
+    // selected yet, selected-but-not-joined (join prompt), or joined (the
+    // actual message list + composer).
+    function renderPanelState() {
+      const group = activeGroup();
+      const joined = group && isJoined(group.id);
+
+      noGroupSelected.style.display = group ? "none" : "block";
+      joinPrompt.style.display = group && !joined ? "block" : "none";
+      joinedStatus.style.display = joined ? "inline-flex" : "none";
+      chatIdentity.style.display = joined ? "flex" : "none";
+      chatMessages.style.display = joined ? "flex" : "none";
+      messageForm.style.display = joined ? "grid" : "none";
+      groupRules.style.display = joined ? "flex" : "none";
+
+      if (group && !joined) {
+        joinPromptGroupName.textContent = group.name;
+        joinPromptNickname.textContent = nickname || "Anonymous Student";
+      }
+    }
+
     async function selectGroup(groupId) {
       activeGroupId = Number(groupId);
       renderGroupList();
-      currentMessages = await loadMessages(activeGroupId);
-      renderChat();
-      restartChatPolling();
+      renderChatHeader();
+      renderPanelState();
+
+      if (isJoined(activeGroupId)) {
+        currentMessages = await loadMessages(activeGroupId);
+        renderChatMessages();
+        restartChatPolling();
+      } else {
+        currentMessages = [];
+        if (chatPollTimer) clearInterval(chatPollTimer);
+      }
     }
+
+    joinGroupButton.addEventListener("click", async () => {
+      if (!activeGroupId) return;
+      markJoined(activeGroupId);
+      renderPanelState();
+      currentMessages = await loadMessages(activeGroupId);
+      renderChatMessages();
+      restartChatPolling();
+    });
 
     function restartChatPolling() {
       if (chatPollTimer) clearInterval(chatPollTimer);
       chatPollTimer = setInterval(async () => {
-        if (!activeGroupId) return;
+        if (!activeGroupId || !isJoined(activeGroupId)) return;
         currentMessages = await loadMessages(activeGroupId);
-        renderChat();
+        renderChatMessages();
       }, 5000);
     }
 
@@ -1606,6 +1758,9 @@
         activeCategory = categorySlug;
         renderCategoryChips();
         renderGroupList();
+        // Auto-join the group you just created — it wouldn't make sense to
+        // create a group and then have to click "Join" on your own group.
+        markJoined(groupData.id);
         await selectGroup(groupData.id);
 
         groupForm.reset();
@@ -1631,10 +1786,14 @@
       sendButton.disabled = true;
 
       try {
+        // authorId used to be missing here entirely, so every chat message
+        // was stored with author_id = NULL — messages never rendered as
+        // "own" (right-aligned/highlighted), and each group's "joined"
+        // count (COUNT(DISTINCT author_id)) was permanently stuck at 0/1.
         const res = await fetch(`${GROUPS_API_BASE_URL}/api/groups/${group.id}/messages`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ authorId: userId, nickname, content })
+          body: JSON.stringify({ authorId: userId, nickname, content, clientToken })
         });
 
         if (!res.ok) {
@@ -1644,9 +1803,10 @@
 
         messageInput.value = "";
         currentMessages = await loadMessages(group.id);
-        renderChat();
+        renderChatMessages();
       } catch (error) {
         console.error(error);
+        window.alert(error.message || "Unable to send your message right now.");
       } finally {
         sendButton.disabled = false;
       }
@@ -1663,11 +1823,11 @@
       await loadGroups();
       renderCategoryChips();
       renderGroupList();
-
-      const firstGroup = groups[0];
-      if (firstGroup) {
-        await selectGroup(firstGroup.id);
-      }
+      // No group is auto-selected/auto-joined — the chat panel starts on
+      // the "pick a group" placeholder until the visitor clicks a card and
+      // then explicitly clicks "Join this group".
+      renderChatHeader();
+      renderPanelState();
     }
 
     init();

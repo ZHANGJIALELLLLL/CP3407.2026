@@ -811,28 +811,37 @@
           <h2>Find conversations that matter to you</h2>
           <p>Categories link directly to the community page to reduce unnecessary navigation.</p>
         </div>
+        <!--
+          These used to link to categories (stress, relationships, career,
+          international, general) that don't exist anywhere in the data
+          model, and community.html never even read the ?category= param —
+          so every card silently opened the same unfiltered "All" feed.
+          They now map to the four categories posts can actually have
+          (academic / friendship / mental-health / other), and
+          community.html reads the query param to apply the filter.
+        -->
         <div class="categories-grid">
           <a class="category-card" href="community.html?category=academic">
             <div class="icon-badge" style="background:var(--blue-light);color:var(--blue);">📘</div>
             <div><h3>Academic</h3><p>Assignments, exams, study habits, and course concerns.</p></div>
           </a>
-          <a class="category-card" href="community.html?category=stress">
+          <a class="category-card" href="community.html?category=mental-health">
             <div class="icon-badge" style="background:var(--pink-light);color:var(--pink);">🧠</div>
-            <div><h3>Stress</h3><p>Workload, time pressure, balance, and well-being.</p></div>
+            <div><h3>Stress &amp; Mental Health</h3><p>Workload, time pressure, balance, and well-being.</p></div>
           </a>
-          <a class="category-card" href="community.html?category=relationships">
+          <a class="category-card" href="community.html?category=friendship">
             <div class="icon-badge" style="background:var(--pink-light);color:var(--pink);">♡</div>
             <div><h3>Relationships</h3><p>Friendships, communication, conflict, and connection.</p></div>
           </a>
-          <a class="category-card" href="community.html?category=career">
+          <a class="category-card" href="community.html?category=other">
             <div class="icon-badge" style="background:var(--orange-light);color:var(--orange);">💼</div>
             <div><h3>Career</h3><p>Career direction, internships, skills, and planning.</p></div>
           </a>
-          <a class="category-card" href="community.html?category=international">
+          <a class="category-card" href="community.html?category=other">
             <div class="icon-badge" style="background:var(--blue-light);color:var(--blue);">🌏</div>
             <div><h3>International Student Life</h3><p>Adjustment, language, culture, and studying away from home.</p></div>
           </a>
-          <a class="category-card" href="community.html?category=general">
+          <a class="category-card" href="community.html?category=other">
             <div class="icon-badge" style="background:var(--green-light);color:var(--green);">💬</div>
             <div><h3>General Discussion</h3><p>Campus life, everyday questions, tips, and experiences.</p></div>
           </a>

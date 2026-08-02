@@ -710,18 +710,35 @@
             <div style="font-size:40px; margin-bottom:16px;">💙</div>
             <h1 style="font-size:22px; margin:0 0 8px; color:#1a1a2e;">Members only</h1>
             <p style="color:#666; margin:0 0 28px; line-height:1.5;">
-                You need to be a member to view this page.<br>Please log in to continue.
+                Guest browsing is currently turned off by an administrator.<br>Please log in to continue.
             </p>
             <a class="button button-primary" style="display:block; margin-bottom:12px;" href="login.html">Log in</a>
             <a style="color:#6a5cf7; font-size:14px; text-decoration:none;" href="signup.html">New to Hello Dear? Create an account</a>
         </div>
     </div>
     <script>
-        // ─── Members-only gate: show a message instead of redirecting silently ───
-        if (!localStorage.getItem("hd_userEmail")) {
-            document.getElementById("loginGate").style.display = "flex";
-            document.body.style.overflow = "hidden";
-        }
+        // ─── Guest browsing ───
+        // Logged-in users always get in. Logged-out visitors only get in if
+        // an administrator has "Allow guest browsing" turned on in Platform
+        // Settings; posting, commenting, reporting, and joining a group
+        // chat still require an account regardless of this setting.
+        (async () => {
+            if (localStorage.getItem("hd_userEmail")) return;
+            try {
+                const response = await fetch("http://localhost:3000/api/settings");
+                const settings = await response.json();
+                if (settings.allowGuestBrowsing === false) {
+                    document.getElementById("loginGate").style.display = "flex";
+                    document.body.style.overflow = "hidden";
+                }
+            } catch (error) {
+                // Can't confirm the setting — fail safe and block guest
+                // access rather than silently letting everyone in.
+                console.error(error);
+                document.getElementById("loginGate").style.display = "flex";
+                document.body.style.overflow = "hidden";
+            }
+        })();
     </script>
     <header class="site-header">
         <div class="container navbar">
@@ -781,6 +798,7 @@
                         <button class="chip" data-filter="academic" type="button">#Academic</button>
                         <button class="chip" data-filter="friendship" type="button">#Friendship</button>
                         <button class="chip" data-filter="mental-health" type="button">#Mental Health</button>
+                        <button class="chip" data-filter="other" type="button">#Other</button>
                     </div>
                 </div>
 
@@ -898,7 +916,12 @@
         const searchInput = document.getElementById("searchInput");
         const filterChips = document.getElementById("filterChips");
 
-        let activeFilter = "all";
+        // Honor a ?category= query param (e.g. from index.html's topic
+        // shortcut cards) so those links actually filter the feed instead
+        // of silently opening the unfiltered "All" view.
+        const VALID_FILTERS = ["all", "academic", "friendship", "mental-health", "other"];
+        const requestedCategory = new URLSearchParams(window.location.search).get("category");
+        let activeFilter = VALID_FILTERS.includes(requestedCategory) ? requestedCategory : "all";
 
         // Auxiliary: Classification Label Style Mapping
         const categoryTagClass = {
@@ -918,10 +941,14 @@
         // Backend server address
         const API_BASE_URL = "http://localhost:3000";
 
-        // Fetch posts (public posts + this user's own private posts) from the backend
+        // Fetch posts (public posts + this user's own private posts) from the backend.
+        // viewerId is also used server-side to report which posts CURRENT_USER_ID
+        // has already liked, so the heart button state survives a reload.
         async function getPosts() {
             try {
-                const response = await fetch(`${API_BASE_URL}/api/posts?userId=${encodeURIComponent(CURRENT_USER_ID)}`);
+                const response = await fetch(
+                    `${API_BASE_URL}/api/posts?userId=${encodeURIComponent(CURRENT_USER_ID)}&viewerId=${encodeURIComponent(CURRENT_USER_ID)}`
+                );
                 if (!response.ok) throw new Error("Failed to load posts");
                 return await response.json();
             } catch (error) {
@@ -929,6 +956,11 @@
                 return [];
             }
         }
+
+        // Reflect a ?category= filter (if any) in the chip row's active state.
+        filterChips.querySelectorAll(".chip").forEach((chip) => {
+            chip.classList.toggle("active", chip.dataset.filter === activeFilter);
+        });
 
         // ---- Determine whether the post is visible to the current user ----
         function isPostVisible(post) {
@@ -989,8 +1021,8 @@
 
                             <div class="post-footer">
                                 <span class="post-stat">💬 <span class="comment-count">${comments.length}</span> Comments</span>
-                                <button class="post-stat like-button" type="button" data-base-count="0">
-                                    <span class="heart-icon">❤️</span> <span class="count">0</span> Likes
+                                <button class="post-stat like-button${post.likedByMe ? ' liked' : ''}" type="button" data-post-id="${post.id}" aria-pressed="${post.likedByMe ? 'true' : 'false'}">
+                                    <span class="heart-icon">❤️</span> <span class="count">${post.likeCount || 0}</span> Likes
                                 </button>
                                 <button class="report-button" type="button" data-post-id="${post.id}">⚑ Report</button>
                             </div>
@@ -1044,6 +1076,13 @@
             const commentText = input.value.trim();
             if (!commentText) return;
 
+            // Belt-and-suspenders: the page-level login gate above already
+            // blocks logged-out visitors, but double check here too.
+            if (!localStorage.getItem("hd_userEmail")) {
+                window.alert("Please log in to leave a comment.");
+                return;
+            }
+
             const authorId = localStorage.getItem("hd_userId");
 
             btn.disabled = true;
@@ -1061,6 +1100,7 @@
                 }
             } catch (error) {
                 console.error(error);
+                window.alert(error.message || "Unable to add your comment right now.");
                 btn.disabled = false;
                 return;
             }
@@ -1126,16 +1166,44 @@
             event.target.disabled = true;
         });
 
-        // Like button
-        document.addEventListener("click", (e) => {
+        // Like button — persisted server-side (post_likes table) so counts
+        // survive a reload and are visible to every visitor, not just the
+        // person who clicked. Previously this only changed the number on
+        // screen and forgot it the moment the page re-rendered.
+        document.addEventListener("click", async (e) => {
             const likeBtn = e.target.closest(".like-button");
             if (!likeBtn) return;
             const countEl = likeBtn.querySelector(".count");
             if (!countEl) return;
-            const current = parseInt(countEl.textContent, 10) || 0;
-            const liked = likeBtn.classList.toggle("liked");
-            countEl.textContent = liked ? current + 1 : current - 1;
-            likeBtn.setAttribute("aria-pressed", String(liked));
+
+            const postId = likeBtn.dataset.postId;
+            const alreadyLiked = likeBtn.classList.contains("liked");
+            likeBtn.disabled = true;
+
+            try {
+                const url = alreadyLiked
+                    ? `${API_BASE_URL}/api/posts/${postId}/like?likerId=${encodeURIComponent(CURRENT_USER_ID)}`
+                    : `${API_BASE_URL}/api/posts/${postId}/like`;
+
+                const response = await fetch(url, {
+                    method: alreadyLiked ? "DELETE" : "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: alreadyLiked ? undefined : JSON.stringify({ likerId: CURRENT_USER_ID })
+                });
+
+                const data = await response.json().catch(() => ({}));
+                if (!response.ok) throw new Error(data.message || "Unable to update like.");
+
+                likeBtn.classList.toggle("liked", !alreadyLiked);
+                likeBtn.setAttribute("aria-pressed", String(!alreadyLiked));
+                if (typeof data.likeCount === "number") {
+                    countEl.textContent = data.likeCount;
+                }
+            } catch (error) {
+                console.error(error);
+            } finally {
+                likeBtn.disabled = false;
+            }
         });
 
         // Report button
@@ -1161,11 +1229,13 @@
                     body: JSON.stringify({ postId, reporterId, reason })
                 });
 
-                if (!response.ok) throw new Error("Failed to submit report.");
+                const data = await response.json().catch(() => ({}));
+                if (!response.ok) throw new Error(data.message || "Failed to submit report.");
 
                 reportBtn.textContent = "✓ Reported";
             } catch (error) {
                 console.error(error);
+                window.alert(error.message || "Unable to submit your report right now.");
                 reportBtn.textContent = "⚑ Report";
                 reportBtn.disabled = false;
             }
