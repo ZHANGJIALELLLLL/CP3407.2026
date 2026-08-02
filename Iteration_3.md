@@ -8,12 +8,12 @@ The objective of Iteration 3 was to complete the remaining core features of the 
 
 ## User Stories
 
-| User Story | Priority | Effort |
-|------------|:--------:|:------:|
-| Reporting Harmful Content | 10 | 3 days |
-| Add Groups| 20 | 2 days |
-| Search and Filter Posts | 20 | 3 days |
-| Administrator Dashboard | 30 | 3 days |
+| User Story | Priority | Priority Justification | Effort |
+|------------|:--------:|-------------------------|:------:|
+| Reporting Harmful Content | 10 | Critical for user safety and moderation; needed before the platform can be considered safe to use | 3 days |
+| Add Groups | 20 | Improves content organisation but is not required for the core anonymous-support use case | 2 days |
+| Search and Filter Posts | 20 | Improves usability at scale, but the platform is already functional without it | 3 days |
+| Administrator Dashboard | 30 | Depends on the Reporting feature existing first, and is used by staff rather than students directly | 3 days |
 
 **Total: 11 person-days**
 
@@ -158,14 +158,26 @@ Reviewed and merged successfully.
 
 | Iteration | Velocity |
 |-----------|---------:|
-| Iteration 1 | 0.3333 |
-| Iteration 2 | 0.3667 |
+| Iteration 1 | 0.3125 |
+| Iteration 2 | 0.3438 |
 
 The team used the Iteration 2 velocity to estimate the workload for Iteration 3.
 
 ### Iteration 3 Backlog
 
 **11 person-days**
+
+### Iteration 3 Actual Velocity
+
+All 4 planned user stories (11 person-days) were completed by the end of the iteration.
+
+Completed Work = **11 person-days**
+
+Velocity = Completed Work ÷ Total Project Backlog (32 person-days)
+
+Velocity = **11 ÷ 32**
+
+Velocity = **0.3438**
 
 ---
 

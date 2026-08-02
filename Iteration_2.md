@@ -8,13 +8,13 @@ The objective of Iteration 2 was to implement the core functionality of the Anon
 
 ## User Stories
 
-| User Story | Priority | Effort |
-|------------|:--------:|:------:|
-| Create an Anonymous Account | 10 | 2 days |
-| User Login | 20 | 2 days |
-| Create an Anonymous Post | 10 | 3 days |
-| Browse Community Posts | 20 | 2 days |
-| Comment on a Post | 30 | 2 days |
+| User Story | Priority | Priority Justification | Effort |
+|------------|:--------:|-------------------------|:------:|
+| Create an Anonymous Account | 10 | Prerequisite for login and posting; all downstream features depend on it | 2 days |
+| Create an Anonymous Post | 10 | Core value proposition of the platform; without posting there is no community content | 3 days |
+| User Login | 20 | Required to access account-linked features, but depends on registration being done first | 2 days |
+| Browse Community Posts | 20 | Needed so users can see the value of posting, but only meaningful once posts exist | 2 days |
+| Comment on a Post | 30 | Enhances engagement but is not essential for the platform's minimum viable functionality | 2 days |
 
 **Total: 11 person-days**
 
@@ -67,6 +67,18 @@ The objective of Iteration 2 was to implement the core functionality of the Anon
 |------|:----------:|--------|
 | Create comment form | 1 day | Done |
 | Display comments | 1 day | Done |
+
+---
+
+# Backend & Database Integration
+
+Following the Iteration 1 reflection, the frontend was connected to the Java backend and a MySQL database during this iteration:
+
+- Account, login, post and comment data are now persisted in MySQL rather than being static/front-end only.
+- Java backend services were implemented to handle registration, authentication, post creation and comment storage.
+- Frontend pages were updated to call the backend endpoints instead of using placeholder data.
+
+This resolves the "not yet connected to Java backend or MySQL database" issue raised in the Iteration 1 reflection.
 
 ---
 
@@ -229,9 +241,9 @@ Reviewed and merged successfully.
 |-----------|---------:|
 | Iteration 1 | 10 person-days |
 | Iteration 2 | 11 person-days |
-| Iteration 3 | 9 person-days |
+| Iteration 3 | 11 person-days |
 
-**Total Project Backlog = 30 person-days**
+**Total Project Backlog = 32 person-days**
 
 ### Velocity Calculation
 
@@ -239,6 +251,6 @@ Completed Work = **11 person-days**
 
 Velocity = Completed Work ÷ Total Project Backlog
 
-Velocity = **11 ÷ 30**
+Velocity = **11 ÷ 32**
 
-Velocity = **0.3667**
+Velocity = **0.3438**
