@@ -6,7 +6,21 @@ const crypto = require("crypto");
 const pool = require("./db");
 
 const app = express();
-app.use(cors());
+const ALLOWED_ORIGINS = (process.env.FRONTEND_ORIGIN || "http://127.0.0.1:5500,http://localhost:5500")
+  .split(",")
+  .map((o) => o.trim());
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      // file://로 열었을 때(origin === "null"), 또는 브라우저가 아닌 도구(Postman 등, origin 없음)는 허용
+      if (!origin || origin === "null" || ALLOWED_ORIGINS.includes(origin)) {
+        return callback(null, true);
+      }
+      return callback(new Error("Not allowed by CORS"));
+    }
+  })
+);
 app.use(express.json());
 
 // ─────────────────────────────────────────────────────────────────────────
