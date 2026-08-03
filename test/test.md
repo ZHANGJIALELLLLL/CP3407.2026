@@ -150,6 +150,33 @@ One row = one pass/fail entered by a tester + date. Any failure becomes a GitHub
 | **M-19** | **group.html** | **Send a message, then send one containing filtered language** | **Clean message appears in the chat; filtered message is rejected with an inline error** |
 | **M-20** | **admin.html** | **Open a group's messages as admin** | **Each message shows the real account email behind the nickname, for moderation** |
 
+### 5a. Manual Test Results Log
+
+*The table above is the test **plan**; this table is the **evidence** — it records what actually happened when someone ran each step. Kept as a separate table (rather than adding 5 more columns above) so the plan stays readable. **This table is currently unfilled — it is a template, not evidence yet.** Before submission, a teammate (ideally not the one who built the feature being tested) should actually run all 20 steps and fill in every row; any row left blank or marked Fail without a linked issue should be treated as not yet tested.*
+
+| ID | Tester | Date | Actual result | Pass/Fail | Evidence / Issue link |
+|---|---|---|---|---|---|
+| M-01 | | | | | |
+| M-02 | | | | | |
+| M-03 | | | | | |
+| M-04 | | | | | |
+| M-05 | | | | | |
+| M-06 | | | | | |
+| M-07 | | | | | |
+| M-08 | | | | | |
+| M-09 | | | | | |
+| M-10 | | | | | |
+| M-11 | | | | | |
+| M-12 | | | | | |
+| M-13 | | | | | |
+| M-14 | | | | | |
+| M-15 | | | | | |
+| M-16 | | | | | |
+| M-17 | | | | | |
+| M-18 | | | | | |
+| M-19 | | | | | |
+| M-20 | | | | | |
+
 ---
 
 ## 6. Bugs Found and Fixed During This Testing Pass
