@@ -159,10 +159,28 @@ Iteration reflections, task boards, and burndown charts are in [`Iteration_1.md`
 ### UI, Database and Deployment Choices
 - **UI:** consistent purple-accent visual identity, card-based layouts, responsive Grid/Flexbox, reused navigation and form components across all pages (see [`design.md` §8](./design.md)).
 - **Database:** relational MySQL schema chosen for referential integrity between users/posts/comments/reports/groups; connection pooling centralised in `backend/db.js` (see [`design.md` §7](./design.md)).
-- **Deployment:** `[TODO — team to add: where the app is deployed/hosted, or state "run locally for demo" if not deployed, plus the reasoning for that choice]`
+- **Deployment:** Run locally for demonstration (`npm start` + opening the HTML pages directly, per "How to Run" below) rather than deployed to a hosting provider. Chosen because the project's scope and timeline didn't justify managing a live MySQL instance, environment secrets, and CORS for a public URL on top of the coursework deliverables — a local demo covers every feature the rubric asks to see, and the "How to Run" steps below let anyone reproduce it in a few minutes.
 
 ### Demonstration Evidence
-`[TODO — team to add: deployed link and/or screenshots or a short demo GIF/video for each iteration, and a short note on client/instructor feedback received after each iteration demo]`
+
+**Screenshots/recordings:** add one image (or short GIF) per iteration to `assets/demo/` — e.g. `assets/demo/iteration-1.png`, `assets/demo/iteration-2.png`, `assets/demo/iteration-3.png` — and reference them here:
+```markdown
+![Iteration 3 demo](./assets/demo/iteration-3.png)
+```
+(`assets/demo/` doesn't exist yet — create the folder and add the images before submission; this section will otherwise still show text-only evidence.)
+
+**Instructor feedback (received during the Iteration 3 demo):** the design was described as too plain/monotonous, and group chat needed to be easier to actually find and use rather than working but being hard to discover.
+
+**Team's own priority:** all three members independently flagged visual consistency across pages as something to protect — so any fix needed to *tighten* consistency, not add per-page variation that could make it worse.
+
+**Diagnosis (from reviewing the actual code, to ground the response in something concrete rather than a vague redesign):**
+1. **`group.html` is missing from the main navigation bar entirely.** `index.html`, `about.html`, `community.html`, and `resources.html` all link to the same four pages in their nav (`index`, `about`, `community`, `resources`) — Group is reachable only via a single "+ Group" button buried inside the Community page. This is very likely *the* discoverability problem the feedback was pointing at, independent of any visual styling.
+2. **The shared colour palette has small, unintentional drifts between pages** — `index.html`, `resources.html`, `login.html`, and `signup.html` define `--blue: #3d79e8` / `--background: #f7f8fc`, while `about.html`, `community.html`, `create-post.html`, and `group.html` define `--blue: #3f79e8` / `--background: #f8f9fd`. The difference is barely visible on any single page, but across the whole site it's the kind of thing that reads as "slightly off" without anyone being able to say why — a concrete, fixable contributor to the "monotonous/inconsistent" feedback.
+
+**Suggested response (for the team to implement or adjust):**
+- Add "Groups" as a fifth item in the shared nav bar on every page — directly answers the discoverability half of the feedback, and is a small, low-risk change since it only touches the nav markup that's already duplicated across pages.
+- Pick one canonical value for each shared CSS variable (e.g. keep `about.html`'s `#3f79e8` / `#f8f9fd`, since 4 of 8 pages already use it) and apply it to the other four pages — resolves the inconsistency without a redesign, and directly serves the team's own "consistency first" priority.
+- For "monotonous": rather than introducing new colours (which risks the inconsistency getting worse), consider adding more visual hierarchy *within* the existing palette — e.g. the `--primary`/`--pink`/`--orange`/`--green` accent colours already defined are currently only used sparingly; using them more deliberately per section (e.g. one accent colour per post category, already partly done in `community.html`'s `categoryTagClass`) would add visual interest without breaking the palette the team wants to keep unified.
 
 ---
 
