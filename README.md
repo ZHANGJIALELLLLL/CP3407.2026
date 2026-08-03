@@ -33,18 +33,6 @@ Team size: 3 (within the maximum of 4 students per team as required).
 - Mental health / support resource directory
 - Administrator dashboard
 
-## Documentation
-- [Design (Architecture / ERD / UI Prototype)](./docs/Design.md)
-- [Testing](./docs/Testing.md)
-- [Development Tools](./docs/Tools.md)
-- [Agile Iterations: 1](./docs/Iteration_1.md) · [2](./docs/Iteration_2.md) · [3](./docs/Iteration_3.md)
-- [Commit History](https://github.com/ZHANGJIALELLLLL/CP3407.2026/commits/main)
-- [Pull Requests](https://github.com/ZHANGJIALELLLLL/CP3407.2026/pulls)
-- [Project Board](https://github.com/ZHANGJIALELLLLL/CP3407.2026/projects)
-- [Team Contributions (GitHub Contributors)](https://github.com/ZHANGJIALELLLLL/CP3407.2026/graphs/contributors)
-
-> ⚠️ TODO: confirm the exact filenames above once `docs/` is finalized on GitHub, and add `docs/Version_Control.md` (branching strategy, commit convention, PR review process — see the Version Control note below, this currently has no dedicated page).
-
 ## Development Process
 Developed using Scrum across three iterations.
 
@@ -78,7 +66,6 @@ Developed using Scrum across three iterations.
 ## Testing
 Testing activities included unit, functional, boundary, negative, automated, mock-object, and system testing. **15 automated tests** were implemented during Iteration 2 (Test-Driven Development). Iteration 3 continued system testing and bug tracking via GitHub Issues.
 
-⚠️ TODO: name the actual test framework used (e.g. Jest/Mocha/Node `assert`) and link the `test/` folder — see `docs/Testing.md` for full test cases and results.
 
 ## How to Run
 Full setup instructions (environment variables, database creation, seeding, starting the server) are in [`backend/README.md`](./backend/README.md).
