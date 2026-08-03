@@ -220,9 +220,6 @@ Supports normal user login, administrator login, invalid-credential messages, lo
 ### Design Decision
 Normal users and administrators have different responsibilities and different authentication mechanisms. Role validation for admin routes happens on the server via `requireAdmin`, not only by hiding the Admin link in the browser.
 
-### ⚠️ Known Limitation
-Because normal user "login state" is not verified server-side, any client can currently call user-facing write endpoints (posts, comments, reports) by supplying an arbitrary `author_id`/`reporter_id`. This is documented in Section 9 (Security) and Section 14 (Limitations) as an area for improvement, and should be disclosed rather than hidden, since Test-Driven/Acceptance testing should reflect real behaviour.
-
 ---
 
 ## 6.5 Community Post Component
