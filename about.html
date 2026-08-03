@@ -112,7 +112,7 @@
       top: 0;
       z-index: 100;
       background: rgba(255, 255, 255, 0.92);
-      border-bottom: 1px solid rgba(223, 227, 241, 0.8);
+      border-bottom: 1px solid var(--border);
       backdrop-filter: blur(14px);
     }
 
@@ -150,7 +150,7 @@
 
     .nav-links a {
       position: relative;
-      color: #2f3650;
+      color: #303750;
       font-size: 0.95rem;
       font-weight: 650;
       padding: 27px 0 24px;
@@ -183,7 +183,7 @@
       width: 44px;
       height: 44px;
       border: 1px solid var(--border);
-      border-radius: 12px;
+      border-radius: 11px;
       background: var(--white);
       cursor: pointer;
     }
@@ -1026,6 +1026,185 @@
         padding: 24px 0;
       }
     }
+
+    /* Navigation buttons exactly match index.html */
+    .nav-actions > .button {
+      min-height: 44px;
+      padding: 0 18px;
+      gap: 8px;
+      border-radius: 11px;
+      font-size: inherit;
+      font-weight: 760;
+    }
+
+
+    /* One consistent line-icon system for About page */
+    .ui-icon {
+      width: 1em;
+      height: 1em;
+      display: inline-block;
+      flex: 0 0 auto;
+      vertical-align: -0.14em;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .button .ui-icon {
+      width: 18px;
+      height: 18px;
+    }
+
+    .chat-bubble .ui-icon {
+      width: 34px;
+      height: 34px;
+    }
+
+    .icon-badge .ui-icon,
+    .feature-icon .ui-icon {
+      width: 24px;
+      height: 24px;
+    }
+
+    .mission-point span .ui-icon {
+      width: 22px;
+      height: 22px;
+    }
+
+    .step-icon .ui-icon {
+      width: 32px;
+      height: 32px;
+    }
+
+    .safety-shield .ui-icon {
+      width: 42px;
+      height: 42px;
+    }
+
+    .safety-item span .ui-icon {
+      width: 27px;
+      height: 27px;
+      margin: 0 auto;
+    }
+
+    .foundation-icon .ui-icon {
+      width: 30px;
+      height: 30px;
+    }
+
+    .vision-stars .ui-icon {
+      width: 78px;
+      height: 78px;
+    }
+
+
+    /* About page photo gallery (different from homepage images) */
+    .about-photo-gallery {
+      padding: 10px 0 34px;
+    }
+
+    .about-photo-intro {
+      max-width: 760px;
+      margin: 0 auto 22px;
+      text-align: center;
+    }
+
+    .about-photo-intro h2 {
+      margin-bottom: 8px;
+      font-size: clamp(1.8rem, 3.2vw, 2.6rem);
+      line-height: 1.12;
+      letter-spacing: -0.045em;
+    }
+
+    .about-photo-intro p {
+      color: var(--text);
+    }
+
+    .about-photo-grid {
+      display: grid;
+      grid-template-columns: 1.12fr 0.88fr 0.88fr;
+      gap: 18px;
+    }
+
+    .about-photo-card {
+      position: relative;
+      min-height: 290px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      background: var(--white);
+      box-shadow: var(--shadow);
+    }
+
+    .about-photo-card img {
+      width: 100%;
+      height: 100%;
+      min-height: 290px;
+      display: block;
+      object-fit: cover;
+    }
+
+    .about-photo-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to top,
+        rgba(17, 25, 54, 0.82) 0%,
+        rgba(17, 25, 54, 0.18) 46%,
+        transparent 72%
+      );
+      pointer-events: none;
+    }
+
+    .about-photo-copy {
+      position: absolute;
+      left: 20px;
+      right: 20px;
+      bottom: 18px;
+      z-index: 2;
+      color: var(--white);
+    }
+
+    .about-photo-copy h3 {
+      margin-bottom: 5px;
+      font-size: 1.08rem;
+      line-height: 1.2;
+    }
+
+    .about-photo-copy p {
+      color: rgba(255, 255, 255, 0.92);
+      font-size: 0.84rem;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 980px) {
+      .about-photo-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .about-photo-card:first-child {
+        grid-column: 1 / -1;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .about-photo-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .about-photo-card:first-child {
+        grid-column: auto;
+      }
+
+      .about-photo-card,
+      .about-photo-card img {
+        min-height: 240px;
+      }
+    }
+
   </style>
 </head>
 
@@ -1053,8 +1232,8 @@
       </nav>
 
       <div class="nav-actions" id="navActions">
-        <a class="button button-outline button-small" id="loginNavLink" href="login.html">Log in</a>
-        <a class="button button-primary button-small" id="signupNavLink" href="signup.html">Sign up</a>
+        <a class="button button-outline" id="loginNavLink" href="login.html">Log in</a>
+        <a class="button button-primary" id="signupNavLink" href="signup.html">Sign up</a>
         <button class="menu-toggle" id="menuToggle" aria-label="Open navigation menu" aria-expanded="false">
           ☰
         </button>
@@ -1075,13 +1254,13 @@
           </p>
 
           <div class="hero-actions">
-            <a class="button button-primary" href="create-post.html">✎ Share Anonymously</a>
-            <a class="button button-outline" href="community.html">💬 Explore Community</a>
+            <a class="button button-primary" href="create-post.html"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg> Share Anonymously</a>
+            <a class="button button-outline" href="community.html"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z"/><path d="M8 9h8"/><path d="M8 13h5"/></svg> Explore Community</a>
           </div>
         </div>
 
         <div class="hero-visual" aria-label="Illustration of university students supporting one another">
-          <div class="chat-bubble" aria-hidden="true">♥</div>
+          <div class="chat-bubble" aria-hidden="true"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8Z"/></svg></div>
           <div class="ground"></div>
           <div class="student-scene" aria-hidden="true">
             <div class="student one">
@@ -1105,11 +1284,72 @@
       </div>
     </section>
 
+
+    <section class="about-photo-gallery" aria-labelledby="aboutPhotoGalleryTitle">
+      <div class="container">
+        <div class="about-photo-intro">
+          <span class="eyebrow">Student stories</span>
+          <h2 id="aboutPhotoGalleryTitle">Hello Dear is inspired by real student experiences.</h2>
+          <p>
+            Behind every anonymous post is a student trying to study, adapt,
+            connect, and feel supported during university life.
+          </p>
+        </div>
+
+        <div class="about-photo-grid">
+          <article class="about-photo-card">
+            <img
+              src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&fm=jpg&ixlib=rb-4.1.0&q=82&w=1400"
+              alt="University students discussing ideas together around a table"
+              loading="lazy"
+              referrerpolicy="no-referrer"
+            />
+            <div class="about-photo-copy">
+              <h3>Built for connection</h3>
+              <p>
+                Students often need a supportive space to ask questions and share concerns.
+              </p>
+            </div>
+          </article>
+
+          <article class="about-photo-card">
+            <img
+              src="https://images.unsplash.com/photo-1513258496099-48168024aec0?auto=format&fit=crop&fm=jpg&ixlib=rb-4.1.0&q=82&w=1200"
+              alt="Students walking together on a university campus"
+              loading="lazy"
+              referrerpolicy="no-referrer"
+            />
+            <div class="about-photo-copy">
+              <h3>Made for campus life</h3>
+              <p>
+                The platform supports everyday student challenges beyond the classroom.
+              </p>
+            </div>
+          </article>
+
+          <article class="about-photo-card">
+            <img
+              src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&fm=jpg&ixlib=rb-4.1.0&q=82&w=1200"
+              alt="Young adults smiling together in a friendly support setting"
+              loading="lazy"
+              referrerpolicy="no-referrer"
+            />
+            <div class="about-photo-copy">
+              <h3>Encouraging peer support</h3>
+              <p>
+                Small conversations can reduce isolation and help students feel understood.
+              </p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
     <section class="section">
       <div class="container split-grid">
         <article class="info-panel green-panel">
           <div class="panel-title">
-            <span class="icon-badge icon-green">⚑</span>
+            <span class="icon-badge icon-green"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 22V4"/><path d="M5 4h11l-2 4 2 4H5"/></svg></span>
             <h2>Our Mission</h2>
           </div>
           <p>
@@ -1120,16 +1360,16 @@
           </p>
 
           <div class="mission-points">
-            <div class="mission-point"><span>♙</span>Student<br />Well-being</div>
-            <div class="mission-point"><span>♡</span>Emotional<br />Support</div>
-            <div class="mission-point"><span>🔒</span>Anonymous<br />Communication</div>
-            <div class="mission-point"><span>♢</span>Safe<br />Community</div>
+            <div class="mission-point"><span><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span>Student<br />Well-being</div>
+            <div class="mission-point"><span><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8Z"/></svg></span>Emotional<br />Support</div>
+            <div class="mission-point"><span><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></span>Anonymous<br />Communication</div>
+            <div class="mission-point"><span><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/></svg></span>Safe<br />Community</div>
           </div>
         </article>
 
         <article class="info-panel purple-panel">
           <div class="panel-title">
-            <span class="icon-badge icon-purple">💡</span>
+            <span class="icon-badge icon-purple"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M8.5 14.5A7 7 0 1 1 15.5 14.5c-.9.7-1.5 1.6-1.5 2.5h-4c0-.9-.6-1.8-1.5-2.5Z"/></svg></span>
             <h2>Why We Built Hello Dear</h2>
           </div>
           <p>
@@ -1155,7 +1395,7 @@
 
         <div class="card-grid">
           <article class="feature-card">
-            <div class="feature-icon" style="background: var(--green-light); color: var(--green);">◉</div>
+            <div class="feature-icon" style="background: var(--green-light); color: var(--green);"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></div>
             <h3>Anonymous by Design</h3>
             <p>
               Real names are not displayed publicly. Students use automatically
@@ -1164,7 +1404,7 @@
           </article>
 
           <article class="feature-card">
-            <div class="feature-icon" style="background: var(--pink-light); color: var(--pink);">♡</div>
+            <div class="feature-icon" style="background: var(--pink-light); color: var(--pink);"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8Z"/></svg></div>
             <h3>Peer Support Focused</h3>
             <p>
               Students support one another through respectful comments,
@@ -1173,7 +1413,7 @@
           </article>
 
           <article class="feature-card">
-            <div class="feature-icon" style="background: var(--blue-light); color: var(--blue);">♢</div>
+            <div class="feature-icon" style="background: var(--blue-light); color: var(--blue);"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/></svg></div>
             <h3>Safe Community</h3>
             <p>
               Reporting tools, profanity filtering, and administrator moderation
@@ -1182,7 +1422,7 @@
           </article>
 
           <article class="feature-card">
-            <div class="feature-icon" style="background: var(--orange-light); color: var(--orange);">▦</div>
+            <div class="feature-icon" style="background: var(--orange-light); color: var(--orange);"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/><path d="M8 7h8"/><path d="M8 11h6"/></svg></div>
             <h3>University Resources</h3>
             <p>
               Students can quickly find counselling, academic, career, and
@@ -1203,28 +1443,28 @@
         <div class="steps">
           <article class="step">
             <span class="step-number">1</span>
-            <div class="step-icon">✎</div>
+            <div class="step-icon"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></div>
             <h3>Post Anonymously</h3>
             <p>Share thoughts or concerns without revealing your real identity.</p>
           </article>
 
           <article class="step">
             <span class="step-number">2</span>
-            <div class="step-icon">💬</div>
+            <div class="step-icon"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z"/><path d="M8 9h8"/><path d="M8 13h5"/></svg></div>
             <h3>Peers Respond</h3>
             <p>Other students reply with advice, support, and encouragement.</p>
           </article>
 
           <article class="step">
             <span class="step-number">3</span>
-            <div class="step-icon">♢</div>
+            <div class="step-icon"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/></svg></div>
             <h3>Community Protection</h3>
             <p>Reports and moderation help maintain a respectful environment.</p>
           </article>
 
           <article class="step">
             <span class="step-number">4</span>
-            <div class="step-icon">▤</div>
+            <div class="step-icon"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/><path d="M8 7h8"/><path d="M8 11h6"/></svg></div>
             <h3>Find Helpful Resources</h3>
             <p>Access relevant university services based on your needs.</p>
           </article>
@@ -1235,7 +1475,7 @@
     <section class="section">
       <div class="container safety-banner">
         <div class="safety-copy">
-          <div class="safety-shield" aria-hidden="true">🔒</div>
+          <div class="safety-shield" aria-hidden="true"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></div>
           <div>
             <h2>Safety &amp; Privacy First</h2>
             <p>
@@ -1246,11 +1486,11 @@
         </div>
 
         <div class="safety-list">
-          <div class="safety-item"><span>👤</span>Anonymous Nickname</div>
-          <div class="safety-item"><span>◉̸</span>No Real Name Displayed</div>
-          <div class="safety-item"><span>▽</span>Profanity Filter</div>
-          <div class="safety-item"><span>⚑</span>Report System</div>
-          <div class="safety-item"><span>♢</span>Admin Review</div>
+          <div class="safety-item"><span><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span>Anonymous Nickname</div>
+          <div class="safety-item"><span><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m3 3 18 18"/><path d="M10.6 10.7a2 2 0 0 0 2.7 2.7"/><path d="M9.9 4.2A10.7 10.7 0 0 1 12 4c5 0 9 4 10 8a12 12 0 0 1-2.1 4.2"/><path d="M6.6 6.6A11.8 11.8 0 0 0 2 12c1 4 5 8 10 8a10.8 10.8 0 0 0 4.1-.8"/></svg></span>No Real Name Displayed</div>
+          <div class="safety-item"><span><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16l-6 7v6l-4 2v-8Z"/></svg></span>Profanity Filter</div>
+          <div class="safety-item"><span><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 22V4"/><path d="M5 4h11l-2 4 2 4H5"/></svg></span>Report System</div>
+          <div class="safety-item"><span><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/></svg></span>Admin Review</div>
         </div>
       </div>
     </section>
@@ -1267,7 +1507,7 @@
 
         <div class="foundation-grid">
           <article class="foundation-card">
-            <div class="foundation-icon">🖥</div>
+            <div class="foundation-icon"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg></div>
             <div>
               <h3>Modern Web Technology</h3>
               <p>
@@ -1278,7 +1518,7 @@
           </article>
 
           <article class="foundation-card">
-            <div class="foundation-icon">▰</div>
+            <div class="foundation-icon"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/><path d="M4 11v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg></div>
             <div>
               <h3>Structured Database</h3>
               <p>
@@ -1289,7 +1529,7 @@
           </article>
 
           <article class="foundation-card">
-            <div class="foundation-icon">🔒</div>
+            <div class="foundation-icon"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></div>
             <div>
               <h3>Reliable &amp; Maintainable</h3>
               <p>
@@ -1318,7 +1558,7 @@
             <span class="vision-tag">University Partnerships</span>
             <span class="vision-tag">Better Support Access</span>
           </div>
-          <div class="vision-stars" aria-hidden="true">✦</div>
+          <div class="vision-stars" aria-hidden="true"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 2 3 6 6.5.9-4.7 4.6 1.1 6.5-5.9-3.1L6.1 20l1.1-6.5L2.5 8.9 9 8Z"/></svg></div>
         </article>
 
         <article class="feedback-card">
@@ -1338,7 +1578,7 @@
               placeholder="Tell us what could make Hello Dear better..."
               required
             ></textarea>
-            <button class="button button-primary" type="submit">✉ Send Feedback</button>
+            <button class="button button-primary" type="submit"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg> Send Feedback</button>
             <p class="form-message" id="formMessage" role="status"></p>
           </form>
         </article>
