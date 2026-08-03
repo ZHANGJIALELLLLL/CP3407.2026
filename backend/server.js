@@ -957,6 +957,28 @@ app.delete("/api/groups/:id", requireAdmin, async (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server running: http://localhost:${PORT}`);
-});
+
+// Only start listening when this file is run directly (`node server.js` /
+// `npm start`). When it is `require()`d instead — e.g. by
+// `test/unit.test.js`, which needs the pure helper functions below without
+// booting a real HTTP server — this guard keeps `require("./server")` side
+// effect-free.
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`Server running: http://localhost:${PORT}`);
+  });
+}
+
+// Exported for unit testing only (see test/unit.test.js). These are pure,
+// dependency-free helper functions that can be tested in isolation, without
+// a running server or a live database connection.
+module.exports = {
+  app,
+  base64url,
+  base64urlDecode,
+  signAdminToken,
+  verifyAdminToken,
+  isUniversityEmail,
+  containsProfanity,
+  slugify
+};
