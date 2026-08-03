@@ -691,10 +691,216 @@
       }
     }
 
+
+    /* Find-conversation cards: open a small information card instead of navigating */
+    .conversation-card-clickable {
+      cursor: pointer;
+      text-align: left;
+      font: inherit;
+      color: inherit;
+      width: 100%;
+      outline: none;
+    }
+
+    .conversation-card-clickable:focus-visible {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(98, 87, 232, 0.13), var(--shadow);
+    }
+
+    .conversation-mini-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 1100;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 22px;
+      background: rgba(17, 25, 54, 0.48);
+      backdrop-filter: blur(4px);
+    }
+
+    .conversation-mini-modal.open {
+      display: flex;
+    }
+
+    .conversation-mini-card {
+      width: min(100%, 470px);
+      padding: 25px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: var(--white);
+      box-shadow: 0 24px 65px rgba(17, 25, 54, 0.24);
+      outline: none;
+    }
+
+    .conversation-mini-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 16px;
+    }
+
+    .conversation-mini-heading {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      min-width: 0;
+    }
+
+    .conversation-mini-title {
+      font-size: 1.3rem;
+      line-height: 1.25;
+      letter-spacing: -0.035em;
+    }
+
+    .conversation-mini-label {
+      margin-top: 4px;
+      color: var(--primary);
+      font-size: 0.76rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .conversation-mini-close {
+      flex: 0 0 auto;
+      width: 38px;
+      height: 38px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--navy);
+      background: var(--white);
+      font-size: 1.3rem;
+      cursor: pointer;
+    }
+
+    .conversation-mini-close:hover {
+      color: var(--primary);
+      border-color: var(--primary);
+      background: var(--primary-light);
+    }
+
+    .conversation-mini-content {
+      display: grid;
+      gap: 14px;
+      color: var(--text);
+      font-size: 0.9rem;
+      line-height: 1.65;
+    }
+
+    .conversation-mini-content h3 {
+      color: var(--navy);
+      font-size: 0.96rem;
+    }
+
+    .conversation-mini-content ul {
+      display: grid;
+      gap: 7px;
+      padding-left: 20px;
+    }
+
+    .conversation-mini-note {
+      padding: 12px 13px;
+      border: 1px solid #ddd8fb;
+      border-radius: 12px;
+      color: #49426f;
+      background: #f8f7ff;
+      font-size: 0.8rem;
+    }
+
+    body.conversation-mini-open {
+      overflow: hidden;
+    }
+
+    @media (max-width: 640px) {
+      .conversation-mini-modal {
+        padding: 12px;
+      }
+
+      .conversation-mini-card {
+        padding: 21px 18px;
+      }
+    }
+
+
+    /* Real photographs inside the existing trust-card icon containers */
+    .trust-card-image {
+      width: 48px;
+      height: 48px;
+      display: block;
+      object-fit: cover;
+      border-radius: 14px;
+    }
+
+
+
+
+
+    /* Trust cards: text above, large real photograph below */
+    .trust-card {
+      flex-direction: column-reverse;
+      align-items: stretch;
+      justify-content: space-between;
+      gap: 16px;
+      min-height: 280px;
+      padding: 20px;
+    }
+
+    .trust-card > div:last-child {
+      width: 100%;
+    }
+
+    .trust-card strong {
+      margin-bottom: 7px;
+      font-size: 1rem;
+    }
+
+    .trust-card span {
+      display: block;
+      line-height: 1.55;
+    }
+
+    .trust-card .icon-badge {
+      width: 100%;
+      height: 155px;
+      flex: 0 0 155px;
+      padding: 0;
+      overflow: hidden;
+      border-radius: 16px;
+      background: transparent;
+    }
+
+    .trust-card-image {
+      width: 100%;
+      height: 155px;
+      display: block;
+      object-fit: cover;
+      border-radius: 16px;
+    }
+
+    @media (max-width: 640px) {
+      .trust-card {
+        min-height: 260px;
+      }
+
+      .trust-card .icon-badge,
+      .trust-card-image {
+        height: 145px;
+        flex-basis: 145px;
+      }
+    }
+
   </style>
 </head>
 
 <body>
+
+  <!--
+    Trust-card photographs are loaded from Unsplash and used under the
+    Unsplash License. The images require an internet connection to display.
+  -->
+
   <header class="site-header">
     <div class="container navbar">
       <a class="brand" href="index.html" aria-label="Hello Dear home">
@@ -765,10 +971,61 @@
       </div>
 
       <div class="container trust">
-        <div class="trust-card"><div class="icon-badge">🔒</div><div><strong>Anonymous</strong><span>Real names are not shown publicly.</span></div></div>
-        <div class="trust-card"><div class="icon-badge">♡</div><div><strong>Peer Support</strong><span>Students encourage and help one another.</span></div></div>
-        <div class="trust-card"><div class="icon-badge">♢</div><div><strong>Safe Community</strong><span>Reports support respectful discussion.</span></div></div>
-        <div class="trust-card"><div class="icon-badge">▤</div><div><strong>Helpful Resources</strong><span>Campus services are easier to find.</span></div></div>
+        <div class="trust-card">
+          <div class="icon-badge">
+            <img
+              class="trust-card-image"
+              loading="lazy"
+              referrerpolicy="no-referrer"
+              src="https://images.unsplash.com/photo-1753613648120-d2c8d1d49002?auto=format&fit=crop&fm=jpg&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&ixlib=rb-4.1.0&q=70&w=500"
+              alt=""
+              aria-hidden="true"
+            />
+          </div>
+          <div><strong>Anonymous</strong><span>Real names are not shown publicly.</span></div>
+        </div>
+
+        <div class="trust-card">
+          <div class="icon-badge">
+            <img
+              class="trust-card-image"
+              loading="lazy"
+              referrerpolicy="no-referrer"
+              src="https://images.unsplash.com/photo-1758270704787-615782711641?auto=format&fit=crop&fm=jpg&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&ixlib=rb-4.1.0&q=70&w=500"
+              alt=""
+              aria-hidden="true"
+            />
+          </div>
+          <div><strong>Peer Support</strong><span>Students encourage and help one another.</span></div>
+        </div>
+
+        <div class="trust-card">
+          <div class="icon-badge">
+            <img
+              class="trust-card-image"
+              loading="lazy"
+              referrerpolicy="no-referrer"
+              src="https://images.unsplash.com/photo-1758270705482-cee87ea98738?auto=format&fit=crop&fm=jpg&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&ixlib=rb-4.1.0&q=70&w=500"
+              alt=""
+              aria-hidden="true"
+            />
+          </div>
+          <div><strong>Safe Community</strong><span>Reports support respectful discussion.</span></div>
+        </div>
+
+        <div class="trust-card">
+          <div class="icon-badge">
+            <img
+              class="trust-card-image"
+              loading="lazy"
+              referrerpolicy="no-referrer"
+              src="https://images.unsplash.com/photo-1764213077313-41b4dc822d8c?auto=format&fit=crop&fm=jpg&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&ixlib=rb-4.1.0&q=70&w=500"
+              alt=""
+              aria-hidden="true"
+            />
+          </div>
+          <div><strong>Helpful Resources</strong><span>Campus services are easier to find.</span></div>
+        </div>
       </div>
     </section>
 
@@ -809,42 +1066,68 @@
         <div class="section-heading">
           <span class="eyebrow">Browse by topic</span>
           <h2>Find conversations that matter to you</h2>
-          <p>Categories link directly to the community page to reduce unnecessary navigation.</p>
+          <p>Select a topic to view a short guide and examples of conversations in that area.</p>
         </div>
-        <!--
-          These used to link to categories (stress, relationships, career,
-          international, general) that don't exist anywhere in the data
-          model, and community.html never even read the ?category= param —
-          so every card silently opened the same unfiltered "All" feed.
-          They now map to the four categories posts can actually have
-          (academic / friendship / mental-health / other), and
-          community.html reads the query param to apply the filter.
-        -->
-        <div class="categories-grid">
-          <a class="category-card" href="community.html?category=academic">
+<div class="categories-grid">
+          <button
+            class="category-card conversation-card-clickable"
+            type="button"
+            data-conversation="academic"
+            aria-label="Open Academic conversation information"
+          >
             <div class="icon-badge" style="background:var(--blue-light);color:var(--blue);">📘</div>
             <div><h3>Academic</h3><p>Assignments, exams, study habits, and course concerns.</p></div>
-          </a>
-          <a class="category-card" href="community.html?category=mental-health">
+          </button>
+
+          <button
+            class="category-card conversation-card-clickable"
+            type="button"
+            data-conversation="mental-health"
+            aria-label="Open Stress and Mental Health conversation information"
+          >
             <div class="icon-badge" style="background:var(--pink-light);color:var(--pink);">🧠</div>
             <div><h3>Stress &amp; Mental Health</h3><p>Workload, time pressure, balance, and well-being.</p></div>
-          </a>
-          <a class="category-card" href="community.html?category=friendship">
+          </button>
+
+          <button
+            class="category-card conversation-card-clickable"
+            type="button"
+            data-conversation="relationships"
+            aria-label="Open Relationships conversation information"
+          >
             <div class="icon-badge" style="background:var(--pink-light);color:var(--pink);">♡</div>
             <div><h3>Relationships</h3><p>Friendships, communication, conflict, and connection.</p></div>
-          </a>
-          <a class="category-card" href="community.html?category=other">
+          </button>
+
+          <button
+            class="category-card conversation-card-clickable"
+            type="button"
+            data-conversation="career"
+            aria-label="Open Career conversation information"
+          >
             <div class="icon-badge" style="background:var(--orange-light);color:var(--orange);">💼</div>
             <div><h3>Career</h3><p>Career direction, internships, skills, and planning.</p></div>
-          </a>
-          <a class="category-card" href="community.html?category=other">
+          </button>
+
+          <button
+            class="category-card conversation-card-clickable"
+            type="button"
+            data-conversation="international"
+            aria-label="Open International Student Life conversation information"
+          >
             <div class="icon-badge" style="background:var(--blue-light);color:var(--blue);">🌏</div>
             <div><h3>International Student Life</h3><p>Adjustment, language, culture, and studying away from home.</p></div>
-          </a>
-          <a class="category-card" href="community.html?category=other">
+          </button>
+
+          <button
+            class="category-card conversation-card-clickable"
+            type="button"
+            data-conversation="general"
+            aria-label="Open General Discussion information"
+          >
             <div class="icon-badge" style="background:var(--green-light);color:var(--green);">💬</div>
             <div><h3>General Discussion</h3><p>Campus life, everyday questions, tips, and experiences.</p></div>
-          </a>
+          </button>
         </div>
       </div>
     </section>
@@ -920,6 +1203,46 @@
       </div>
     </section>
   </main>
+
+
+
+  <!-- Find-conversation information card -->
+  <div
+    class="conversation-mini-modal"
+    id="conversationMiniModal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="conversationMiniTitle"
+    aria-hidden="true"
+  >
+    <div class="conversation-mini-card" tabindex="-1">
+      <div class="conversation-mini-header">
+        <div class="conversation-mini-heading">
+          <div class="icon-badge" id="conversationMiniIcon">📘</div>
+          <div>
+            <h2 class="conversation-mini-title" id="conversationMiniTitle">
+              Conversation topic
+            </h2>
+            <p class="conversation-mini-label">Conversation guide</p>
+          </div>
+        </div>
+
+        <button
+          class="conversation-mini-close"
+          id="conversationMiniClose"
+          type="button"
+          aria-label="Close conversation information"
+        >
+          ×
+        </button>
+      </div>
+
+      <div
+        class="conversation-mini-content"
+        id="conversationMiniContent"
+      ></div>
+    </div>
+  </div>
 
 
   <!-- Core feature detail modal -->
@@ -1206,6 +1529,222 @@
     document.addEventListener("keydown", (event) => {
       if (event.key === "Escape" && featureModal.classList.contains("open")) {
         closeFeatureModal();
+      }
+    });
+
+
+
+    // Find-conversation cards: display small information cards on this page.
+    const conversationDetails = {
+      academic: {
+        icon: "📘",
+        iconStyle: "background:var(--blue-light);color:var(--blue);",
+        title: "Academic",
+        content: `
+          <p>
+            A space for concerns related to study, assessments, classes and
+            university learning.
+          </p>
+          <h3>Common conversation topics</h3>
+          <ul>
+            <li>Assignment planning and approaching deadlines.</li>
+            <li>Exam preparation and study routines.</li>
+            <li>Managing several courses at the same time.</li>
+            <li>Asking lecturers or classmates for academic support.</li>
+          </ul>
+          <div class="conversation-mini-note">
+            Students should avoid sharing assessment answers or confidential
+            course material.
+          </div>
+        `
+      },
+
+      "mental-health": {
+        icon: "🧠",
+        iconStyle: "background:var(--pink-light);color:var(--pink);",
+        title: "Stress & Mental Health",
+        content: `
+          <p>
+            A supportive topic area for discussing workload, emotional pressure,
+            balance and general well-being.
+          </p>
+          <h3>Common conversation topics</h3>
+          <ul>
+            <li>Feeling overwhelmed by university responsibilities.</li>
+            <li>Creating healthier study and rest routines.</li>
+            <li>Managing homesickness, loneliness or uncertainty.</li>
+            <li>Finding suitable university well-being resources.</li>
+          </ul>
+          <div class="conversation-mini-note">
+            Peer support does not replace qualified counselling or emergency
+            services.
+          </div>
+        `
+      },
+
+      relationships: {
+        icon: "♡",
+        iconStyle: "background:var(--pink-light);color:var(--pink);",
+        title: "Relationships",
+        content: `
+          <p>
+            A topic area for respectful discussions about friendships,
+            communication and social connection.
+          </p>
+          <h3>Common conversation topics</h3>
+          <ul>
+            <li>Making friends at university.</li>
+            <li>Handling misunderstandings and conflict.</li>
+            <li>Communicating personal boundaries respectfully.</li>
+            <li>Feeling excluded or disconnected from others.</li>
+          </ul>
+          <div class="conversation-mini-note">
+            Do not publish another person's name, contact details or private
+            information.
+          </div>
+        `
+      },
+
+      career: {
+        icon: "💼",
+        iconStyle: "background:var(--orange-light);color:var(--orange);",
+        title: "Career",
+        content: `
+          <p>
+            A place to discuss career planning, work preparation and uncertainty
+            about future pathways.
+          </p>
+          <h3>Common conversation topics</h3>
+          <ul>
+            <li>Choosing a career direction.</li>
+            <li>Preparing résumés and applications.</li>
+            <li>Finding internships or graduate opportunities.</li>
+            <li>Developing employability and interview skills.</li>
+          </ul>
+          <div class="conversation-mini-note">
+            Official career advice should be confirmed with the university
+            Career Centre.
+          </div>
+        `
+      },
+
+      international: {
+        icon: "🌏",
+        iconStyle: "background:var(--blue-light);color:var(--blue);",
+        title: "International Student Life",
+        content: `
+          <p>
+            A space for students adjusting to university life in a different
+            country or culture.
+          </p>
+          <h3>Common conversation topics</h3>
+          <ul>
+            <li>Adapting to a new culture and study environment.</li>
+            <li>Language confidence and classroom communication.</li>
+            <li>Homesickness and maintaining connections with home.</li>
+            <li>Finding campus services and student activities.</li>
+          </ul>
+          <div class="conversation-mini-note">
+            Visa and immigration questions should be checked with an authorised
+            university or government service.
+          </div>
+        `
+      },
+
+      general: {
+        icon: "💬",
+        iconStyle: "background:var(--green-light);color:var(--green);",
+        title: "General Discussion",
+        content: `
+          <p>
+            A broad topic area for everyday student questions that do not fit
+            another category.
+          </p>
+          <h3>Common conversation topics</h3>
+          <ul>
+            <li>Campus routines and student-life tips.</li>
+            <li>Clubs, activities and university events.</li>
+            <li>Useful study spaces and campus facilities.</li>
+            <li>Sharing general experiences respectfully.</li>
+          </ul>
+          <div class="conversation-mini-note">
+            Posts must still follow the community rules and protect personal
+            information.
+          </div>
+        `
+      }
+    };
+
+    const conversationCards = document.querySelectorAll("[data-conversation]");
+    const conversationMiniModal = document.getElementById(
+      "conversationMiniModal"
+    );
+    const conversationMiniCard = conversationMiniModal.querySelector(
+      ".conversation-mini-card"
+    );
+    const conversationMiniIcon = document.getElementById(
+      "conversationMiniIcon"
+    );
+    const conversationMiniTitle = document.getElementById(
+      "conversationMiniTitle"
+    );
+    const conversationMiniContent = document.getElementById(
+      "conversationMiniContent"
+    );
+    const conversationMiniClose = document.getElementById(
+      "conversationMiniClose"
+    );
+    let lastConversationCard = null;
+
+    function openConversationMiniCard(topicId, sourceCard) {
+      const topic = conversationDetails[topicId];
+      if (!topic) return;
+
+      lastConversationCard = sourceCard;
+      conversationMiniIcon.textContent = topic.icon;
+      conversationMiniIcon.setAttribute("style", topic.iconStyle);
+      conversationMiniTitle.textContent = topic.title;
+      conversationMiniContent.innerHTML = topic.content;
+
+      conversationMiniModal.classList.add("open");
+      conversationMiniModal.setAttribute("aria-hidden", "false");
+      document.body.classList.add("conversation-mini-open");
+      conversationMiniCard.focus();
+    }
+
+    function closeConversationMiniCard() {
+      conversationMiniModal.classList.remove("open");
+      conversationMiniModal.setAttribute("aria-hidden", "true");
+      document.body.classList.remove("conversation-mini-open");
+
+      if (lastConversationCard) {
+        lastConversationCard.focus();
+      }
+    }
+
+    conversationCards.forEach((card) => {
+      card.addEventListener("click", () => {
+        openConversationMiniCard(card.dataset.conversation, card);
+      });
+    });
+
+    conversationMiniClose.addEventListener(
+      "click",
+      closeConversationMiniCard
+    );
+
+    conversationMiniModal.addEventListener("click", (event) => {
+      if (event.target === conversationMiniModal) {
+        closeConversationMiniCard();
+      }
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (
+        event.key === "Escape" &&
+        conversationMiniModal.classList.contains("open")
+      ) {
+        closeConversationMiniCard();
       }
     });
 
