@@ -276,7 +276,7 @@ Total: 19   Passed: 19   Failed: 0
 | **Adversarial (tamper/forgery)** | A signature-flipped admin token; a forged payload with a different `adminId` re-signed with the original signature; an already-expired token | UT-05, UT-06, UT-08 |
 | **Moderation edge cases** | A message containing a blocked word as a whole word (rejected) vs. the same substring embedded inside a longer, innocuous word (accepted) — a direct boundary-value test of the word-boundary regex | UT-15, UT-16, TC-32 |
 
-**Known gap, disclosed rather than hidden:** neither suite currently sends SQL-injection or XSS payloads as post/comment content. Parameterised queries (`mysql2` placeholders, used throughout `server.js`) make SQL injection unlikely to succeed, but this has not been *tested*, only reasoned about from the code. Adding a small adversarial-input data set for post/comment/group-message content is listed as future work.
+**Known gap, disclosed rather than hidden:** neither suite currently sends SQL-injection or XSS payloads as post/comment content. Parameterised queries (`mysql2` placeholders, used throughout `server.js`) make SQL injection unlikely to succeed. On the XSS side, a manual code review (this pass) confirmed `community.html`, `group.html`, `resources.html`, and `admin.html` all consistently pass user-supplied content (post/comment text, group chat messages, nicknames) through an `escapeHtml()` helper before inserting it via `innerHTML` — so the code is written defensively. Neither of these has been *tested* automatically, only reasoned about from the code, so adding a small adversarial-input data set for post/comment/group-message content (e.g. `<script>`, `' OR 1=1 --`) is listed as future work to turn "reasoned about" into "verified".
 
 ---
 
