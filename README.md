@@ -50,7 +50,7 @@ Team size: 3 (within the maximum of 4 students per team).
 - Build a simple, user-friendly web application, deliverable within a 3-person team's realistic scope.
 
 ### Requirements Gathering
-Requirements were derived from structured user interviews with six students across three programmes (Human Resource Management, Accounting, Information Technology). Findings and interview questions are recorded in [`docs/Prac02-User-Research-and-User-Stories.md`](./docs/Prac02-User-Research-and-User-Stories.md). Key findings that shaped requirements: anonymity was the most-requested feature across all groups, users wanted post categories, and IT students specifically flagged the need for reporting/moderation and hiding personally identifying information.
+Requirements were derived from structured user interviews with six students across three programmes (Human Resource Management, Accounting, Information Technology).  Key findings that shaped requirements: anonymity was the most-requested feature across all groups, users wanted post categories, and IT students specifically flagged the need for reporting/moderation and hiding personally identifying information.
 
 ### Prioritised Product Backlog
 
