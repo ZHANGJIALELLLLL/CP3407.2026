@@ -50,7 +50,7 @@ Team size: 3 (within the maximum of 4 students per team).
 - Build a simple, user-friendly web application, deliverable within a 3-person team's realistic scope.
 
 ### Requirements Gathering
-Requirements were derived from structured user interviews with six students across three programmes (Human Resource Management, Accounting, Information Technology).  Key findings that shaped requirements: anonymity was the most-requested feature across all groups, users wanted post categories, and IT students specifically flagged the need for reporting/moderation and hiding personally identifying information.
+Requirements were derived from structured user interviews with six students across three programmes (Human Resource Management, Accounting, Information Technology). Findings and interview questions are recorded in [`docs/Prac02-User-Research-and-User-Stories.md`](./docs/Prac02-User-Research-and-User-Stories.md). Key findings that shaped requirements: anonymity was the most-requested feature across all groups, users wanted post categories, and IT students specifically flagged the need for reporting/moderation and hiding personally identifying information.
 
 ### Prioritised Product Backlog
 
@@ -84,7 +84,7 @@ All 32 planned person-days of backlog were marked complete across the three iter
 Full architectural design, database design (with ER diagram), UI design, and design-decision justifications for every major component are documented in **[`design.md`](./design.md)**. That page covers:
 
 - **Architecture** — a three-layer design (presentation / application / data), with a Mermaid architecture diagram and justification for the separation of concerns.
-- **Database design** — an 11-table MySQL schema with a reverse-engineered ER diagram (MySQL Workbench) and relationship table.
+- **Database design** — a 12-table MySQL schema with a reverse-engineered ER diagram (MySQL Workbench) and relationship table.
 - **UI design** — visual identity, responsive design approach, and accessibility considerations.
 - **Component-by-component design decisions** for all 10 major components (navigation, home, registration, authentication, community posts, groups/group chat, resources, feedback, admin dashboard, backend API).
 
@@ -216,6 +216,8 @@ Project documentation is split across purpose-specific pages so each rubric area
 | [`design.md`](./design.md) | Architecture, database, UI design and justification |
 | [`test/test.md`](./test/test.md) | Testing strategy, traceability, bug tracking, test evidence |
 | [`Iteration_1.md`](./Iteration_1.md) / [`Iteration_2.md`](./Iteration_2.md) / [`Iteration_3.md`](./Iteration_3.md) | Sprint planning, task breakdown, burndown, velocity, retrospectives |
+| [`docs/prac 1 project proposal.md`](./docs/prac%201%20project%20proposal.md) | Original project proposal |
+| [`docs/Prac02-User-Research-and-User-Stories.md`](./docs/Prac02-User-Research-and-User-Stories.md) | User interviews and derived requirements |
 | [`backend/README.md`](./backend/README.md) | Backend setup instructions |
 
 ---
@@ -276,7 +278,6 @@ CP3407.2026/
 - Feature-branch + Pull Request workflow for remaining development (see [§5](#5-version-control)).
 - `design.md` describes group categories as fixed/closed, but the delivered API auto-creates unknown categories (found during testing — see [`test/test.md` §6.3](./test/test.md)). Needs a decision: tighten the API, or update the design docs to reflect it as a frontend-only convention.
 - Neither test suite currently exercises SQL-injection or XSS-style payloads as user content — parameterised queries make this unlikely to succeed, but it hasn't been directly tested (see [`test/test.md` §11](./test/test.md)).
-- `docs/Iteration_1.md` and the root-level `Iteration_1.md` are two different, unrelated files that happen to share a name (the one in `docs/` is an old GitHub Projects task-board export; the root one is the actual Iteration 1 report this README links to). Worth renaming or removing the `docs/` copy so it doesn't get confused with the real one.
 - Mobile-responsive optimisation and further accessibility testing.
 - AI-assisted content moderation.
 - Email notifications and email verification.
