@@ -163,11 +163,16 @@ Iteration reflections, task boards, and burndown charts are in [`Iteration_1.md`
 
 ### Demonstration Evidence
 
-**Screenshots/recordings:** add one image (or short GIF) per iteration to `assets/demo/` — e.g. `assets/demo/iteration-1.png`, `assets/demo/iteration-2.png`, `assets/demo/iteration-3.png` — and reference them here:
-```markdown
+**Screenshots:**
+
+**Iteration 1**
+![Iteration 1 demo](./assets/demo/iteration-1.png)
+
+**Iteration 2**
+![Iteration 2 demo](./assets/demo/iteration-2.png)
+
+**Iteration 3**
 ![Iteration 3 demo](./assets/demo/iteration-3.png)
-```
-(`assets/demo/` doesn't exist yet — create the folder and add the images before submission; this section will otherwise still show text-only evidence.)
 
 **Instructor feedback (received during the Iteration 3 demo):** the design was described as too plain/monotonous, and group chat needed to be easier to actually find and use rather than working but being hard to discover.
 
