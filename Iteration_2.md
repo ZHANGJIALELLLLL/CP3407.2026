@@ -2,7 +2,9 @@
 
 ## Objective
 
-The objective of Iteration 2 was to implement the core functionality of the Anonymous Student Support Platform using Test-Driven Development (TDD). During this iteration, the team focused on developing user interaction features, writing automated tests before implementation, and improving software quality through continuous testing.
+The objective of Iteration 2 was to implement the core functionality of the Anonymous Student Support Platform: connecting the frontend to a real backend and database, and delivering the account, posting, and commenting features. During this iteration, the team focused on developing user interaction features and improving software quality through manual testing.
+
+*(Note added during final review: the automated test suite — `test/test.js` and `test/unit.test.js` — was actually added in Iteration 3, after most features already existed. See `test/test.md` §13 for an honest account of testing practice; this iteration was not built test-first, despite earlier wording here suggesting otherwise.)*
 
 ---
 
@@ -72,13 +74,13 @@ The objective of Iteration 2 was to implement the core functionality of the Anon
 
 # Backend & Database Integration
 
-Following the Iteration 1 reflection, the frontend was connected to the Java backend and a MySQL database during this iteration:
+Following the Iteration 1 reflection, the frontend was connected to a real backend and a MySQL database during this iteration. The backend was originally planned as Java Spring Boot (see the initial project proposal), but the team switched to **Node.js and Express** before this integration work, for faster iteration within the team's skillset — the sentence below has been corrected to say so:
 
 - Account, login, post and comment data are now persisted in MySQL rather than being static/front-end only.
-- Java backend services were implemented to handle registration, authentication, post creation and comment storage.
+- Node.js/Express backend services were implemented to handle registration, authentication, post creation and comment storage.
 - Frontend pages were updated to call the backend endpoints instead of using placeholder data.
 
-This resolves the "not yet connected to Java backend or MySQL database" issue raised in the Iteration 1 reflection.
+This resolves the "not yet connected to a real backend or MySQL database" issue raised in the Iteration 1 reflection.
 
 ---
 
@@ -176,7 +178,9 @@ A total of **15 automated tests** were implemented.
 
 ---
 
-## Pull Request
+## Iteration Summary (written in PR-description style)
+
+*Note added during final review: committed directly to `main`, not through a real Pull Request. "Automated Tests" here has been corrected below — the automated test suite was actually added in Iteration 3, not this one; see `test/test.md` §13.*
 
 ### Title
 
@@ -187,7 +191,7 @@ Implement Iteration 2 core application features
 ### Description
 
 ```
-Completed Iteration 2 using Test-Driven Development.
+Completed Iteration 2: connected the frontend to a real backend and MySQL database.
 
 Implemented:
 
@@ -196,9 +200,6 @@ Implemented:
 - Anonymous Posting
 - Community Page
 - Comments
-- Automated Tests
-
-Reviewed and merged successfully.
 ```
 
 ---
