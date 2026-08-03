@@ -50,9 +50,47 @@ Team size: 3 (within the maximum of 4 students per team).
 - Build a simple, user-friendly web application, deliverable within a 3-person team's realistic scope.
 
 ### Requirements Gathering
-Requirements were derived from structured user interviews with six students across three programmes (Human Resource Management, Accounting, Information Technology). Findings and interview questions are recorded in [`docs/Prac02-User-Research-and-User-Stories.md`](./docs/Prac02-User-Research-and-User-Stories.md). Key findings that shaped requirements: anonymity was the most-requested feature across all groups, users wanted post categories, and IT students specifically flagged the need for reporting/moderation and hiding personally identifying information.
+Requirements were derived from structured interviews with six students across three programmes — two each from Human Resource Management, Accounting, and Information Technology (referred to as Participant 1–6, not by name). Each 10–15 minute interview covered: what pressures students face, comfort discussing problems, whether anonymity would help, what posts they'd want to read/write, privacy concerns, and what the platform should do about harmful content.
 
-### Prioritised Product Backlog
+**What each group emphasised:**
+- **HRM students** — interpersonal/group-assignment pressure; wanted clear post categories (academic, friendship, internship, campus life, general support).
+- **Accounting students** — exam/deadline stress; wanted short supportive reactions ("I understand", "You are not alone") over judgmental comments, and the ability to save posts.
+- **IT students** — security and technical usability; wanted no real names/IDs/emails ever shown, plus reporting and admin moderation.
+- **Common across all three** — anonymous posting was the single most-requested feature; all three groups also flagged reporting/moderation and a mobile-friendly interface as important.
+
+### Priority & Effort Methodology
+Priorities use a 10/20/30/40/50 scale (lower number = higher priority), matching how the original backlog was scoped:
+- **10** — critical, must be in the first working version.
+- **20** — high priority, completed soon after the critical functions.
+- **30** — medium priority, improves usability but not essential for v1.
+- **40 / 50** — lower priority / future enhancement, only if time allows.
+
+Effort is estimated in person-days per user story, based on the team's own judgement of implementation complexity (no formal planning-poker session was run — noted here rather than implied).
+
+### Original User Stories (from initial user research, before scope was finalised)
+Written in "As a ⟨role⟩, I want ⟨goal⟩, so that ⟨benefit⟩" form during requirements gathering, before the backlog below was finalised for the 3-person team's actual capacity:
+
+| # | User Story | Priority | Effort |
+|---|---|:---:|:---:|
+| 1 | As a student, I want to create an account with an anonymous display name, so that I can use the platform without showing my real identity to other students. | 10 | 3 days |
+| 2 | As a student, I want to publish an anonymous post, so that I can safely share my academic, social, or university-life concerns. | 10 | 4 days |
+| 3 | As a student, I want to view posts published by other students, so that I can learn from their experiences and provide support. | 10 | 3 days |
+| 4 | As a student, I want to comment anonymously on another student's post, so that I can provide encouragement or practical advice. | 10 | 4 days |
+| 5 | As a student, I want to report harmful or inappropriate posts and comments, so that the platform remains safe and respectful. | 10 | 3 days |
+| 6 | As an administrator, I want to review reported posts and comments, so that I can remove content that violates the community guidelines. | 10 | 5 days |
+| 7 | As a student, I want to select a category when creating a post, so that other users can understand the topic of my post. | 10 | — |
+| 8 | As a student, I want to search and filter posts, so that I can quickly find discussions related to my needs. | 20 | 4 days |
+| 9 | As a student, I want to use supportive reactions, so that I can encourage another student without writing a complete comment. | 20 | 2 days |
+| 10 | As a student, I want to access official university support information, so that I know where to obtain appropriate assistance. | 20 | 2 days |
+| 11 | As a student, I want to edit or delete my own post, so that I can correct mistakes or remove information I no longer wish to share. | 30 | 3 days |
+| 12 | As a student, I want to save useful posts, so that I can easily read them again later. | 30 | 3 days |
+| 13 | As a student, I want to receive a notification when another user replies to my post or comment, so that I don't miss new responses. | 30 | 4 days |
+| 14 | As a student, I want to send an anonymous private message to another student, so that I can continue a supportive conversation privately. | 40 | 6 days |
+| 15 | As a student, I want to switch the platform to dark mode, so that it is more comfortable to use in low-light environments. | 50 | 2 days |
+
+**What was actually delivered vs. this original list:** stories 1–10 map directly onto the delivered backlog below (with "supportive reactions" delivered as post likes, and search/filter extended to resources too). Stories 11–15 (edit/delete own post, save posts, reply notifications, private messaging, dark mode) were **not built** — correctly deprioritised given their lower priority (30/40/50) and the team's 32-person-day capacity across 3 iterations. Group creation/chat was added to the delivered backlog even though it isn't in this original list — it emerged as a scope addition during planning, not from the original interviews.
+
+### Prioritised Product Backlog (as actually scoped and delivered)
 
 | # | User Story | Priority | Priority Justification | Effort |
 |---|---|:---:|---|:---:|
@@ -70,10 +108,13 @@ Requirements were derived from structured user interviews with six students acro
 | 12 | Administrator Dashboard | 30 | Depends on Reporting existing first; used by staff, not students | 3 days |
 | 13 | Submit Platform Feedback | 30 | Supports continuous improvement, not core functionality | included above |
 
-**Total backlog: 32 person-days across 3 iterations** (Iteration 1: 10, Iteration 2: 11, Iteration 3: 11). Full task breakdowns are in [`Iteration_1.md`](./Iteration_1.md), [`Iteration_2.md`](./Iteration_2.md), and [`Iteration_3.md`](./Iteration_3.md).
+**Total backlog: 32 person-days across 3 iterations** (Iteration 1: 10, Iteration 2: 11, Iteration 3: 11). Full task breakdowns are in [`Iteration_1.md`](./Iteration_1.md), [`Iteration_2.md`](./Iteration_2.md), and [`Iteration_3.md`](./Iteration_3.md). Capacity was not formally split per teammate (3 people, no individual availability/capacity table) — noted here rather than left unstated.
+
+### Original Project Proposal (summary)
+The initial proposal scoped Hello Dear as: HTML/CSS/JS frontend, **Java Spring Boot** backend, MySQL database, covering user accounts (registration/login/university-email validation), community features (anonymous posting, categories, comments, helpful votes, search), safety features (profanity filtering, reporting, moderation, suspend/restore users), a student resources directory, and a feedback system. Data-privacy commitments: no public email/password exposure, generated anonymous nicknames, hashed passwords, admin-role gating, and input validation to reduce SQL-injection risk.
 
 ### Delivery Against Plan
-All 32 planned person-days of backlog were marked complete across the three iterations (see the Velocity figures in [§7](#7-agile-software-engineering-scrum)). One planning change occurred during the project: **the backend was originally scoped as Java Spring Boot** in the initial [project proposal](./docs/prac%201%20project%20proposal.md), but the team migrated to **Node.js + Express** early in development for faster iteration within the team's skillset. This is the one place delivered implementation diverges from the original written plan, and it is disclosed here rather than left unreconciled.
+All 32 planned person-days of backlog were marked complete across the three iterations (see the Velocity figures in [§7](#7-agile-software-engineering-scrum)). One planning change occurred during the project: **the backend was originally scoped as Java Spring Boot** (see above), but the team migrated to **Node.js + Express** early in development for faster iteration within the team's skillset. This is the one place delivered implementation diverges from the original written plan, and it is disclosed here rather than left unreconciled.
 
 ---
 
@@ -216,8 +257,6 @@ Project documentation is split across purpose-specific pages so each rubric area
 | [`design.md`](./design.md) | Architecture, database, UI design and justification |
 | [`test/test.md`](./test/test.md) | Testing strategy, traceability, bug tracking, test evidence |
 | [`Iteration_1.md`](./Iteration_1.md) / [`Iteration_2.md`](./Iteration_2.md) / [`Iteration_3.md`](./Iteration_3.md) | Sprint planning, task breakdown, burndown, velocity, retrospectives |
-| [`docs/prac 1 project proposal.md`](./docs/prac%201%20project%20proposal.md) | Original project proposal |
-| [`docs/Prac02-User-Research-and-User-Stories.md`](./docs/Prac02-User-Research-and-User-Stories.md) | User interviews and derived requirements |
 | [`backend/README.md`](./backend/README.md) | Backend setup instructions |
 
 ---
@@ -258,9 +297,6 @@ CP3407.2026/
 │   ├── server.js, db.js, migrate.js, package.json, env.example
 │   ├── seed-admin.js, seed-resources.js, seed-groups.js
 │   └── db/schema.sql
-├── docs/
-│   ├── prac 1 project proposal.md
-│   └── Prac02-User-Research-and-User-Stories.md
 ├── test/
 │   ├── test.js        # system/acceptance tests
 │   ├── unit.test.js    # unit tests
