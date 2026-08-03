@@ -216,8 +216,6 @@ Project documentation is split across purpose-specific pages so each rubric area
 | [`design.md`](./design.md) | Architecture, database, UI design and justification |
 | [`test/test.md`](./test/test.md) | Testing strategy, traceability, bug tracking, test evidence |
 | [`Iteration_1.md`](./Iteration_1.md) / [`Iteration_2.md`](./Iteration_2.md) / [`Iteration_3.md`](./Iteration_3.md) | Sprint planning, task breakdown, burndown, velocity, retrospectives |
-| [`docs/prac 1 project proposal.md`](./docs/prac%201%20project%20proposal.md) | Original project proposal |
-| [`docs/Prac02-User-Research-and-User-Stories.md`](./docs/Prac02-User-Research-and-User-Stories.md) | User interviews and derived requirements |
 | [`backend/README.md`](./backend/README.md) | Backend setup instructions |
 
 ---
