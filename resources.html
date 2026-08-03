@@ -729,6 +729,120 @@
         padding: 20px 0;
       }
     }
+
+    /* Real-photo support gallery replacing the immediate-assistance banner */
+    .support-gallery {
+      padding: 28px 0 66px;
+    }
+
+    .support-gallery-grid {
+      display: grid;
+      grid-template-columns: 1.25fr 0.75fr 0.75fr;
+      gap: 18px;
+    }
+
+    .support-photo-card {
+      position: relative;
+      min-height: 300px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      background: var(--white);
+      box-shadow: var(--shadow);
+    }
+
+    .support-photo-card img {
+      width: 100%;
+      height: 100%;
+      min-height: 300px;
+      display: block;
+      object-fit: cover;
+    }
+
+    .support-photo-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to top,
+        rgba(17, 25, 54, 0.82) 0%,
+        rgba(17, 25, 54, 0.18) 48%,
+        transparent 72%
+      );
+      pointer-events: none;
+    }
+
+    .support-photo-copy {
+      position: absolute;
+      left: 22px;
+      right: 22px;
+      bottom: 20px;
+      z-index: 2;
+      color: var(--white);
+    }
+
+    .support-photo-copy h2,
+    .support-photo-copy h3 {
+      margin-bottom: 5px;
+      line-height: 1.2;
+    }
+
+    .support-photo-copy h2 {
+      font-size: 1.55rem;
+    }
+
+    .support-photo-copy h3 {
+      font-size: 1.08rem;
+    }
+
+    .support-photo-copy p {
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 0.84rem;
+      line-height: 1.5;
+    }
+
+    .support-gallery-intro {
+      max-width: 760px;
+      margin: 0 auto 28px;
+      text-align: center;
+    }
+
+    .support-gallery-intro h2 {
+      margin-bottom: 9px;
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.1;
+      letter-spacing: -0.05em;
+    }
+
+    .support-gallery-intro p {
+      color: var(--text);
+    }
+
+    @media (max-width: 980px) {
+      .support-gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .support-photo-card:first-child {
+        grid-column: 1 / -1;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .support-gallery-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .support-photo-card:first-child {
+        grid-column: auto;
+      }
+
+      .support-photo-card,
+      .support-photo-card img {
+        min-height: 250px;
+      }
+    }
+
   </style>
 </head>
 
@@ -839,17 +953,60 @@
       </div>
     </section>
 
-    <section class="section">
-      <div class="container help-banner">
-        <div class="help-icon" aria-hidden="true">☎</div>
-        <div>
-          <h2>Need immediate assistance?</h2>
+    <section class="support-gallery" aria-labelledby="supportGalleryTitle">
+      <div class="container">
+        <div class="support-gallery-intro">
+          <span class="eyebrow">Campus support in action</span>
+          <h2 id="supportGalleryTitle">Support can begin with one conversation.</h2>
           <p>
-            This resource page should display your university's official urgent-support
-            and after-hours contact details. Confirm all information before publishing.
+            University life is easier when students can study together, ask for
+            guidance, and connect with people who understand their experience.
           </p>
         </div>
-        <a class="button button-outline" href="#">View Urgent Support</a>
+
+        <div class="support-gallery-grid">
+          <article class="support-photo-card">
+            <img
+              src="https://images.unsplash.com/photo-1758270704787-615782711641?auto=format&fit=crop&fm=jpg&ixlib=rb-4.1.0&q=82&w=1400"
+              alt="University students working together outdoors with laptops and study materials"
+              loading="lazy"
+              referrerpolicy="no-referrer"
+            />
+            <div class="support-photo-copy">
+              <h2>Learn together</h2>
+              <p>
+                Peer discussion and shared study routines can make academic
+                challenges feel more manageable.
+              </p>
+            </div>
+          </article>
+
+          <article class="support-photo-card">
+            <img
+              src="https://images.unsplash.com/photo-1764213077313-41b4dc822d8c?auto=format&fit=crop&fm=jpg&ixlib=rb-4.1.0&q=82&w=1000"
+              alt="Students studying in a bright university library"
+              loading="lazy"
+              referrerpolicy="no-referrer"
+            />
+            <div class="support-photo-copy">
+              <h3>Use campus spaces</h3>
+              <p>Libraries and learning hubs provide places to focus and ask for help.</p>
+            </div>
+          </article>
+
+          <article class="support-photo-card">
+            <img
+              src="https://images.unsplash.com/photo-1753613648120-d2c8d1d49002?auto=format&fit=crop&fm=jpg&ixlib=rb-4.1.0&q=82&w=1000"
+              alt="A university student using a laptop in a calm study environment"
+              loading="lazy"
+              referrerpolicy="no-referrer"
+            />
+            <div class="support-photo-copy">
+              <h3>Find the right service</h3>
+              <p>Clear resource information helps students choose an appropriate next step.</p>
+            </div>
+          </article>
+        </div>
       </div>
     </section>
 
