@@ -4,8 +4,6 @@ Hello Dear is a web-based anonymous peer-support platform for university student
 
 **Repository:** https://github.com/ZHANGJIALELLLLL/CP3407.2026
 
-> Testing strategy, automated test suite, and test evidence are documented separately in [`test/test.md`](./test/test.md) and are not repeated in this page.
-
 ---
 
 ## Table of Contents
@@ -14,14 +12,15 @@ Hello Dear is a web-based anonymous peer-support platform for university student
 2. [Requirements](#1-requirements)
 3. [Design](#2-design)
 4. [Implementation / Delivered Solution](#3-implementation--delivered-solution)
-5. [Version Control](#5-version-control)
-6. [Development & Build Tools](#6-development--build-tools)
-7. [Agile Software Engineering (Scrum)](#7-agile-software-engineering-scrum)
-8. [Project Technical Writing](#8-project-technical-writing)
-9. [How to Run](#how-to-run)
-10. [Repository Structure](#repository-structure)
-11. [Known Limitations & Future Improvements](#known-limitations--future-improvements)
-12. [References](#references)
+5. [Testing](#4-testing)
+6. [Version Control](#5-version-control)
+7. [Development & Build Tools](#6-development--build-tools)
+8. [Agile Software Engineering (Scrum)](#7-agile-software-engineering-scrum)
+9. [Project Technical Writing](#8-project-technical-writing)
+10. [How to Run](#how-to-run)
+11. [Repository Structure](#repository-structure)
+12. [Known Limitations & Future Improvements](#known-limitations--future-improvements)
+13. [References](#references)
 
 ---
 
@@ -51,7 +50,7 @@ Team size: 3 (within the maximum of 4 students per team).
 - Build a simple, user-friendly web application, deliverable within a 3-person team's realistic scope.
 
 ### Requirements Gathering
-Requirements were derived from structured user interviews with six students across three programmes (Human Resource Management, Accounting, Information Technology).  Key findings that shaped requirements: anonymity was the most-requested feature across all groups, users wanted post categories, and IT students specifically flagged the need for reporting/moderation and hiding personally identifying information.
+Requirements were derived from structured user interviews with six students across three programmes (Human Resource Management, Accounting, Information Technology). Findings and interview questions are recorded in [`docs/Prac02-User-Research-and-User-Stories.md`](./docs/Prac02-User-Research-and-User-Stories.md). Key findings that shaped requirements: anonymity was the most-requested feature across all groups, users wanted post categories, and IT students specifically flagged the need for reporting/moderation and hiding personally identifying information.
 
 ### Prioritised Product Backlog
 
@@ -126,19 +125,39 @@ Iteration reflections, task boards, and burndown charts are in [`Iteration_1.md`
 
 ---
 
+## 4. Testing
+
+*Rubric criterion: "Exemplary testing of all components. Test-driven development. Acceptance testing of all delivered features. Appropriate testing data sets. Delivered implementation matches the planning."*
+
+Full testing strategy, traceability tables, manual checklist, bug-tracking process, and appropriate-data-set breakdown are in **[`test/test.md`](./test/test.md)**. Summary:
+
+| Layer | File | What it covers |
+|---|---|---|
+| Unit tests | `test/unit.test.js` | 19 tests against pure backend logic (admin token signing/verification, email domain classification, profanity filter, category slug generation) — no server or database required |
+| System/acceptance tests | `test/test.js` | 36 black-box HTTP tests against every REST endpoint, including full coverage of Group/Group Chat |
+| Manual UI checklist | `test/test.md` §5 | 20 checklist items covering rendering, validation messages, and nav-bar state across every page |
+
+**Verified result (most recent run): 55 / 55 automated tests passing** (36 system + 19 unit) — see `test/test.md` §10 for the full log and instructions to reproduce it.
+
+**Testing found and fixed a real bug in the test suite itself:** the admin-authenticated test cases were previously running with no `Authorization` header at all (the admin login test case logged in successfully but never stored the returned token), so nine admin-route tests were silently passing against unauthenticated requests. This is documented as a worked example in `test/test.md` §6.1, in the same spirit as the nav-bar regression example that was already there — testing is treated as something that should surface real problems, not just produce a green checklist.
+
+**Honesty on Test-Driven Development:** most features were built first and system-tested after (legitimate acceptance testing, which the rubric requires separately). The newly-added unit test suite was written using a test-first-verification approach. `test/test.md` §13 gives a direct account of this rather than an unqualified TDD claim — see that section for what a fully TDD-aligned workflow would look like going forward.
+
+---
+
 ## 5. Version Control
 
 *Rubric criterion: "Exemplary use of GitHub/git or equivalent."*
 
 The project is version-controlled with Git and hosted on GitHub. The team's workflow:
 
-- **Single shared `main` branch** with direct, frequent commits from all three team members throughout the project (94 commits at time of writing).
+- **Single shared `main` branch** with direct, frequent commits from all three team members throughout the project.
 - **GitHub Issues** used for bug tracking, with a structured template ([`.github/ISSUE_TEMPLATE/bug_report.md`](./.github/ISSUE_TEMPLATE/bug_report.md)) capturing steps to reproduce, expected/actual result, severity, and linked user story — see [`test/test.md` §6](./test/test.md) for the full process and a worked example.
 - Commit messages are generally task-descriptive (e.g. `connect admin and sql`, `add the group chatting page`).
 
 **Planned improvement before final submission:** feature branches and Pull Requests are not yet part of the workflow — all commits currently go directly to `main`. Introducing at least a lightweight PR step (open a branch → PR → merge) for the remaining changes would strengthen this criterion and bring the workflow in line with standard collaborative Git practice.
 
-`.gitignore` is currently only present under `backend/` (excluding `.env`, `node_modules/`). `[TODO — add a root-level .gitignore to exclude IDE folders such as .idea/ and any unreferenced local image exports before final submission]`
+A root-level `.gitignore` (excluding `.idea/`, `node_modules/`, `.env`, `.DS_Store`) plus `backend/.gitignore` cover the project; `.idea/` has been removed from tracking.
 
 ---
 
@@ -159,6 +178,8 @@ The project is version-controlled with Git and hosted on GitHub. The team's work
 | IDE | JetBrains IDE | Primary development environment (project-level config under `.idea/`) |
 | Version control | Git + GitHub | Source control; GitHub Issues + Issue templates for bug tracking |
 | Seeding scripts | `seed-admin.js`, `seed-resources.js`, `seed-groups.js` | Repeatable, known-state test data for demos and manual testing |
+
+`[TODO — team to add any additional tools actually used: e.g. Postman/Insomnia for API testing during development, a UML tool for the class diagram, a prototyping tool for the UI mockups, browser DevTools for responsive testing]`
 
 ---
 
@@ -212,13 +233,15 @@ cd CP3407.2026/backend
 npm install
 cp env.example .env   # fill in your MySQL credentials
 mysql -u root -p < db/schema.sql
-npm run migrate         # adds post_likes + guarantees the group tables exist — see design.md §7.3
+npm run migrate         # adds post_likes + guarantees the group tables exist
 npm run seed-admin
 npm run seed-resources
 npm run seed-groups
 npm start
 ```
 The backend API runs at `http://localhost:3000`. Open the frontend pages (`index.html`, `login.html`, `signup.html`, `community.html`, `create-post.html`, `group.html`, `resources.html`, `admin.html`, `about.html`) directly in a browser — they call the API at port 3000.
+
+To run the test suites, see [`test/test.md` §9](./test/test.md).
 
 ---
 
@@ -232,14 +255,15 @@ CP3407.2026/
 ├── index.html, login.html, signup.html, community.html,
 │   create-post.html, group.html, resources.html, admin.html, about.html
 ├── backend/
-│   ├── server.js, db.js, package.json, env.example
+│   ├── server.js, db.js, migrate.js, package.json, env.example
 │   ├── seed-admin.js, seed-resources.js, seed-groups.js
 │   └── db/schema.sql
 ├── docs/
 │   ├── prac 1 project proposal.md
 │   └── Prac02-User-Research-and-User-Stories.md
 ├── test/
-│   ├── test.js
+│   ├── test.js        # system/acceptance tests
+│   ├── unit.test.js    # unit tests
 │   └── test.md
 └── .github/
     └── ISSUE_TEMPLATE/bug_report.md
@@ -252,6 +276,9 @@ CP3407.2026/
 - Real session/token-based authentication for normal users (currently login state is client-stored only; see `design.md` §6.4 and §9).
 - Restrict CORS to known origins rather than allowing all.
 - Feature-branch + Pull Request workflow for remaining development (see [§5](#5-version-control)).
+- `design.md` describes group categories as fixed/closed, but the delivered API auto-creates unknown categories (found during testing — see [`test/test.md` §6.3](./test/test.md)). Needs a decision: tighten the API, or update the design docs to reflect it as a frontend-only convention.
+- Neither test suite currently exercises SQL-injection or XSS-style payloads as user content — parameterised queries make this unlikely to succeed, but it hasn't been directly tested (see [`test/test.md` §11](./test/test.md)).
+- `docs/Iteration_1.md` and the root-level `Iteration_1.md` are two different, unrelated files that happen to share a name (the one in `docs/` is an old GitHub Projects task-board export; the root one is the actual Iteration 1 report this README links to). Worth renaming or removing the `docs/` copy so it doesn't get confused with the real one.
 - Mobile-responsive optimisation and further accessibility testing.
 - AI-assisted content moderation.
 - Email notifications and email verification.
