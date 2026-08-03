@@ -98,8 +98,6 @@ The backend API runs at `http://localhost:3000`. Open the frontend pages (`index
 ## UML / Design Evidence
 Class Diagram and Sequence Diagram were developed during Iteration 1 and updated throughout development; Architecture, ERD, and Interface Prototype diagrams are in [`docs/Design.md`](./docs/Design.md).
 
-## Instructor Access
-The instructor (JCU-Australia: jc138691@gmail.com, Dmitry Konovalov) must be added as a collaborator on this repository. ⚠️ TODO: confirm this has been done under Settings → Collaborators.
 
 ## Future Improvements
 - Real session/token-based authentication for normal users
