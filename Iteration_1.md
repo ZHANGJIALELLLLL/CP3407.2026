@@ -81,7 +81,9 @@ The objective of Iteration 1 was to establish the foundation of the Anonymous St
 
 ---
 
-## Pull Request
+## Iteration Summary (written in PR-description style)
+
+*Note added during final review: this iteration's work was committed directly to `main`, not through an actual GitHub Pull Request — git history shows no PR merges for this project. The title/description below are kept as a summary of what was delivered, in the format a PR description would take, but "reviewed and merged" should not be read as a claim that a real PR review happened.*
 
 ### Title
 
@@ -102,8 +104,6 @@ Implemented:
 - Mental Health Resources page
 - UI improvements
 - Documentation updates
-
-All changes were reviewed and merged successfully.
 ```
 
 ---
@@ -168,7 +168,7 @@ Velocity = **0.3125**
 - The homepage and navigation provide a simple and consistent user experience.
 - The About page clearly explains the purpose of the platform.
 - The Mental Health Resources page provides useful support information for students.
-- GitHub Issues, commits and pull requests were used to manage the team's work.
+- GitHub Issues and direct commits to `main` were used to manage the team's work.
 
 ### What could be improved
 
@@ -252,4 +252,3 @@ Velocity = **0.3125**
 # Sequence Diagram
 
 <img width="497" height="285" alt="Sequence_Diagram_Iteration_1" src="https://github.com/user-attachments/assets/a1cb2260-4421-4569-a948-9276cdb801e7" />
-
