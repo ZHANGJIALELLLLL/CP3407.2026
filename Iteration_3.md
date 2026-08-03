@@ -97,7 +97,9 @@ The objective of Iteration 3 was to complete the remaining core features of the 
 
 ---
 
-## Pull Request
+## Iteration Summary (written in PR-description style)
+
+*Note added during final review: committed directly to `main`, not through a real Pull Request.*
 
 ### Title
 
@@ -118,8 +120,6 @@ Implemented:
 - Administrator Dashboard
 - Bug fixes
 - Final system testing
-
-Reviewed and merged successfully.
 ```
 
 ---
