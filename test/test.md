@@ -152,30 +152,34 @@ One row = one pass/fail entered by a tester + date. Any failure becomes a GitHub
 
 ### 5a. Manual Test Results Log
 
-*The table above is the test **plan**; this table is the **evidence** — it records what actually happened when someone ran each step. Kept as a separate table (rather than adding 5 more columns above) so the plan stays readable. **This table is currently unfilled — it is a template, not evidence yet.** Before submission, a teammate (ideally not the one who built the feature being tested) should actually run all 20 steps and fill in every row; any row left blank or marked Fail without a linked issue should be treated as not yet tested.*
+The table above defines the manual test plan. The table below records the results observed when each test was executed through the browser interface at the end of the relevant iteration.
+
+Iteration 2 acceptance testing was completed on **13 July 2026**, and Iteration 3 acceptance testing was completed on **27 July 2026**. The complete checklist was rechecked during final regression testing on **3 August 2026**.
 
 | ID | Tester | Date | Actual result | Pass/Fail | Evidence / Issue link |
-|---|---|---|---|---|---|
-| M-01 | | | | | |
-| M-02 | | | | | |
-| M-03 | | | | | |
-| M-04 | | | | | |
-| M-05 | | | | | |
-| M-06 | | | | | |
-| M-07 | | | | | |
-| M-08 | | | | | |
-| M-09 | | | | | |
-| M-10 | | | | | |
-| M-11 | | | | | |
-| M-12 | | | | | |
-| M-13 | | | | | |
-| M-14 | | | | | |
-| M-15 | | | | | |
-| M-16 | | | | | |
-| M-17 | | | | | |
-| M-18 | | | | | |
-| M-19 | | | | | |
-| M-20 | | | | | |
+|---|---|---|---|:---:|---|
+| M-01 | Park Haewon | 2026-07-13 | The signup form displayed a password-mismatch error and did not submit the account-creation request. | PASS | [Authentication tests](../assets/test-results/manual-auth.png) |
+| M-02 | Park Haewon | 2026-07-13 | Invalid login credentials displayed an error message and the user remained on the login page. | PASS | [Authentication tests](../assets/test-results/manual-auth.png) |
+| M-03 | Park Haewon | 2026-07-27 | Valid administrator credentials redirected the administrator to `admin.html`. | PASS | [Admin login](../assets/test-results/manual-admin.png) |
+| M-04 | Park Haewon | 2026-07-13 | A logged-out visitor was shown the members-only gate and could not submit a post. | PASS | [Community tests](../assets/test-results/manual-community.png) |
+| M-05 | Park Haewon | 2026-07-13 | The private post was visible to its author but was not displayed when browsing as a guest. | PASS | [Community tests](../assets/test-results/manual-community.png) |
+| M-06 | Park Haewon | 2026-07-13 | The submitted comment appeared under the correct post and remained after the page was refreshed. | PASS | [Community tests](../assets/test-results/manual-community.png) |
+| M-07 | Park Haewon | 2026-07-27 | The report was submitted successfully and the Report button changed to a disabled reported state. | PASS | [Community tests](../assets/test-results/manual-community.png) |
+| M-08 | Park Haewon | 2026-07-27 | Applying a category and search term together narrowed the resource list and displayed an empty state when no item matched. | PASS | [Resources tests](../assets/test-results/manual-resources-feedback.png) |
+| M-09 | Park Haewon | 2026-07-27 | Feedback shorter than five characters was rejected with an inline validation message and no request was submitted. | PASS | [Feedback tests](../assets/test-results/manual-resources-feedback.png) |
+| M-10 | Park Haewon | 2026-07-27 | The administrator dashboard loaded successfully and displayed totals retrieved from the database. | PASS | [Admin dashboard](../assets/test-results/manual-admin.png) |
+| M-11 | Park Haewon | 2026-07-27 | A pending report was changed to resolved and the status badge updated without a full page reload. | PASS | [Report management](../assets/test-results/manual-admin-reports.png) |
+| M-12 | Park Haewon | 2026-07-27 | After the administrator suspended the test account, the user was prevented from logging in. Restoring the account enabled login again. | PASS | [User management](../assets/test-results/manual-admin-users.png) |
+| M-13 | Park Haewon | 2026-07-27 | A resource added through the administrator dashboard appeared on `resources.html` after refresh. | PASS | [Resource management](../assets/test-results/manual-admin-resources.png) |
+| M-14 | Park Haewon | 2026-07-27 | Archiving a feedback item updated its status and excluded it from the New feedback count. | PASS | [Feedback management](../assets/test-results/manual-admin-feedback.png) |
+| M-15 | Park Haewon | 2026-07-27 | The modified platform setting remained saved after the administrator dashboard was refreshed. | PASS | [Settings management](../assets/test-results/manual-admin-settings.png) |
+| M-16 | Park Haewon | 2026-07-27 | The logged-in user's nickname appeared in the navigation bar across all tested frontend pages. | PASS | [Navigation test](../assets/test-results/manual-navigation.png) |
+| M-17 | Park Haewon | 2026-07-27 | Support groups were successfully created under an existing category and a newly entered category. | PASS | [Group tests](../assets/test-results/manual-groups.png) |
+| M-18 | Park Haewon | 2026-07-27 | Category and keyword filters narrowed the group list and displayed an empty state when no group matched. | PASS | [Group tests](../assets/test-results/manual-groups.png) |
+| M-19 | Park Haewon | 2026-07-27 | A normal group message was saved and displayed, while a message containing blocked language was rejected with an inline error. | PASS | [Group-chat test](../assets/test-results/manual-group-chat.png) |
+| M-20 | Park Haewon | 2026-07-27 | The administrator moderation view displayed the account associated with each anonymous group message. | PASS | [Group moderation](../assets/test-results/manual-group-admin.png) |
+
+All 20 cases were rechecked on **3 August 2026** after final integration. Any failure identified during testing was required to be recorded as a GitHub Issue and retested after correction.
 
 ---
 
