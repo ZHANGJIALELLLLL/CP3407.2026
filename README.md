@@ -212,6 +212,7 @@ cd CP3407.2026/backend
 npm install
 cp env.example .env   # fill in your MySQL credentials
 mysql -u root -p < db/schema.sql
+npm run migrate         # adds post_likes + guarantees the group tables exist — see design.md §7.3
 npm run seed-admin
 npm run seed-resources
 npm run seed-groups
