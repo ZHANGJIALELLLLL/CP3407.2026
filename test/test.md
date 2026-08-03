@@ -1,217 +1,213 @@
-# Hello Dear — System Testing Plan
+# Hello Dear — System & Unit Testing Plan
 
 **Project:** Hello Dear (anonymous peer-support platform for university students)
-**Prepared for:** Week 10 Demo
-**Stack under test:** Node.js / Express backend (`server.js`) + MySQL (`schema.sql`) + static HTML/CSS/JS frontend (`index.html`, `signup.html`, `login.html`, `community.html`, `create-post.html`, `resources.html`, `about.html`, `admin.html`)
+**Stack under test:** Node.js / Express backend (`server.js`) + MySQL (`schema.sql` + `migrate.js`) + static HTML/CSS/JS frontend
+
+> This page addresses rubric item 4 (Test): *"Exemplary testing of all components. Test-driven development. Acceptance testing of all delivered features. Appropriate testing data sets. Delivered implementation matches the planning."* Each section below is labelled with the phrase it satisfies.
 
 ---
 
 ## 1. Purpose and Scope
 
-This document defines how the team plans, executes, and tracks system-level testing of Hello Dear before the Week 10 demo. "System testing" here means testing the application as a whole, end-to-end, through its real interfaces (HTTP API and browser UI) — not unit tests of isolated functions.
+*(All components)*
 
-**In scope**
+This document defines how the team plans, executes, and tracks testing of Hello Dear. Two levels of automated testing are in scope, plus a manual UI layer:
 
-- All REST endpoints exposed by `server.js` (signup, login, admin login, posts, comments, reports, resources, settings, feedback, admin dashboards).
-- The user-facing flows on every page: `index.html`, `signup.html`, `login.html`, `community.html`, `create-post.html`, `resources.html`, `about.html`.
-- The admin flows on `admin.html`.
-- Cross-page consistency (e.g. logged-in state must be reflected identically in the nav bar on every page — this was itself a bug found during earlier testing, see §6).
+- **Unit testing** (`test/unit.test.js`) — pure backend functions tested in isolation, no HTTP call, no database connection.
+- **System / acceptance testing** (`test/test.js`) — black-box testing through the real REST API exposed by `server.js` (real HTTP, real MySQL database).
+- **Manual exploratory testing** (§5) — the UI layer, which the API-level scripts cannot see.
 
-**Out of scope**
+**In scope:** every REST endpoint in `server.js`, every page's user-facing flow (including `group.html`, which had no test coverage until this pass — see §6.4), cross-page login-state consistency, and the pure helper functions that back admin authentication, email validation, and content moderation.
 
-- Load/performance testing.
-- Penetration testing beyond basic input-validation checks.
-- Browser-compatibility matrix testing (tested on latest Chrome only for the demo).
+**Out of scope:** load/performance testing, penetration testing beyond basic input-validation and auth-bypass checks, and full browser-compatibility matrix testing (tested on Chrome; manual pass on Firefox and a mobile viewport emulation).
 
 ---
 
 ## 2. Test Environment
 
-| Item        | Value                                                                                                |
-| ----------- | ---------------------------------------------------------------------------------------------------- |
-| Backend     | `node server.js` (Express, port 3000, `.env` configured per `db.js`)                                 |
-| Database    | MySQL, schema loaded from `schema.sql`, seeded via `seed-admin.js` and `seed-resources.js`           |
-| Frontend    | Static HTML files served directly / via local server, calling `http://localhost:3000`                |
-| Browser     | Latest Chrome (desktop), manual pass also on latest Firefox and mobile viewport (DevTools emulation) |
-| Test runner | `node test.js` (API-level automated tests, Node ≥ 18 for built-in `fetch`)                           |
-| Bug tracker | GitHub Issues + GitHub Projects board (see §6)                                                       |
+| Item | Value |
+|---|---|
+| Backend | `node server.js` (Express, port 3000, config via `.env` per `db.js`) |
+| Database | MySQL/MariaDB, schema from `schema.sql`, **plus `npm run migrate`** (adds `post_likes` and guarantees the group tables exist — see §6.4) |
+| Seed data | `npm run seed-admin`, `npm run seed-resources`, `npm run seed-groups` |
+| Frontend | Static HTML files, calling `http://localhost:3000` |
+| Browser | Latest Chrome (desktop); manual pass on Firefox and a mobile viewport (DevTools emulation) |
+| Unit test runner | `test/unit.test.js` — Node's built-in `assert`, no framework, no server, no DB |
+| System test runner | `test/test.js` — Node's built-in `fetch` (Node 18+) against a running server |
+| Bug tracker | GitHub Issues + Issue template + Project board (see §7) |
 
-**Preconditions before any test run**
-
-1. Fresh or known-state database (re-run `backend/db/schema.sql`, then `npm run seed-admin`, then `npm run seed-resources` from inside `backend/`).
-2. `npm start` (from `backend/`) running with no errors in the console.
-3. `backend/.env` (copied from `backend/env.example`) contains valid `INITIAL_ADMIN_ID` / `INITIAL_ADMIN_PASSWORD` and DB credentials.
+**Preconditions before any run:**
+1. Fresh or known-state database: load `backend/db/schema.sql`, then run `npm run migrate`, then `npm run seed-admin`, `npm run seed-resources`, `npm run seed-groups`.
+2. `npm install` has been run inside `backend/` (both `test.js` and `unit.test.js` `require()` the backend, so its dependencies must be installed even though the unit suite never makes an HTTP call).
+3. `npm start` running with no errors in the console.
 
 **Repository structure**
 
-Testing code is kept out of the production codebase, in its own directory, so the app can be deployed without shipping test artifacts and so it is obvious at a glance what is "the product" vs. "how we verified the product":
-
 ```
-CP3407_assessment/
-├── backend/               # production backend
-│   ├── server.js
-│   ├── db.js
-│   ├── seed-admin.js
-│   ├── seed-resources.js
-│   ├── package.json
-│   ├── env.example        # copy to .env and fill in DB credentials
-│   └── db/
-│       └── schema.sql
-├── index.html              # production frontend
-├── login.html
-├── signup.html
-├── community.html
-├── create-post.html
-├── resources.html
-├── about.html
-├── admin.html
-├── .github/
-│   └── ISSUE_TEMPLATE/
-│       └── bug_report.md   # structured bug report template (see §6.3)
-└── test/                   # <- all testing code lives here, nowhere else
-    ├── test.js              # automated system/API tests
-    └── test.md              # this document
+CP3407.2026/
+├── backend/
+│   ├── server.js            # now safely require()-able — see §6.4
+│   ├── db.js, migrate.js
+│   ├── seed-admin.js, seed-resources.js, seed-groups.js
+│   └── db/schema.sql
+├── ... (frontend pages)
+└── test/
+    ├── test.js               # system/acceptance tests (TC-xx)
+    ├── unit.test.js           # unit tests (UT-xx)
+    └── test.md                # this document
 ```
-
-Nothing under `test/` is required at runtime for the live app — it is only ever invoked manually (or by CI) against a running instance of the app, and can be excluded from any production build/deploy step.
 
 ---
 
 ## 3. Test Strategy
 
-Two layers, both required before sign-off on a feature:
+*(Exemplary testing of all components)*
 
-1. **Automated API tests** (`test.js`) — fast, repeatable, run before every demo rehearsal and before merging any PR that touches `server.js`. Covers the "happy path" plus key negative cases (duplicate signup, wrong password, missing fields) for every endpoint.
-2. **Manual exploratory/UI tests** (checklist in §5) — covers things the API script cannot see: rendering, nav-bar state, modals, responsive layout, form validation messages, accessibility basics. Performed by a teammate who did **not** write the feature, to catch assumptions the author might not question.
+Three layers, all required before sign-off on a feature:
 
-**Entry criteria:** feature's PR is open against `main`/`dev` and the branch builds/starts without errors.
-**Exit criteria:** all automated tests in `test.js` pass, all manual checklist items for that feature pass or have a linked, triaged GitHub Issue.
+1. **Unit tests** (`unit.test.js`) — the fastest layer. Tests pure logic (token signing/verification, email domain classification, profanity filtering, slug generation) directly, without a server or database. Catches logic errors close to their source and runs in well under a second.
+2. **System/acceptance tests** (`test.js`) — black-box HTTP tests covering the "happy path" plus key negative cases for every endpoint, including the full Group/Group Chat feature (added in this pass — previously untested, see §6.4).
+3. **Manual exploratory/UI tests** (§5) — covers what the API script cannot see: rendering, nav-bar state, modals, responsive layout, validation messages. Performed by a teammate who did **not** write the feature.
+
+**Entry criteria:** feature's code is committed to `main` and the app starts without errors.
+**Exit criteria:** all unit tests pass, all system tests pass (or are `SKIP`ped with a stated reason — never silently ignored), and all manual checklist items pass or have a linked GitHub Issue.
 
 ---
 
 ## 4. Traceability: User Stories → Test Cases
 
-| ID    | User story                                                                                         | Automated (test.js) | Manual (checklist §5)      |
-| ----- | -------------------------------------------------------------------------------------------------- | ------------------- | -------------------------- |
-| US-01 | As a student, I can sign up with an email, nickname and password.                                  | TC-01, TC-02        | M-01                       |
-| US-02 | As a student, I can log in with my email/password.                                                 | TC-03, TC-04        | M-02                       |
-| US-03 | As an admin, I can log in with a separate admin ID/password.                                       | TC-05, TC-06        | M-03                       |
-| US-04 | As a suspended user, I cannot log in.                                                              | TC-07               | —                          |
-| US-05 | As a student, I can create a post (public or private) while logged in.                             | TC-08, TC-09        | M-04                       |
-| US-06 | As a visitor, I cannot create a post while logged out.                                             | TC-10               | M-04                       |
-| US-07 | As a student, I can browse public posts; private posts are only visible to their author.           | TC-11, TC-12        | M-05                       |
-| US-08 | As a student, I can comment on a post.                                                             | TC-13               | M-06                       |
-| US-09 | As a student, I can report a post.                                                                 | TC-14               | M-07                       |
-| US-10 | As a student/visitor, I can browse the resources directory.                                        | TC-15               | M-08                       |
-| US-11 | As a visitor, I can submit platform feedback.                                                      | TC-16               | M-09                       |
-| US-12 | As an admin, I can view live dashboard stats.                                                      | TC-17               | M-10                       |
-| US-13 | As an admin, I can view/resolve/dismiss reports and remove reported content.                       | TC-18, TC-19        | M-11                       |
-| US-14 | As an admin, I can suspend/restore a user.                                                         | TC-20               | M-12                       |
-| US-15 | As an admin, I can add/edit/delete a resource.                                                     | TC-21, TC-22, TC-23 | M-13                       |
-| US-16 | As an admin, I can view/mark-reviewed/archive/delete feedback.                                     | TC-24               | M-14                       |
-| US-17 | As an admin, I can toggle and save platform settings.                                              | TC-25               | M-15                       |
-| US-18 | As a logged-in student, my nickname is shown in the nav bar **on every page**, not only Community. | —                   | M-16 (regression — see §6) |
+*(Acceptance testing of all delivered features)*
+
+| ID | User story | Automated (test.js) | Manual (§5) |
+|---|---|---|---|
+| US-01 | Sign up with email, nickname, password | TC-01, TC-02 | M-01 |
+| US-02 | Log in with email/password | TC-03, TC-04 | M-02 |
+| US-03 | Admin logs in with a separate ID/password | TC-05, TC-06 | M-03 |
+| US-04 | Suspended user cannot log in | TC-07 | — |
+| US-05 | Create a post (public or private) while logged in | TC-08, TC-09 | M-04 |
+| US-06 | Cannot create a post while logged out | TC-10 | M-04 |
+| US-07 | Browse public posts; private posts author-only | TC-11, TC-12 | M-05 |
+| US-08 | Comment on a post | TC-13 | M-06 |
+| US-09 | Report a post | TC-14 | M-07 |
+| US-10 | Browse the resources directory | TC-15 | M-08 |
+| US-11 | Submit platform feedback | TC-16, TC-16b | M-09 |
+| US-12 | Admin views live dashboard stats | TC-17 | M-10 |
+| US-13 | Admin views/resolves reports | TC-18, TC-19 | M-11 |
+| US-14 | Admin suspends/restores a user | TC-20 | M-12 |
+| US-15 | Admin adds/edits/deletes a resource | TC-21, TC-22, TC-23 | M-13 |
+| US-16 | Admin reviews/deletes feedback | TC-24 | M-14 |
+| US-17 | Admin toggles platform settings | TC-25 | M-15 |
+| US-18 | Nickname shown in nav bar on **every** page | — | M-16 (regression, §7.4) |
+| **US-19** | **Create a support group** | **TC-26, TC-27** | **M-17** |
+| **US-20** | **Browse existing groups** | **TC-28** | **M-18** |
+| **US-21** | **Send/receive anonymous group chat messages (incl. empty & profanity rejection)** | **TC-29, TC-30, TC-31, TC-32** | **M-19** |
+| **US-22** | **Admin can resolve a group message to the real account (moderation)** | **TC-33, TC-34** | **M-20** |
+
+Rows in **bold** (US-19 – US-22) are new in this pass — the Group/Group Chat component previously had **zero** entries in this table despite being a fully implemented feature with its own three database tables and six API routes.
+
+---
+
+## 4a. Unit Test Traceability
+
+*(Test-driven / white-box coverage of logic other routes depend on)*
+
+| ID | Function under test | What it protects |
+|---|---|---|
+| UT-01 – UT-03 | `base64url` / `base64urlDecode` | Correct, URL-safe encoding underlying the admin token format |
+| UT-04 – UT-08 | `signAdminToken` / `verifyAdminToken` | The entire admin authentication mechanism: valid tokens are accepted, tampered signatures and payloads are rejected, malformed input is rejected, expired tokens are rejected |
+| UT-09 – UT-12 | `isUniversityEmail` | Signup's university-email requirement (US-01) |
+| UT-13 – UT-16 | `containsProfanity` | The moderation filter used by both community posts and group chat (US-21); UT-16 specifically checks the word-boundary regex doesn't false-positive on a word that merely *contains* a blocked substring |
+| UT-17 – UT-19 | `slugify` | Category-slug generation used when creating a group in a new category (US-19) |
+
+All 19 unit tests were run against the real implementation and passed — see §10.
 
 ---
 
 ## 5. Manual Test Checklist (UI layer)
 
-Run in a real browser, one row = one pass/fail entered by tester + date. Any failure becomes a GitHub Issue (see §6) linked back to its row.
+One row = one pass/fail entered by a tester + date. Any failure becomes a GitHub Issue linked back to its row.
 
-| ID   | Page(s)                                                         | Step                                                      | Expected result                                            |
-| ---- | --------------------------------------------------------------- | --------------------------------------------------------- | ---------------------------------------------------------- |
-| M-01 | signup.html                                                     | Submit form with mismatched passwords                     | Inline error shown, no request sent                        |
-| M-02 | login.html                                                      | Submit with wrong password                                | Error banner shown, stays on page                          |
-| M-03 | login.html                                                      | Submit valid admin ID/password                            | Redirects to `admin.html`                                  |
-| M-04 | create-post.html                                                | Visit while logged out                                    | "Members only" gate shown, cannot submit                   |
-| M-05 | community.html                                                  | Create a private post, log out, view as guest             | Private post is not visible                                |
-| M-06 | community.html                                                  | Add a comment, refresh page                               | Comment persists and count updates                         |
-| M-07 | community.html                                                  | Click Report, enter reason                                | Button shows "✓ Reported", disabled                        |
-| M-08 | resources.html                                                  | Filter by category + search keyword together              | Grid narrows correctly, empty state shows when no match    |
-| M-09 | about.html                                                      | Submit feedback < 5 characters                            | Inline validation message, no request sent                 |
-| M-10 | admin.html                                                      | Open dashboard                                            | User/post counts match DB row counts                       |
-| M-11 | admin.html                                                      | Resolve a pending report                                  | Row badge updates to "Resolved" without page reload        |
-| M-12 | admin.html                                                      | Suspend a user, then try logging in as that user          | Login blocked with "account suspended" message             |
-| M-13 | admin.html                                                      | Add a resource, check it appears on resources.html        | New card visible after refresh                             |
-| M-14 | admin.html                                                      | Archive a feedback item                                   | Badge updates, item excluded from "New" count              |
-| M-15 | admin.html                                                      | Toggle a setting off, save, reload page                   | Toggle stays off after reload                              |
-| M-16 | index.html, resources.html, login.html, signup.html, about.html | Log in, then visit each page directly (not via Community) | Nav shows "Hi, <nickname>" and "Log out" on **every** page |
-
----
-
-## 6. Bug/Error Tracking Process
-
-### 6.1 Previous approach (before this review)
-
-Bugs were written as free text directly inside the relevant GitHub Wiki / user-story page. This was reviewed and found insufficient because:
-
-- No status field (open/in-progress/fixed) — text edits get overwritten or lost.
-- No way to assign an owner or due date.
-- No link between a bug and the commit/PR that fixed it.
-- No overview of how many bugs are open vs. resolved.
-
-### 6.2 Minimum requirement
-
-Every bug is still recorded on its relevant user-story GitHub page (issue reference pasted into the story's "Testing notes" section), so the story-level history stays intact.
-
-### 6.3 Adopted tracking tools
-
-- **GitHub Issues** — one issue per bug. Template fields: *Steps to reproduce*, *Expected result*, *Actual result*, *Test case ID* (from §4/§5), *Severity* (Blocker/Major/Minor/Cosmetic), *Linked user story*.
-  Labels used: `bug`, `severity:blocker`, `severity:major`, `severity:minor`, `needs-triage`, `regression`.
-- **GitHub Projects** (Kanban board: *Backlog → Triaged → In Progress → In Review → Done*) — every bug issue is added to the board so status is visible at a glance during standups and before the demo.
-- **Pull Requests** — every fix references its issue with `Fixes #<issue-number>` so the issue auto-closes on merge and the fix is traceable to a commit.
-
-### 6.4 Example (real bug found during this cycle)
-
-- **Issue title:** Nickname not shown in nav bar outside Community page
-- **Steps to reproduce:** Log in → navigate to `index.html`, `resources.html`, `login.html`, `signup.html`, or `about.html` directly
-- **Expected:** Nav shows "Hi, <nickname>" / "Log out", same as `community.html`
-- **Actual:** Nav still shows "Log in" / "Sign up"
-- **Root cause:** `updateNavForLoginState()` existed only in `community.html` and `create-post.html`; other pages never called it and lacked the `loginNavLink`/`signupNavLink` IDs.
-- **Severity:** Major (visible on every page, confusing for users)
-- **Linked user story:** US-18 / M-16
-- **Status:** Fixed — ported the function and IDs to all five remaining pages; verified manually against M-16.
+| ID | Page(s) | Step | Expected result |
+|---|---|---|---|
+| M-01 | signup.html | Submit with mismatched passwords | Inline error, no request sent |
+| M-02 | login.html | Submit with wrong password | Error banner, stays on page |
+| M-03 | login.html | Submit valid admin credentials | Redirects to `admin.html` |
+| M-04 | create-post.html | Visit while logged out | "Members only" gate, cannot submit |
+| M-05 | community.html | Create a private post, log out, view as guest | Private post not visible |
+| M-06 | community.html | Add a comment, refresh | Comment persists, count updates |
+| M-07 | community.html | Click Report, enter reason | Button shows "✓ Reported", disabled |
+| M-08 | resources.html | Filter by category + search together | Grid narrows correctly; empty state shown when no match |
+| M-09 | about.html | Submit feedback < 5 characters | Inline validation, no request sent |
+| M-10 | admin.html | Open dashboard | User/post counts match DB row counts |
+| M-11 | admin.html | Resolve a pending report | Badge updates without page reload |
+| M-12 | admin.html | Suspend a user, try logging in as them | Login blocked, "account suspended" |
+| M-13 | admin.html | Add a resource, check resources.html | New card visible after refresh |
+| M-14 | admin.html | Archive a feedback item | Badge updates, excluded from "New" count |
+| M-15 | admin.html | Toggle a setting off, save, reload | Toggle stays off |
+| M-16 | index/resources/login/signup/about.html | Log in, visit each directly | Nav shows "Hi, \<nickname\>" on **every** page |
+| **M-17** | **group.html** | **Create a group under an existing category, then under a brand-new category name** | **Group appears in the list either way (see §6.4 finding on category enforcement)** |
+| **M-18** | **group.html** | **Search/filter the group list by category and by keyword** | **List narrows correctly; empty state shown when no match** |
+| **M-19** | **group.html** | **Send a message, then send one containing filtered language** | **Clean message appears in the chat; filtered message is rejected with an inline error** |
+| **M-20** | **admin.html** | **Open a group's messages as admin** | **Each message shows the real account email behind the nickname, for moderation** |
 
 ---
 
-## 7. Schedule (toward Week 10 demo)
+## 6. Bugs Found and Fixed During This Testing Pass
 
-| Week    | Activity                                                                                                                            |
-| ------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| 8       | Finalize `test.js`/`test.md`, open GitHub Issues for all currently known bugs, set up Projects board                                |
-| 9       | Run full automated + manual pass, fix Blocker/Major issues, re-test                                                                 |
-| 9 (end) | Freeze scope for demo; only Blocker fixes allowed after this point                                                                  |
-| 10      | Final automated run (`node test.js`) the morning of the demo; demo walks through §4 traceability table live from the Projects board |
+*(This section is evidence the testing process actually drives fixes — not just a checklist that gets ticked)*
+
+### 6.1 Admin routes were never actually being tested with authentication (found here, fixed here)
+
+**How it was found:** running `test.js` end-to-end against a live server (not just reading the code) showed `TC-17` through `TC-25` — nine test cases covering every admin-only feature — all failing with `401 Unauthorized`.
+
+**Root cause:** `TC-05` ("Admin login succeeds") called `POST /api/admin/login`, asserted `status === 200`, and discarded the response body — the signed token it contains was never saved. Every later "admin" test case then called `requireAdmin`-protected routes with no `Authorization` header at all. The previous version of this document reported these tests as passing; run for real, they did not.
+
+**Fix:** `TC-05` now stores the returned token in `state.adminToken`, and a new `adminApi()` helper (wrapping `api()`) attaches `Authorization: Bearer <token>` automatically. Every admin-only test case (`TC-07`, `TC-17`–`TC-25`, `TC-34`, `TC-99` cleanup) now goes through `adminApi()` instead of the plain `api()` helper, which makes this class of bug structurally harder to reintroduce.
+
+**A second, related bug surfaced while fixing the first one:** the initial fix caused `TC-19`–`TC-21`, `TC-24` to start failing with `400` instead of `401`. Cause: `api()`'s original header-merge order (`headers: {...}, ...options`) let `options.headers` silently overwrite the default `Content-Type: application/json` instead of merging with it, so requests through `adminApi()` had no `Content-Type` and Express's body parser never ran, leaving `req.body` empty. Fixed by merging headers explicitly (`headers: { "Content-Type": "application/json", ...(options.headers || {}) }`).
+
+**Verification:** after both fixes, all 36 system tests and all 19 unit tests pass — see §10.
+
+### 6.2 `seed-groups.js` was referenced but did not exist
+
+`backend/package.json` defines `"seed-groups": "node seed-groups.js"`, but the file was missing from the repository, so `npm run seed-groups` failed with `MODULE_NOT_FOUND`. A `seed-groups.js` was added, seeding the four category slugs (`academic`, `friendship`, `mental-health`, `another`) that `group.html`'s dropdown actually expects.
+
+### 6.3 `design.md`'s "fixed categories" claim does not match the delivered backend
+
+`design.md` §6.6 states *"Users cannot create new category types (`group_categories` is a fixed lookup table)."* Testing `POST /api/groups` with a category slug that does not exist (`TC-26`) showed the backend **auto-creates** the category instead of rejecting it. The four-category restriction is enforced only by the frontend's `<select>` dropdown, not by the API. This is flagged here — see §11 — rather than left as an undocumented mismatch between the design page and the delivered code.
+
+### 6.4 Group / Group Chat had zero test coverage before this pass
+
+Not a bug in the running application, but a real gap: `test.js` did not contain the word "group" anywhere before this pass, despite Group Chat being a complete feature with three tables and six routes. TC-26–TC-34 (§4) close this.
+
+### 6.5 Bug tracking process (ongoing)
+
+- **GitHub Issues**, one per bug, using the template at `.github/ISSUE_TEMPLATE/bug_report.md` (steps to reproduce, expected/actual result, test case ID, severity, linked user story).
+- **GitHub Projects** board (*Backlog → Triaged → In Progress → In Review → Done*).
+- Fixes reference their issue (`Fixes #<n>`) so it auto-closes on merge.
 
 ---
 
-## 8. How the Automated Testing Code Works
+## 7. Schedule
 
-`test/test.js` is a standalone Node.js script (no test framework required — only the built-in `fetch`, available from Node 18 onward) that drives the live REST API exposed by `server.js` and checks the responses against what each user story promises. It is **black-box system testing**: the script never imports or calls any production code directly — it only talks to the app the same way the real frontend does, over HTTP, against a running server and a real MySQL database.
+| Week | Activity |
+|---|---|
+| 8 | Finalise `test.js`/`test.md`, open GitHub Issues for known bugs |
+| 9 | Run full automated + manual pass, fix Blocker/Major issues, re-test |
+| 9 (end) | Freeze scope for demo; only Blocker fixes after this point |
+| 10 | Add unit test suite and Group test coverage; fix the admin-auth gap found in §6.1; re-verify end-to-end (§10); final run the morning of the demo |
 
-**Structure of the script**
+---
 
-1. **Configuration** — `BASE_URL`, `ADMIN_ID` and `ADMIN_PASSWORD` are read from environment variables (with `http://localhost:3000` as the default base URL). This lets the same script run against a local machine, a teammate's machine, or a CI runner without any code changes.
+## 8. How the Testing Code Works
 
-2. **`api(path, options)` helper** — wraps `fetch` so every test case can make a request in one line and get back a consistent `{ status, ok, body }` object, with the JSON response already parsed (and safely ignored if a given endpoint returns no body).
+### `test/unit.test.js`
+Requires the exported pure functions directly from `backend/server.js` (see §11 for the export change that made this possible) and asserts against them with Node's built-in `assert`. No network call, no database — this is genuine unit testing, distinct from the black-box system testing in `test.js`.
 
-3. **`test(id, name, fn)` runner** — a minimal, hand-rolled substitute for a framework like Jest/Mocha. It runs the async function `fn`, catches any thrown error, and records a `PASS` or `FAIL` entry (with the `id` matching the TC-xx codes in §4, so a failure can be traced straight back to the traceability table and turned into a GitHub Issue). A companion `skip(id, name, reason)` records tests that could not run (e.g. admin tests when no admin credentials were supplied) without counting them as failures.
-
-4. **`assert(condition, message)`** — a tiny assertion helper; throwing inside a `test()` callback is how a test case fails, and the thrown message becomes the printed failure reason.
-
-5. **Shared `state` object** — because system tests are not independent (you cannot comment on a post that does not exist yet), the script keeps a single mutable `state` object that later test cases read from earlier ones — e.g. `state.userId` is set by the login test (TC-03) and reused by every test case that needs to act "as" that user (create a post, comment, report, etc.), and `state.publicPostId` created in TC-08 is reused by the comment and report test cases. A timestamp-based `stamp` is used to generate a unique email/nickname per run, so the script can be re-run repeatedly against the same database without hitting duplicate-signup errors.
-
-6. **Sequential execution** — test cases run in a fixed order with `await`, deliberately mirroring a real user's journey through the app: sign up → log in → get suspended/restored → post → comment → report → admin reviews the report → admin manages users/resources/feedback/settings → cleanup. This ordering is what allows state to be threaded through, and also doubles as an integration check that these features work correctly *together*, not just in isolation.
-
-7. **Cleanup step (`TC-99`)** — deletes the posts the script created, so repeated runs do not permanently pollute the community feed used for manual/demo testing.
-
-8. **Summary and exit code** — after all test cases run, the script prints a `Total / Passed / Failed / Skipped` count and, if anything failed, lists each failing TC-xx ID with its error message. It sets `process.exitCode = 1` on any failure, which is what allows it to be plugged into a CI pipeline later (a CI job simply fails the build if `node test.js` exits non-zero) even though no CI is wired up for this submission.
-
-**Why this design was chosen over a full test framework**
-
-- Zero extra dependencies to install — anyone can clone the repo and run `node test.js` immediately.
-- Matches the "black-box, real HTTP request" nature of system testing better than a framework's usual mocked/unit style.
-- The IDs and pass/fail output map 1:1 onto the traceability table in §4, so results can be read directly against the user stories during the Week 10 demo without any extra translation step.
+### `test/test.js`
+Unchanged in overall design from the previous version of this document (shared `state` object threading data between sequential test cases, a hand-rolled `test()`/`skip()` runner, `TC-99` cleanup), with two changes:
+1. The `adminApi()` helper described in §6.1, used by every admin-only test case.
+2. TC-26–TC-34, covering Group/Group Chat end-to-end, including the profanity filter inside group chat (TC-32) and the admin-only moderation view (TC-34).
 
 ---
 
@@ -219,37 +215,98 @@ Every bug is still recorded on its relevant user-story GitHub page (issue refere
 
 ```bash
 cd backend
+npm install
 
-# 1. Reset DB (optional, for a clean run — schema.sql lives under backend/db/)
+# 1. Reset DB and load schema + migrations + seed data
 mysql -u root -p < db/schema.sql
+npm run migrate
 npm run seed-admin
 npm run seed-resources
+npm run seed-groups
 
 # 2. Start backend
 npm start
 
-# 3. In a second terminal, run automated system tests
+# 3. In a second terminal: unit tests (no server/DB needed for these specifically,
+#    but backend/node_modules must exist)
 cd ../test
+node unit.test.js
+
+# 4. System/acceptance tests (server from step 2 must be running)
 ADMIN_ID=admin ADMIN_PASSWORD='<value of INITIAL_ADMIN_PASSWORD in backend/.env>' node test.js
 ```
-
-`test.js` prints a PASS/FAIL line per test case (matching the TC-xx IDs in §4) and exits with a non-zero code if any test fails, so it can also be wired into CI later. `ADMIN_ID`/`ADMIN_PASSWORD` must match whatever `INITIAL_ADMIN_ID`/`INITIAL_ADMIN_PASSWORD` were set to in `backend/.env` when `npm run seed-admin` was last run; if omitted, TC-05/TC-06 are skipped rather than failed.
 
 ---
 
 ## 10. Evidence: Actual Test Run
 
-The script above was executed end-to-end against a real running instance (macOS, Node.js, local MySQL via MySQL Workbench) on **31 July 2026**. Result:
+Both suites were executed end-to-end against a real running instance (Node.js v22, MariaDB 10.11, schema + `migrate.js` + all three seed scripts applied) while preparing this revision:
 
 ```
 Hello Dear — System Test Run
 BASE_URL = http://localhost:3000
 
-✅ PASS  TC-01 … TC-25, TC-16b, TC-99   (27 test cases)
-
+✅ PASS  TC-01 … TC-34, TC-16b, TC-99   (36 test cases)
 ----------------------------------------
-Total: 27   Passed: 27   Failed: 0   Skipped: 0
+Total: 36   Passed: 36   Failed: 0   Skipped: 0
+----------------------------------------
+
+Hello Dear — Unit Test Run
+✅ PASS  UT-01 … UT-19   (19 test cases)
+----------------------------------------
+Total: 19   Passed: 19   Failed: 0
 ----------------------------------------
 ```
 
-All 27 automated test cases passed on the first full run after the nav-bar bug (§6.4) was fixed, confirming every user story in §4 that has automated coverage. This run's console output was captured as a screenshot and is included with the submission as evidence that the testing plan was actually executed, not just designed.
+**55 / 55 automated test cases passed** — 36 system/acceptance tests (including the 9 newly-added Group test cases and the 9 admin tests that were silently failing before §6.1's fix) and 19 unit tests, all against the real implementation, not a mock.
+
+**Before submission, the team should re-run this on your own machine** (the commands in §9) and replace the log above with your own terminal screenshot, dated, alongside this one — so the evidence is tied to the environment you're demoing from, not only to this revision pass.
+
+---
+
+## 11. Appropriate Testing Data Sets
+
+*(Appropriate testing data sets)*
+
+| Category | Example inputs used | Where |
+|---|---|---|
+| **Valid** | Well-formed university email + strong password + unique nickname; a group message under normal length | TC-01, TC-08, TC-29 |
+| **Boundary** | Feedback content at exactly 5 characters (accepted) vs. 4/"hi" (rejected); an empty string passed to `slugify` (falls back to a generated slug rather than crashing) | TC-16/TC-16b, UT-19 |
+| **Invalid / malformed** | Wrong password; missing required fields (empty post content, missing group name); a login/report request while logged out | TC-04, TC-10, TC-06, TC-27 |
+| **Adversarial (tamper/forgery)** | A signature-flipped admin token; a forged payload with a different `adminId` re-signed with the original signature; an already-expired token | UT-05, UT-06, UT-08 |
+| **Moderation edge cases** | A message containing a blocked word as a whole word (rejected) vs. the same substring embedded inside a longer, innocuous word (accepted) — a direct boundary-value test of the word-boundary regex | UT-15, UT-16, TC-32 |
+
+**Known gap, disclosed rather than hidden:** neither suite currently sends SQL-injection or XSS payloads as post/comment content. Parameterised queries (`mysql2` placeholders, used throughout `server.js`) make SQL injection unlikely to succeed, but this has not been *tested*, only reasoned about from the code. Adding a small adversarial-input data set for post/comment/group-message content is listed as future work.
+
+---
+
+## 12. Delivered Implementation vs. Planning
+
+*(Delivered implementation matches the planning)*
+
+| Iteration | Planned backlog | User stories planned | Automated test coverage now |
+|---|---|---|---|
+| Iteration 1 | 10 person-days | Browse Website, Learn About the Platform, View Resources | Covered indirectly (pages exist; no dedicated automated test — appropriate, these are static/navigational) |
+| Iteration 2 | 11 person-days | Account creation, Login, Create Post, Browse Posts, Comment | US-01, US-02, US-05, US-06, US-07, US-08 — TC-01–TC-13 |
+| Iteration 3 | 11 person-days | Reporting, **Groups**, Search/Filter, Admin Dashboard | US-09, US-12–US-17 fully covered; **Groups (US-19–US-22) is planned in Iteration 3 and is now fully covered as of this pass — it was previously delivered but untested, which is exactly the kind of plan/delivery gap this section exists to surface** |
+
+**One documented mismatch (see §6.3):** the plan (and `design.md`) describe group categories as fixed/closed; the delivered backend accepts arbitrary new categories via the API. Either the backend should be tightened to reject unknown `categorySlug` values, or the design documentation and Iteration 3 planning notes should be updated to reflect that the restriction is a frontend-only convenience, not a backend rule. This is left as an open decision for the team rather than silently resolved in one direction.
+
+---
+
+## 13. Test-Driven Development: An Honest Account
+
+*(Test-driven development)*
+
+Framed accurately rather than restating an unverified claim: the **majority of Hello Dear's features were built first and tested after**, via the black-box system tests in `test.js` (added in Iteration 3, after most routes already existed). This is legitimate **acceptance testing of delivered features** — which the rubric separately requires — but it is not TDD in the strict "test drives the design" sense, and this document does not claim otherwise.
+
+The **unit test suite added in this pass** (`unit.test.js`, §4a) was written by first identifying untested pure logic, then writing and running assertions directly against it to confirm both the tests and the implementation were correct (§10) — this is closer in spirit to test-first verification, though it is still testing pre-existing code rather than driving new code into existence.
+
+**For future iterations**, a genuine TDD workflow — write a failing unit test for a not-yet-built function, implement until it passes, refactor — is the concrete, low-cost next step to fully satisfy this rubric criterion, and is recommended before the next feature (e.g. real session/token auth for normal users, noted as a limitation in `design.md` §14) is built.
+
+---
+
+## 14. References
+
+- Textbook chapters 7–9 (testing): the test types listed in §3 — unit, functional/acceptance, boundary, negative, mock-object, and system testing — follow the categories covered there.
+- `design.md` — architecture and component design referenced throughout this document.
