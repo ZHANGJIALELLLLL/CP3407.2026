@@ -674,8 +674,6 @@ assets/design/
 
 ![Full Interface Prototype](./assets/design/prototype.png)
 
-**Tools used:** `[TODO — team to fill in: name the actual tool(s) used to produce the architecture diagram, ERD, and prototype screens above — e.g. Figma, Canva, Keynote/PowerPoint, Excalidraw, an AI design tool, or hand-coded HTML/CSS. Do not list draw.io/Gliffy/Lucidchart/NinjaMock/Adobe XD below unless one of those was actually used — the image files themselves are screenshots (their EXIF metadata is tagged "Screenshot" by macOS), which only shows how they were captured, not which app was open when they were captured.]`
-
 **Note on a difference between this prototype and the delivered site:** the prototype above shows "Groups" as a fifth top-level item in the main navigation bar. After building and reviewing the prototype, the team decided to keep Groups as a feature reached *from* the Community page (via its "+ Group" button) rather than a sibling top-level nav item in the delivered site — see `README.md` → Implementation / Delivered Solution → Demonstration Evidence for the reasoning. The prototype is left as originally designed rather than edited to match, since it documents the design's evolution rather than only the final state.
 
 ### Evidence Status
