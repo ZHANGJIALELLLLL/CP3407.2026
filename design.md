@@ -650,29 +650,41 @@ The system can be extended with new routes, tables, resources, administrator too
 ---
 
 # 12. Required Design Evidence
-Add the final exported files to:
+Final files, in `assets/design/`:
 ```text
 assets/design/
 ├── system-architecture.png
 ├── database-erd.png
 ├── homepage-prototype.png
-├── community-prototype.png
-├── group-prototype.png
-└── admin-dashboard-prototype.png
+└── prototype.png
 ```
+(This list was originally six files, one per major page; `prototype.png` covers the login, community, groups, and admin-dashboard screens together in one combined image, so the list above reflects what's actually in the repository.)
 
-Recommended tools:
-- **Architecture / UML:** diagrams.net (draw.io), Gliffy, or Lucidchart
-- **Database ERD:** MySQL Workbench (used for Figure 1 above), GenMyModel, or dbdiagram.io
-- **Interface prototype:** Figma, NinjaMock, or Adobe XD
+## System Architecture
+
+![System Architecture](./assets/design/system-architecture.png)
+
+## Database ERD
+
+![Database ERD](./assets/design/database-erd.png)
+
+## UI Prototype
+
+![Homepage Prototype](./assets/design/homepage-prototype.png)
+
+![Full Interface Prototype](./assets/design/prototype.png)
+
+**Tools used:** `[TODO — team to fill in: name the actual tool(s) used to produce the architecture diagram, ERD, and prototype screens above — e.g. Figma, Canva, Keynote/PowerPoint, Excalidraw, an AI design tool, or hand-coded HTML/CSS. Do not list draw.io/Gliffy/Lucidchart/NinjaMock/Adobe XD below unless one of those was actually used — the image files themselves are screenshots (their EXIF metadata is tagged "Screenshot" by macOS), which only shows how they were captured, not which app was open when they were captured.]`
+
+**Note on a difference between this prototype and the delivered site:** the prototype above shows "Groups" as a fifth top-level item in the main navigation bar. After building and reviewing the prototype, the team decided to keep Groups as a feature reached *from* the Community page (via its "+ Group" button) rather than a sibling top-level nav item in the delivered site — see `README.md` → Implementation / Delivered Solution → Demonstration Evidence for the reasoning. The prototype is left as originally designed rather than edited to match, since it documents the design's evolution rather than only the final state.
 
 ### Evidence Status
 | Item | Status |
 |---|---|
-| Architecture diagram (`system-architecture.png`) | ⚠️ Not exported as a standalone file — the architecture is documented as the Mermaid diagram in §4 of this page instead. Export a PNG via draw.io/Lucidchart if the rubric requires a standalone image file. |
-| Database ERD (`database-erd.png`) | ✅ Done — embedded in §7.1 above (MySQL Workbench reverse-engineered screenshot) |
-| Interface prototype | ❌ **Not done.** No Figma/NinjaMock/Adobe XD file or exported prototype image exists in the repository. This needs to be created before submission if the rubric requires it — the delivered HTML pages themselves are not a substitute for a prototype. |
-| Deployed solution link | ❌ **Not done.** No deployment currently exists; see `README.md` → Implementation / Delivered Solution, where this is correctly marked as a TODO. This row previously said "✅ Done", which contradicted that TODO — fixed here to match reality. |
+| Architecture diagram (`system-architecture.png`) | ✅ Done — `assets/design/system-architecture.png` |
+| Database ERD (`database-erd.png`) | ✅ Done — `assets/design/database-erd.png`, and also embedded in §7.1 above |
+| Interface prototype | ✅ Done — `assets/design/homepage-prototype.png` (homepage) and `assets/design/prototype.png` (login, community, groups, and admin-dashboard screens, combined in one file) |
+| Deployed solution link | ❌ **Not done.** No deployment currently exists; see `README.md` → Implementation / Delivered Solution, where this is correctly marked as a local-demo decision rather than a deployment. |
 
 Do not leave placeholders in the final submitted version.
 
