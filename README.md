@@ -243,7 +243,6 @@ A root-level `.gitignore` (excluding `.idea/`, `node_modules/`, `.env`, `.DS_Sto
 | Version control | Git + GitHub | Source control; GitHub Issues + Issue templates for bug tracking |
 | Seeding scripts | `seed-admin.js`, `seed-resources.js`, `seed-groups.js` | Repeatable, known-state test data for demos and manual testing |
 
-`[TODO — team to add any additional tools actually used: e.g. Postman/Insomnia for API testing during development, a UML tool for the class diagram, a prototyping tool for the UI mockups, browser DevTools for responsive testing]`
 
 ---
 
