@@ -265,7 +265,9 @@ sequenceDiagram
 Browse existing support groups, search/filter, create a group within an approved category, enter a group chat, display the user's nickname, send messages, and reload recent messages.
 
 ### Approved Categories
-Academic, Friendship, Mental Health, Another. Users cannot create new category types (`group_categories` is a fixed lookup table).
+The frontend offers four categories — Academic, Friendship, Mental Health, Another — as a fixed `<select>` list in `group.html`, and rejects client-side any value not in that list before submitting.
+
+**Note on backend enforcement:** the restriction is currently enforced only at the UI layer. `POST /api/groups` on the backend will auto-create a new `group_categories` row for any `categorySlug` it doesn't recognise, rather than rejecting it — confirmed by an automated test (`TC-26` in `test/test.md`) that successfully created a group under a brand-new, never-seeded category slug via a direct API call. In practice a student using `group.html` can only ever submit one of the four approved slugs, so this is not exploitable through the normal UI — but it means the "fixed lookup table" description below is a description of the *frontend's* behaviour, not a guarantee the API itself makes. Whether to tighten `POST /api/groups` to reject unknown slugs, or to intentionally treat this as an extension point, is an open decision for the team (see `README.md` → Known Limitations).
 
 ```mermaid
 sequenceDiagram
@@ -276,8 +278,8 @@ sequenceDiagram
     Student->>GroupUI: Select approved category
     Student->>GroupUI: Enter group name and description
     GroupUI->>API: POST /api/groups
-    API->>API: Validate category and fields
-    API->>DB: Insert group
+    API->>API: Validate fields (category is accepted as given, not restricted to a fixed list)
+    API->>DB: Insert group (auto-creating the category row if it is new)
     DB-->>API: Created group ID
     API-->>GroupUI: Group created
     GroupUI->>API: GET group messages
@@ -305,7 +307,7 @@ sequenceDiagram
 ```
 
 ### Design Decisions
-- Fixed categories reduce inappropriate or duplicate category creation.
+- The frontend restricts group creation to four categories, keeping the browse/filter experience simple and reducing inappropriate or duplicate category names in normal use (see the API-enforcement note above).
 - The anonymous nickname is reused from the authenticated user state.
 - `group_messages.author_id` is nullable so seeded "starter" messages can exist without a real account.
 - The current implementation can poll the server for new messages; a future version could use WebSockets.
@@ -530,15 +532,13 @@ erDiagram
     }
 ```
 
-## 7.3 ⚠️ Action Required: Sync `schema.sql` with the Live Database
-The `post_likes` table appears in the live-database ER diagram above but is **not yet present** in `backend/db/schema.sql` in the repository. This means the checked-in schema file is out of date relative to the actual database.
+## 7.3 How `post_likes` and the Group Tables Reach the Live Database
 
-**Before submission:**
-1. Export the current live schema: `mysqldump -u <user> -p --no-data hello_dear > schema.sql`
-2. Replace `backend/db/schema.sql` with this export (or manually add the missing `CREATE TABLE post_likes (...)` statement with its foreign key to `posts(id)`).
-3. Re-run `Database → Reverse Engineer` in MySQL Workbench against the updated file (or the live DB) to confirm the diagram and the file match exactly.
+`backend/db/schema.sql` reflects the schema as it stood at the *start* of the project (the tables designed before Iteration 3). Two tables added later — `post_likes` (the "helpful" vote feature) and the group tables (`group_categories`, `groups_table`, `group_messages`) — are **not** in `schema.sql`. Instead they are created by a separate, idempotent migration script: **`backend/migrate.js`**, run once via `npm run migrate` (see `README.md` §"How to Run"). Running it against a database that already has these tables is safe — it only creates what's missing.
 
-The rubric requires the ER diagram, the GitHub design page, and the backend code/schema to all describe the same structure — this is the one place they currently disagree.
+This means `schema.sql` alone is **not** a complete description of the live database; `schema.sql` + `migrate.js` together are. The ER diagram in §7.1 was reverse-engineered from the live database (i.e. after `migrate.js` had already run), which is why it correctly shows `post_likes` even though `schema.sql` on its own does not.
+
+**Recommended follow-up (not urgent, but worth doing before final hand-off):** fold `migrate.js`'s `CREATE TABLE` statements into `schema.sql` itself, so a single file is once again the full source of truth and a new developer doesn't need to know a second script exists. Left as an open item rather than silently resolved, since either a single consolidated `schema.sql` or the current two-file split is a defensible choice — the team should pick one deliberately.
 
 ## 7.4 Database Design Justification
 MySQL was selected because:
@@ -700,7 +700,8 @@ Do not leave placeholders in the final submitted version.
 # 14. Current Limitations
 - No server-side session/token validation for normal user requests (see §6.4, §9).
 - CORS currently allows all origins.
-- `backend/db/schema.sql` is out of sync with the live database (missing `post_likes` — see §7.3).
+- `backend/db/schema.sql` only covers the schema as of Iteration 2; `post_likes` and the group tables are added by `backend/migrate.js` instead (see §7.3) — the two files together, not `schema.sql` alone, are the full source of truth.
+- The four group categories (Academic, Friendship, Mental Health, Another) are enforced by the frontend's dropdown and by client-side validation, but not by the API itself — see §6.6.
 - Group chat may use periodic polling rather than WebSockets.
 - University resource information must be verified before deployment.
 - Advanced content moderation is limited.
