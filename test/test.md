@@ -287,7 +287,14 @@ Total: 19   Passed: 19   Failed: 0
 
 **55 / 55 automated test cases passed** — 36 system/acceptance tests (including the 9 newly-added Group test cases and the 9 admin tests that were silently failing before §6.1's fix) and 19 unit tests, all against the real implementation, not a mock.
 
-**Before submission, the team should re-run this on your own machine** (the commands in §9) and replace the log above with your own terminal screenshot, dated, alongside this one — so the evidence is tied to the environment you're demoing from, not only to this revision pass.
+**Before submission, the team should re-run this on your own machine** (the commands in §9) and add your own terminal screenshot, dated, alongside this one — so the evidence is tied to the environment you're demoing from, not only to this revision pass.
+
+Save the screenshot(s) to `assets/test-results/` (e.g. `assets/test-results/system-tests.png` and `assets/test-results/unit-tests.png`, or one combined image) and embed them here:
+```markdown
+![System test run](../assets/test-results/system-tests.png)
+![Unit test run](../assets/test-results/unit-tests.png)
+```
+(paths are relative to `test/test.md`, hence `../assets/...`)
 
 ---
 
