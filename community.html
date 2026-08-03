@@ -95,7 +95,7 @@
             top: 0;
             z-index: 100;
             background: rgba(255, 255, 255, 0.92);
-            border-bottom: 1px solid rgba(223, 227, 241, 0.8);
+            border-bottom: 1px solid var(--border);
             backdrop-filter: blur(14px);
         }
 
@@ -133,7 +133,7 @@
 
         .nav-links a {
             position: relative;
-            color: #2f3650;
+            color: #303750;
             font-size: 0.95rem;
             font-weight: 650;
             padding: 27px 0 24px;
@@ -166,7 +166,7 @@
             width: 44px;
             height: 44px;
             border: 1px solid var(--border);
-            border-radius: 12px;
+            border-radius: 11px;
             background: var(--white);
             cursor: pointer;
         }
@@ -701,6 +701,17 @@
                 flex-direction: column;
             }
         }
+
+        /* Navigation buttons exactly match index.html */
+        .nav-actions > .button {
+            min-height: 44px;
+            padding: 0 18px;
+            gap: 8px;
+            border-radius: 11px;
+            font-size: inherit;
+            font-weight: 760;
+        }
+
     </style>
 </head>
 
@@ -761,8 +772,8 @@
             </nav>
 
             <div class="nav-actions" id="navActions">
-                <a class="button button-outline button-small" id="loginNavLink" href="login.html">Log in</a>
-                <a class="button button-primary button-small" id="signupNavLink" href="signup.html">Sign up</a>
+                <a class="button button-outline" id="loginNavLink" href="login.html">Log in</a>
+                <a class="button button-primary" id="signupNavLink" href="signup.html">Sign up</a>
                 <button class="menu-toggle" id="menuToggle" aria-label="Open navigation menu" aria-expanded="false">
                     ☰
                 </button>
