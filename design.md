@@ -98,6 +98,11 @@ This architecture was selected because it:
 ## 5. Repository Component Structure
 ```text
 CP3407.2026/
+├── README.md
+├── design.md
+├── Iteration_1.md
+├── Iteration_2.md
+├── Iteration_3.md
 ├── index.html
 ├── about.html
 ├── signup.html
@@ -111,9 +116,11 @@ CP3407.2026/
 ├── backend/
 │   ├── server.js
 │   ├── db.js
+│   ├── migrate.js
 │   ├── package.json
 │   ├── package-lock.json
 │   ├── env.example
+│   ├── README.md
 │   ├── seed-admin.js
 │   ├── seed-resources.js
 │   ├── seed-groups.js
@@ -121,20 +128,16 @@ CP3407.2026/
 │       └── schema.sql
 │
 ├── docs/
-│   ├── Project_Proposal.md
-│   ├── User_Research.md
-│   ├── Iteration_1.md
-│   ├── Iteration_2.md
-│   ├── Iteration_3.md
-│   ├── Design.md
-│   ├── Testing.md
-│   └── Tools.md
+│   ├── prac 1 project proposal.md
+│   └── Prac02-User-Research-and-User-Stories.md
 │
-└── assets/
-    ├── design/
-    ├── screenshots/
-    ├── burndown/
-    └── test-results/
+├── test/
+│   ├── test.js
+│   ├── unit.test.js
+│   └── test.md
+│
+└── .github/
+    └── ISSUE_TEMPLATE/bug_report.md
 ```
 
 ---
@@ -396,7 +399,7 @@ Centralising connection code improves maintainability. Environment variables pre
 # 7. Database Design
 
 ## 7.1 Final ER Diagram
-The diagram below was generated directly from the live MySQL database using **MySQL Workbench → Database → Reverse Engineer**, and reflects the actual, current `hello_dear` schema (11 tables).
+The diagram below was generated directly from the live MySQL database using **MySQL Workbench → Database → Reverse Engineer**, and reflects the actual, current `hello_dear` schema (12 tables).
 
 <img width="927" height="923" alt="Screenshot 2026-08-03 at 12 58 20 PM" src="https://github.com/user-attachments/assets/3265c61a-f242-40ae-aa56-94bc88a29902" />
 
@@ -532,13 +535,13 @@ erDiagram
     }
 ```
 
-## 7.3 How `post_likes` and the Group Tables Reach the Live Database
+## 7.3 How `post_likes` Reaches the Live Database
 
-`backend/db/schema.sql` reflects the schema as it stood at the *start* of the project (the tables designed before Iteration 3). Two tables added later — `post_likes` (the "helpful" vote feature) and the group tables (`group_categories`, `groups_table`, `group_messages`) — are **not** in `schema.sql`. Instead they are created by a separate, idempotent migration script: **`backend/migrate.js`**, run once via `npm run migrate` (see `README.md` §"How to Run"). Running it against a database that already has these tables is safe — it only creates what's missing.
+`backend/db/schema.sql` now includes the group tables (`group_categories`, `groups_table`, `group_messages`) directly. One table is still added separately: **`post_likes`** (the "helpful" vote feature), created by **`backend/migrate.js`**, run once via `npm run migrate` (see `README.md` → "How to Run"). `migrate.js` re-creates the group tables too if they're somehow missing (e.g. a database created before `group.html` existed), but that's now a safety net, not the primary way they're created — `schema.sql` is.
 
-This means `schema.sql` alone is **not** a complete description of the live database; `schema.sql` + `migrate.js` together are. The ER diagram in §7.1 was reverse-engineered from the live database (i.e. after `migrate.js` had already run), which is why it correctly shows `post_likes` even though `schema.sql` on its own does not.
+This means `schema.sql` alone is **not yet** a complete description of the live database — `schema.sql` + `migrate.js`'s `post_likes` step together are. The ER diagram in §7.1 was reverse-engineered from the live database (i.e. after `migrate.js` had already run), which is why it correctly shows `post_likes` even though `schema.sql` on its own does not.
 
-**Recommended follow-up (not urgent, but worth doing before final hand-off):** fold `migrate.js`'s `CREATE TABLE` statements into `schema.sql` itself, so a single file is once again the full source of truth and a new developer doesn't need to know a second script exists. Left as an open item rather than silently resolved, since either a single consolidated `schema.sql` or the current two-file split is a defensible choice — the team should pick one deliberately.
+**Recommended follow-up (not urgent, but worth doing before final hand-off):** fold the `post_likes` `CREATE TABLE` statement into `schema.sql` too, so a single file is once again the full source of truth.
 
 ## 7.4 Database Design Justification
 MySQL was selected because:
@@ -593,9 +596,9 @@ Semantic headings, labelled form fields, keyboard-focus states, accessible butto
 | Password hashing (bcrypt) | ✅ Implemented |
 | Parameterised SQL queries | ✅ Implemented|
 | Admin route protection | ✅ Implemented (`requireAdmin` + HMAC token) |
-| User-facing route protection (posts/comments/reports) |  ✅ Implemented |
-| CORS restriction |  ✅ Implemented |
-| Admin token secret |  ✅ Implemented |
+| **User-facing route protection (posts/comments/reports)** | ⚠️ **Client-side identity only.** The frontend sends a stored `authorId`/`userId` with each request; the server trusts it as-is. There is no server-side session or token proving the request actually came from that account (see §6.4). Anyone who knows or guesses another user's ID could act as them — create posts, comment, like, view their private posts, send group messages, or file reports in their name. This is the single biggest security gap in the current implementation. |
+| **CORS restriction** | ⚠️ **Partially implemented.** `server.js` rejects requests from any browser origin *not* on the `FRONTEND_ORIGIN` allow-list — so it is not "allow all". However, it also unconditionally allows requests with **no Origin header at all** (e.g. `curl`/Postman/server-to-server calls) *and* requests with a `null` origin (pages opened via `file://`, which is how the static frontend is normally opened in this project). In practice this means the restriction only stops *other websites'* browser-based requests; it does not stop a direct API call from outside a browser. |
+| Admin token secret | ✅ Implemented, but falls back to an insecure default if `ADMIN_TOKEN_SECRET` is unset — see `backend/env.example` |
 | Duplicate email checks | ✅ Implemented (`users.email UNIQUE`) |
 | Environment variables for credentials | ✅ Implemented (`dotenv`) |
 
@@ -670,10 +673,10 @@ Recommended tools:
 ### Evidence Status
 | Item | Status |
 |---|---|
-| Architecture diagram (`system-architecture.png`) | ✅ Done |
-| Database ERD (`database-erd.png`) | ✅ Done |
-| Interface prototype | ✅ Done |
-| Deployed solution link | ✅ Done |
+| Architecture diagram (`system-architecture.png`) | ⚠️ Not exported as a standalone file — the architecture is documented as the Mermaid diagram in §4 of this page instead. Export a PNG via draw.io/Lucidchart if the rubric requires a standalone image file. |
+| Database ERD (`database-erd.png`) | ✅ Done — embedded in §7.1 above (MySQL Workbench reverse-engineered screenshot) |
+| Interface prototype | ❌ **Not done.** No Figma/NinjaMock/Adobe XD file or exported prototype image exists in the repository. This needs to be created before submission if the rubric requires it — the delivered HTML pages themselves are not a substitute for a prototype. |
+| Deployed solution link | ❌ **Not done.** No deployment currently exists; see `README.md` → Implementation / Delivered Solution, where this is correctly marked as a TODO. This row previously said "✅ Done", which contradicted that TODO — fixed here to match reality. |
 
 Do not leave placeholders in the final submitted version.
 
@@ -698,9 +701,9 @@ Do not leave placeholders in the final submitted version.
 ---
 
 # 14. Current Limitations
-- No server-side session/token validation for normal user requests (see §6.4, §9).
-- CORS currently allows all origins.
-- `backend/db/schema.sql` only covers the schema as of Iteration 2; `post_likes` and the group tables are added by `backend/migrate.js` instead (see §7.3) — the two files together, not `schema.sql` alone, are the full source of truth.
+- No server-side session/token validation for normal user requests — see §6.4 and the "User-facing route protection" row in §9.
+- CORS rejects unlisted browser origins, but allows any request with no Origin header or a `null` origin (see the "CORS restriction" row in §9) — not a full restriction.
+- `backend/db/schema.sql` includes the group tables directly, but `post_likes` is still added separately by `backend/migrate.js` (see §7.3) — `schema.sql` + `migrate.js` together, not `schema.sql` alone, are the full source of truth.
 - The four group categories (Academic, Friendship, Mental Health, Another) are enforced by the frontend's dropdown and by client-side validation, but not by the API itself — see §6.6.
 - Group chat may use periodic polling rather than WebSockets.
 - University resource information must be verified before deployment.
@@ -712,7 +715,7 @@ Do not leave placeholders in the final submitted version.
 
 # 15. Future Design Improvements
 - Add real session/token-based authentication for normal users.
-- Restrict CORS to known origins.
+- Close the CORS gap: stop accepting no-origin/null-origin requests once the frontend is served over HTTP instead of opened via file://.
 - WebSocket-based real-time group chat.
 - Email verification.
 - Administrator resource-management forms.
