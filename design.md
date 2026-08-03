@@ -127,10 +127,6 @@ CP3407.2026/
 │   └── db/
 │       └── schema.sql
 │
-├── docs/
-│   ├── prac 1 project proposal.md
-│   └── Prac02-User-Research-and-User-Stories.md
-│
 ├── test/
 │   ├── test.js
 │   ├── unit.test.js
